@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace ShoeShop.Models
+{
+    public class Role
+    {
+        public int Id { get; set; }
+        public string RoleName { get; set; }
+        public string PrivilegesList { get; set; }
+
+        public int SellerId { get; set; }
+        public Seller Seller { get; set; }
+    }
+}
