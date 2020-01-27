@@ -9,9 +9,8 @@ namespace ShoeShop.Models
     {
         public int Id { get; set; }
         public string ColorName { get; set; }
-        public int ShortenColor { get; set; }
+        public string ShortenColor { get; set; }
 
-        public int ShoeId { get; set; }
         public Shoe Shoe { get; set; }
     }
 }

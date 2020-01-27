@@ -10,6 +10,8 @@ namespace ShoeShop.Models
         public string ProductName { get; set; }
         public string ProductFullCode { get; set; }
         public string ProductCode { get; set; }
+
+        public int ColorId { get; set; }
         public Color Color { get; set; }
         public bool Gender { get; set; }
         public double Price { get; set; }

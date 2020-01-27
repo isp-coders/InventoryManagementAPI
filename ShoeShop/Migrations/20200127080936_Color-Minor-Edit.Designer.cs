@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShoeShop.Data;
 
 namespace ShoeShop.Migrations
 {
     [DbContext(typeof(ShoeShopContext))]
-    partial class ShoeShopContextModelSnapshot : ModelSnapshot
+    [Migration("20200127080936_Color-Minor-Edit")]
+    partial class ColorMinorEdit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,10 +62,16 @@ namespace ShoeShop.Migrations
                     b.Property<string>("ColorName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ShoeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ShortenColor")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ShoeId")
+                        .IsUnique();
 
                     b.ToTable("Colors");
                 });
@@ -149,9 +157,6 @@ namespace ShoeShop.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ColorId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
@@ -181,9 +186,6 @@ namespace ShoeShop.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ColorId")
-                        .IsUnique();
-
                     b.HasIndex("SaleId");
 
                     b.ToTable("Shoes");
@@ -200,6 +202,15 @@ namespace ShoeShop.Migrations
                     b.HasOne("ShoeShop.Models.Shoe", "Shoe")
                         .WithOne("Branch")
                         .HasForeignKey("ShoeShop.Models.Branch", "ShoeId");
+                });
+
+            modelBuilder.Entity("ShoeShop.Models.Color", b =>
+                {
+                    b.HasOne("ShoeShop.Models.Shoe", "Shoe")
+                        .WithOne("Color")
+                        .HasForeignKey("ShoeShop.Models.Color", "ShoeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ShoeShop.Models.Role", b =>
@@ -220,12 +231,6 @@ namespace ShoeShop.Migrations
 
             modelBuilder.Entity("ShoeShop.Models.Shoe", b =>
                 {
-                    b.HasOne("ShoeShop.Models.Color", "Color")
-                        .WithOne("Shoe")
-                        .HasForeignKey("ShoeShop.Models.Shoe", "ColorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ShoeShop.Models.Sale", "Sale")
                         .WithMany("Shoes")
                         .HasForeignKey("SaleId")
