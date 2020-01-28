@@ -12,6 +12,7 @@ namespace ShoeShop.Repositories
         Task<Color> GetColor(int id);
         Task<Exception> PutColor(int id, Color color);
         Task<Color> PostColor(Color color);
+        Task<Color> PostColors(Color[] color);
         Task<Exception> DeleteColor(int id);
     }
 }

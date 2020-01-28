@@ -32,9 +32,9 @@ namespace ShoeShop.Controllers
 
         // GET: api/Colors/5
         [HttpGet("{id}")]
-        public ActionResult<Color> GetColor(int id)
+        public async Task<ActionResult<Color>> GetColor(int id)
         {
-            var color = _colorsRepository.GetColor(id);
+            var color = await _colorsRepository.GetColor(id);
 
             if (color == null)
             {
@@ -73,10 +73,18 @@ namespace ShoeShop.Controllers
         }
 
         // POST: api/Colors
+        //[HttpPost]
+        //public async Task<ActionResult<Color>> PostColor(Color color)
+        //{
+        //    await _colorsRepository.PostColor(color);
+        //    return Ok();
+        //}
+
+        // POST: api/Colors
         [HttpPost]
-        public async Task<ActionResult<Color>> PostColor(Color color)
+        public async Task<ActionResult<Color>> PostColors(Color[] color)
         {
-            await _colorsRepository.PostColor(color);
+            await _colorsRepository.PostColors(color);
             return Ok();
         }
 

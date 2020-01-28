@@ -65,6 +65,14 @@ namespace ShoeShop.Repositories
             return null;
         }
 
+        public async Task<Color> PostColors(Color[] color)
+        {
+            _context.Colors.AddRange(color);
+            await _context.SaveChangesAsync();
+
+            return null;
+        }
+
         public async Task<Exception> DeleteColor(int id)
         {
             var color = await _context.Colors.FindAsync(id);
