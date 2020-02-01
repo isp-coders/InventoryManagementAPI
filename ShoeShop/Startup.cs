@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
 using ShoeShop.Data;
 using ShoeShop.Repositories;
+using ShoeShop.Repositories.IRepositories;
 
 namespace ShoeShop
 {
@@ -30,6 +31,8 @@ namespace ShoeShop
             services.AddControllersWithViews();
             services.AddDbContext<ShoeShopContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ShopShoeDB")));
             services.AddTransient<IColorsRepository, ColorsRepository>();
+            services.AddTransient<IBranchesRepository, BranchesRepository>();
+            services.AddTransient<IProductsRepository, ProductsRepository>(); 
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {

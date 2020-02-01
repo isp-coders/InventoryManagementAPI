@@ -9,6 +9,8 @@
     <Compile Remove="Migrations\20200125151949_Initial.Designer.cs" />
     <Compile Remove="Migrations\20200125161416_Initial.cs" />
     <Compile Remove="Migrations\20200125161416_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200128101513_Branch-Shoe-Sale-Relation-Reverese.cs" />
+    <Compile Remove="Migrations\20200128101513_Branch-Shoe-Sale-Relation-Reverese.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
