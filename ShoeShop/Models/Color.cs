@@ -11,6 +11,6 @@ namespace ShoeShop.Models
         public string ColorName { get; set; }
         public string ShortenColor { get; set; }
 
-        public Shoe Shoe { get; set; }
+        public List<Product> Products { get; set; }
     }
 }
