@@ -10,10 +10,8 @@ namespace ShoeShop.Models
         public string Name { get; set; }
         public string Location { get; set; }
 
-        public int SaleId { get; set; }
         public Sale Sale { get; set; }
 
-        public int? ShoeId { get; set; }
-        public Shoe Shoe { get; set; }
+        public List<Product> Products { get; set; }
     }
 }
