@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShoeShop.Data;
 
 namespace ShoeShop.Migrations
 {
     [DbContext(typeof(ShoeShopContext))]
-    partial class ShoeShopContextModelSnapshot : ModelSnapshot
+    [Migration("20200129132311_product-branch-relationship-fix")]
+    partial class productbranchrelationshipfix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -96,7 +98,8 @@ namespace ShoeShop.Migrations
 
                     b.HasIndex("BranchId");
 
-                    b.HasIndex("ColorId");
+                    b.HasIndex("ColorId")
+                        .IsUnique();
 
                     b.ToTable("Products");
                 });
@@ -194,8 +197,8 @@ namespace ShoeShop.Migrations
                         .HasForeignKey("BranchId");
 
                     b.HasOne("ShoeShop.Models.Color", "Color")
-                        .WithMany("Products")
-                        .HasForeignKey("ColorId")
+                        .WithOne("product")
+                        .HasForeignKey("ShoeShop.Models.Product", "ColorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

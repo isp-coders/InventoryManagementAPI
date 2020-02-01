@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShoeShop.Data;
 
 namespace ShoeShop.Migrations
 {
     [DbContext(typeof(ShoeShopContext))]
-    partial class ShoeShopContextModelSnapshot : ModelSnapshot
+    [Migration("20200128101619_Branch-Shoe-Sale-Relation-Reverese")]
+    partial class BranchShoeSaleRelationReverese
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,52 +57,6 @@ namespace ShoeShop.Migrations
                     b.ToTable("Colors");
                 });
 
-            modelBuilder.Entity("ShoeShop.Models.Product", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("BranchId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ColorId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Count")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Gender")
-                        .HasColumnType("bit");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
-
-                    b.Property<string>("ProductCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProductFullCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProductName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProductYear")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Size")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BranchId");
-
-                    b.HasIndex("ColorId");
-
-                    b.ToTable("Products");
-                });
-
             modelBuilder.Entity("ShoeShop.Models.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -138,18 +94,12 @@ namespace ShoeShop.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("SellerId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BranchId")
-                        .IsUnique();
-
-                    b.HasIndex("ProductId")
                         .IsUnique();
 
                     b.HasIndex("SellerId");
@@ -187,17 +137,58 @@ namespace ShoeShop.Migrations
                     b.ToTable("Sellers");
                 });
 
-            modelBuilder.Entity("ShoeShop.Models.Product", b =>
+            modelBuilder.Entity("ShoeShop.Models.Shoe", b =>
                 {
-                    b.HasOne("ShoeShop.Models.Branch", "Branch")
-                        .WithMany("Products")
-                        .HasForeignKey("BranchId");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.HasOne("ShoeShop.Models.Color", "Color")
-                        .WithMany("Products")
-                        .HasForeignKey("ColorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int?>("BranchId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ColorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Gender")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<string>("ProductCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProductFullCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProductName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ProductYear")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("SaleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Size")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BranchId")
+                        .IsUnique()
+                        .HasFilter("[BranchId] IS NOT NULL");
+
+                    b.HasIndex("ColorId")
+                        .IsUnique();
+
+                    b.HasIndex("SaleId");
+
+                    b.ToTable("Shoes");
                 });
 
             modelBuilder.Entity("ShoeShop.Models.Role", b =>
@@ -217,15 +208,28 @@ namespace ShoeShop.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShoeShop.Models.Product", "Product")
-                        .WithOne("Sale")
-                        .HasForeignKey("ShoeShop.Models.Sale", "ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ShoeShop.Models.Seller", "Seller")
                         .WithMany("Sales")
                         .HasForeignKey("SellerId");
+                });
+
+            modelBuilder.Entity("ShoeShop.Models.Shoe", b =>
+                {
+                    b.HasOne("ShoeShop.Models.Branch", "Branch")
+                        .WithOne("Shoe")
+                        .HasForeignKey("ShoeShop.Models.Shoe", "BranchId");
+
+                    b.HasOne("ShoeShop.Models.Color", "Color")
+                        .WithOne("Shoe")
+                        .HasForeignKey("ShoeShop.Models.Shoe", "ColorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ShoeShop.Models.Sale", "Sale")
+                        .WithMany("Shoes")
+                        .HasForeignKey("SaleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

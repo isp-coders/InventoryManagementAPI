@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShoeShop.Data;
 
 namespace ShoeShop.Migrations
 {
     [DbContext(typeof(ShoeShopContext))]
-    partial class ShoeShopContextModelSnapshot : ModelSnapshot
+    [Migration("20200129124332_sale-product-relationship-fix-2")]
+    partial class saleproductrelationshipfix2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,9 +96,12 @@ namespace ShoeShop.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BranchId");
+                    b.HasIndex("BranchId")
+                        .IsUnique()
+                        .HasFilter("[BranchId] IS NOT NULL");
 
-                    b.HasIndex("ColorId");
+                    b.HasIndex("ColorId")
+                        .IsUnique();
 
                     b.ToTable("Products");
                 });
@@ -190,12 +195,12 @@ namespace ShoeShop.Migrations
             modelBuilder.Entity("ShoeShop.Models.Product", b =>
                 {
                     b.HasOne("ShoeShop.Models.Branch", "Branch")
-                        .WithMany("Products")
-                        .HasForeignKey("BranchId");
+                        .WithOne("product")
+                        .HasForeignKey("ShoeShop.Models.Product", "BranchId");
 
                     b.HasOne("ShoeShop.Models.Color", "Color")
-                        .WithMany("Products")
-                        .HasForeignKey("ColorId")
+                        .WithOne("product")
+                        .HasForeignKey("ShoeShop.Models.Product", "ColorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
