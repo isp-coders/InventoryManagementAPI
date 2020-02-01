@@ -16,7 +16,7 @@ namespace ShoeShop.Data
         public DbSet<Branch> Branches { get; set; }
         public DbSet<Sale> Sales { get; set; }
         public DbSet<Seller> Sellers { get; set; }
-        public DbSet<Shoe> Shoes { get; set; }
+        public DbSet<Product> Products { get; set; }
         public DbSet<Color> Colors { get; set; }
         public DbSet<Role> Roles { get; set; }
     }

@@ -12,10 +12,12 @@ namespace ShoeShop.Models
         public int? SellerId { get; set; }
         public Seller Seller { get; set; }
 
+        public int BranchId { get; set; }
         public Branch Branch { get; set; }
 
         //public PaymentMethod PaymentMethod { get; set; }
 
-        public ICollection<Shoe> Shoes { get; set; }
+        public int ProductId { get; set; }
+        public Product Product { get; set; }
     }
 }
