@@ -8,16 +8,13 @@ namespace ShoeShop.Models
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }
-
-        public int? SellerId { get; set; }
-        public Seller Seller { get; set; }
+        public double Total { get; set; }
+        public int UserId { get; set; }
+        public User User { get; set; }
 
         public int BranchId { get; set; }
         public Branch Branch { get; set; }
-
-        //public PaymentMethod PaymentMethod { get; set; }
-
-        public int ProductId { get; set; }
-        public Product Product { get; set; }
+        public List<SaleProduct> SaleProducts { get; set; }
+        public List<SalePaymentMethod> SalePaymentMethods { get; set; }
     }
 }

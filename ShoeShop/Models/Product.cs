@@ -23,6 +23,6 @@ namespace ShoeShop.Models
         public int? BranchId { get; set; }
         public Branch Branch { get; set; }
 
-        public Sale Sale { get; set; }
+        public List<SaleProduct> SaleProducts { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace ShoeShop.Models
         public string Location { get; set; }
 
         public Sale Sale { get; set; }
-
+        public List<User> Users { get; set; }
         public List<Product> Products { get; set; }
     }
 }
