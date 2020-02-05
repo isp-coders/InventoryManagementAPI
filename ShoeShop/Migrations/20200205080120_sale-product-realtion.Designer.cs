@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShoeShop.Data;
 
 namespace ShoeShop.Migrations
 {
     [DbContext(typeof(ShoeShopContext))]
-    partial class ShoeShopContextModelSnapshot : ModelSnapshot
+    [Migration("20200205080120_sale-product-realtion")]
+    partial class saleproductrealtion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -150,10 +152,13 @@ namespace ShoeShop.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("SellerId")
+                        .HasColumnType("int");
+
                     b.Property<double>("Total")
                         .HasColumnType("float");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -172,6 +177,9 @@ namespace ShoeShop.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("PaymentMethodId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Count")
                         .HasColumnType("int");
 
                     b.Property<int>("DefferedPaymentCount")
@@ -272,9 +280,7 @@ namespace ShoeShop.Migrations
 
                     b.HasOne("ShoeShop.Models.User", "User")
                         .WithMany("Sales")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("ShoeShop.Models.SalePaymentMethod", b =>

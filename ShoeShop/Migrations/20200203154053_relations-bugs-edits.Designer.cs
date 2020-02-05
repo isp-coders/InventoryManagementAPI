@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShoeShop.Data;
 
 namespace ShoeShop.Migrations
 {
     [DbContext(typeof(ShoeShopContext))]
-    partial class ShoeShopContextModelSnapshot : ModelSnapshot
+    [Migration("20200203154053_relations-bugs-edits")]
+    partial class relationsbugsedits
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -150,15 +152,21 @@ namespace ShoeShop.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<double>("Total")
-                        .HasColumnType("float");
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
 
-                    b.Property<int>("UserId")
+                    b.Property<int>("SellerId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BranchId")
+                        .IsUnique();
+
+                    b.HasIndex("ProductId")
                         .IsUnique();
 
                     b.HasIndex("UserId");
@@ -174,6 +182,9 @@ namespace ShoeShop.Migrations
                     b.Property<int>("PaymentMethodId")
                         .HasColumnType("int");
 
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
                     b.Property<int>("DefferedPaymentCount")
                         .HasColumnType("int");
 
@@ -182,27 +193,6 @@ namespace ShoeShop.Migrations
                     b.HasIndex("PaymentMethodId");
 
                     b.ToTable("SalePaymentMethodsRelation");
-                });
-
-            modelBuilder.Entity("ShoeShop.Models.SaleProduct", b =>
-                {
-                    b.Property<int>("SaleId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Receipt")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("SaleId", "ProductId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("SaleProduct");
                 });
 
             modelBuilder.Entity("ShoeShop.Models.User", b =>
@@ -270,11 +260,15 @@ namespace ShoeShop.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShoeShop.Models.User", "User")
-                        .WithMany("Sales")
-                        .HasForeignKey("UserId")
+                    b.HasOne("ShoeShop.Models.Product", "Product")
+                        .WithOne("Sale")
+                        .HasForeignKey("ShoeShop.Models.Sale", "ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("ShoeShop.Models.User", "User")
+                        .WithMany("Sales")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("ShoeShop.Models.SalePaymentMethod", b =>
@@ -287,21 +281,6 @@ namespace ShoeShop.Migrations
 
                     b.HasOne("ShoeShop.Models.Sale", "Sale")
                         .WithMany("SalePaymentMethods")
-                        .HasForeignKey("SaleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ShoeShop.Models.SaleProduct", b =>
-                {
-                    b.HasOne("ShoeShop.Models.Product", "Product")
-                        .WithMany("SaleProducts")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ShoeShop.Models.Sale", "Sale")
-                        .WithMany("SaleProducts")
                         .HasForeignKey("SaleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
