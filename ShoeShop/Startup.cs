@@ -32,7 +32,10 @@ namespace ShoeShop
             services.AddDbContext<ShoeShopContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ShopShoeDB")));
             services.AddTransient<IColorsRepository, ColorsRepository>();
             services.AddTransient<IBranchesRepository, BranchesRepository>();
-            services.AddTransient<IProductsRepository, ProductsRepository>(); 
+            services.AddTransient<IProductsRepository, ProductsRepository>();
+            services.AddTransient<INormalSatisRepository, NormalSatisRepository>();
+            services.AddTransient<IPaymentMethodsRepository, PaymentMethodsRepository>();
+            
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {
@@ -41,7 +44,8 @@ namespace ShoeShop
                        .AllowAnyHeader();
             }));
 
-            services.AddControllers().AddNewtonsoftJson(options => {
+            services.AddControllers().AddNewtonsoftJson(options =>
+            {
                 options.SerializerSettings.ReferenceLoopHandling =
             Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
