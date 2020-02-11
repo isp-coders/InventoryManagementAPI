@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShoeShop.Data;
 
 namespace ShoeShop.Migrations
 {
     [DbContext(typeof(ShoeShopContext))]
-    partial class ShoeShopContextModelSnapshot : ModelSnapshot
+    [Migration("20200206124149_Sale-Branch-Edit-SomeEdits")]
+    partial class SaleBranchEditSomeEdits
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -179,9 +181,6 @@ namespace ShoeShop.Migrations
                     b.Property<int>("DefferedPaymentCount")
                         .HasColumnType("int");
 
-                    b.Property<string>("Receipt")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("SaleId", "PaymentMethodId");
 
                     b.HasIndex("PaymentMethodId");
@@ -199,6 +198,9 @@ namespace ShoeShop.Migrations
 
                     b.Property<int>("ProductCount")
                         .HasColumnType("int");
+
+                    b.Property<string>("Receipt")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("SaleId", "ProductId");
 
