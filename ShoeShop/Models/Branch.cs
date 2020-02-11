@@ -13,5 +13,12 @@ namespace ShoeShop.Models
         public List<Sale> Sales { get; set; }
         public List<User> Users { get; set; }
         public List<Product> Products { get; set; }
+
+        public Branch()
+        {
+            Sales = new List<Sale>();
+            Users = new List<User>();
+            Products = new List<Product>();
+        }
     }
 }

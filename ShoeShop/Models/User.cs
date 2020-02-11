@@ -16,6 +16,12 @@ namespace ShoeShop.Models
         public Branch Branch { get; set; }
 
         public List<Sale> Sales { get; set; }
-        public ICollection<UserRole> UserRoles { get; set; }
+        public List<UserRole> UserRoles { get; set; }
+
+        public User()
+        {
+            Sales = new List<Sale>();
+            UserRoles = new List<UserRole>();
+        }
     }
 }

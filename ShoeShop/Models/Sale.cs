@@ -16,5 +16,10 @@ namespace ShoeShop.Models
         public Branch Branch { get; set; }
         public List<SaleProduct> SaleProducts { get; set; }
         public List<SalePaymentMethod> SalePaymentMethods { get; set; }
+        public Sale()
+        {
+            SaleProducts = new List<SaleProduct>();
+            SalePaymentMethods = new List<SalePaymentMethod>();
+        }
     }
 }
