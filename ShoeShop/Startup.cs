@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -35,7 +37,7 @@ namespace ShoeShop
             services.AddTransient<IProductsRepository, ProductsRepository>();
             services.AddTransient<INormalSatisRepository, NormalSatisRepository>();
             services.AddTransient<IPaymentMethodsRepository, PaymentMethodsRepository>();
-            
+
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {
@@ -44,6 +46,7 @@ namespace ShoeShop
                        .AllowAnyHeader();
             }));
 
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddControllers().AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling =
@@ -62,6 +65,8 @@ namespace ShoeShop
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+                // This helps to return Error explanation through resoponse
+                app.UseDeveloperExceptionPage();
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
