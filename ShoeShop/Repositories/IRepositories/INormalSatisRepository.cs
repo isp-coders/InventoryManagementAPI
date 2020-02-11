@@ -1,4 +1,5 @@
-﻿using ShoeShop.Models;
+﻿using ShoeShop.DTOs;
+using ShoeShop.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,7 @@ namespace ShoeShop.Repositories.IRepositories
     public interface INormalSatisRepository
     {
         Product GetProductDetails(string ProductFullCode);
+        Task SellProducts(ProductSellingDto productSellingDto);
+        Task<List<SaleUserBranchProductsDTO>> GetSelledProductsByUserId(int UserId, DateTime? StartDate, DateTime? EndDate);
     }
 }
