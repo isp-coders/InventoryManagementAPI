@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿
+using Microsoft.AspNetCore.Mvc;
+using ShoeShop.DTOs;
 using ShoeShop.Repositories;
 using ShoeShop.Repositories.IRepositories;
 using System;
@@ -31,6 +33,21 @@ namespace ShoeShop.Controllers
         {
             var result = _normalSatisRepository.GetProductDetails(ProductFullCode);
             return Ok(result);
+        }
+
+        [Route("SellProducts")]
+        [HttpPost]
+        public async Task<ActionResult> SellProducts(ProductSellingDto productSellingDto)
+        {
+            await _normalSatisRepository.SellProducts(productSellingDto);
+            return Ok();
+        }
+
+        [Route("GetSelledProductsByUserId/{Id}/{StartDate?}/{EndDate?}")]
+        [HttpGet]
+        public async Task<ActionResult> GetSelledProductsByUserId(int Id, DateTime StartDate, DateTime EndDate)
+        {
+            return Ok(await _normalSatisRepository.GetSelledProductsByUserId(Id, StartDate, EndDate));
         }
     }
 }
