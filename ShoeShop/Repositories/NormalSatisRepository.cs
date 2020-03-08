@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ShoeShop.Data;
 using ShoeShop.DTOs;
 using ShoeShop.Models;
+using ShoeShop.ModelViews;
 using ShoeShop.Repositories.IRepositories;
 using System;
 using System.Collections.Generic;
@@ -22,9 +23,9 @@ namespace ShoeShop.Repositories
             _mapper = mapper;
         }
 
-        public Product GetProductDetails(string ProductFullCode)
+        public async Task<ProductViewDto> GetProductDetails(string ProductFullCode)
         {
-            return _context.Products.Include(inc => inc.Color).Include(inc => inc.Branch).SingleOrDefault(si => si.ProductFullCode == ProductFullCode);
+            return await _mapper.ProjectTo<ProductViewDto>(_context.Products.Include(inc => inc.Color).Include(inc => inc.Branch)).SingleOrDefaultAsync(si => si.ProductFullCode == ProductFullCode);
         }
 
         public async Task SellProducts(ProductSellingDto productSellingDto)

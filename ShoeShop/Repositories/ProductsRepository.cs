@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using ShoeShop.Data;
+using ShoeShop.DTOs;
 using ShoeShop.Models;
 using ShoeShop.Repositories.IRepositories;
 using System;
@@ -12,15 +14,18 @@ namespace ShoeShop.Repositories
     public class ProductsRepository : IProductsRepository
     {
         private readonly ShoeShopContext _context;
+        private readonly IMapper _mapper;
 
-        public ProductsRepository(ShoeShopContext context)
+        public ProductsRepository(ShoeShopContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Product>> GetProducts()
+        public async Task<IEnumerable<ProductViewDto>> GetProducts()
         {
-            return await _context.Products.Include(inc=> inc.Branch).Include(inc=> inc.Color).ToListAsync();
+            return await _mapper.ProjectTo<ProductViewDto>(_context.Products.Include(inc => inc.Branch).Include(inc => inc.Color)).ToListAsync();
+            //return await _context.Products.Include(inc => inc.Branch).Include(inc => inc.Color).ToListAsync();
         }
 
         public async Task<Exception> PutProduct(int id, Product product)

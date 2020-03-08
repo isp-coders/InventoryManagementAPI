@@ -9,7 +9,7 @@ namespace ShoeShop.Repositories.IRepositories
 {
     public interface INormalSatisRepository
     {
-        Product GetProductDetails(string ProductFullCode);
+        Task<ProductViewDto> GetProductDetails(string ProductFullCode);
         Task SellProducts(ProductSellingDto productSellingDto);
         Task<List<SaleUserBranchProductsDTO>> GetSelledProductsByUserId(int UserId, DateTime? StartDate, DateTime? EndDate);
     }

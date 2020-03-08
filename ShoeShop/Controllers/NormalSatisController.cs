@@ -29,10 +29,10 @@ namespace ShoeShop.Controllers
 
         [Route("GetProductDetails/{ProductFullCode}")]
         [HttpGet]
-        public ActionResult GetProductDetails(string ProductFullCode)
+        public async Task<ActionResult> GetProductDetails(string ProductFullCode)
         {
             var result = _normalSatisRepository.GetProductDetails(ProductFullCode);
-            return Ok(result);
+            return Ok(await result);
         }
 
         [Route("SellProducts")]
