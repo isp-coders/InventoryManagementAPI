@@ -25,7 +25,7 @@ namespace ShoeShop.AutoMapper.Profiles
                  .ForMember(q => q.BranchName, opt => opt.MapFrom(s => s.Branch.Name))
                  .ForMember(q => q.BranchId, opt => opt.MapFrom(s => s.BranchId))
                  .ForMember(q => q.Count, opt => opt.MapFrom(s => s.Count))
-                 .ForMember(q => q.SellingPrice, opt => opt.AllowNull())
+                 .ForMember(q => q.SellingPrice, opt => opt.MapFrom(s => s.SellingPrice))
                  .ForMember(q => q.Branch, opt => opt.MapFrom(s => s.Branch))
                  .ForMember(q => q.Date, opt => opt.MapFrom(s => s.SaleProducts.Select(se => se.Sale.Date).ToString()));
 
