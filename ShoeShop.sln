@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoeShop", "ShoeShop\ShoeShop.csproj", "{902BAC90-CF2C-4BE5-89AE-062635C49307}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoeShop", "ShoeShop\ShoeShop.csproj", "{902BAC90-CF2C-4BE5-89AE-062635C49307}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InventoryManagement.EntityFrameworkCore", "InventoryManagement.EntityFrameworkCore\InventoryManagement.EntityFrameworkCore.csproj", "{A003313B-33C1-4BB9-8019-3C3688659E93}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InventoryManagement.Core", "InventoryManagement.Core\InventoryManagement.Core.csproj", "{D3C3F84B-A020-472B-898E-982C2963D29A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InventoryManagement.Application", "InventoryManagement.Application\InventoryManagement.Application.csproj", "{BCC444D2-BEB5-4DFE-94FB-BFF4F47792BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{902BAC90-CF2C-4BE5-89AE-062635C49307}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{902BAC90-CF2C-4BE5-89AE-062635C49307}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{902BAC90-CF2C-4BE5-89AE-062635C49307}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A003313B-33C1-4BB9-8019-3C3688659E93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A003313B-33C1-4BB9-8019-3C3688659E93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A003313B-33C1-4BB9-8019-3C3688659E93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A003313B-33C1-4BB9-8019-3C3688659E93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3C3F84B-A020-472B-898E-982C2963D29A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3C3F84B-A020-472B-898E-982C2963D29A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3C3F84B-A020-472B-898E-982C2963D29A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3C3F84B-A020-472B-898E-982C2963D29A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCC444D2-BEB5-4DFE-94FB-BFF4F47792BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCC444D2-BEB5-4DFE-94FB-BFF4F47792BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCC444D2-BEB5-4DFE-94FB-BFF4F47792BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCC444D2-BEB5-4DFE-94FB-BFF4F47792BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

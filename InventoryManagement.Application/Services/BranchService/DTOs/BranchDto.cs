@@ -1,22 +1,23 @@
-﻿using System;
+﻿using ShoeShop.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ShoeShop.Models
+namespace InventoryManagement.Application.Services.BranchesService.DTOs
 {
-    public class Branch
+    public class BranchDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Location { get; set; }
 
-        public List<Sale> Sales { get; set; }
+        public List<SalesDetails> Sales { get; set; }
         public List<User> Users { get; set; }
         public List<Product> Products { get; set; }
 
-        public Branch()
+        public BranchDto()
         {
-            Sales = new List<Sale>();
+            Sales = new List<SalesDetails>();
             Users = new List<User>();
             Products = new List<Product>();
         }

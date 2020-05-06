@@ -15,12 +15,12 @@ namespace ShoeShop.Models
         public int? BranchId { get; set; }
         public Branch Branch { get; set; }
 
-        public List<Sale> Sales { get; set; }
+        public List<SalesDetails> Sales { get; set; }
         public List<UserRole> UserRoles { get; set; }
 
         public User()
         {
-            Sales = new List<Sale>();
+            Sales = new List<SalesDetails>();
             UserRoles = new List<UserRole>();
         }
     }

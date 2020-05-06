@@ -52,7 +52,7 @@ namespace ShoeShop.Data
         }
 
         public DbSet<Branch> Branches { get; set; }
-        public DbSet<Sale> Sales { get; set; }
+        public DbSet<SalesDetails> Sales { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Color> Colors { get; set; }

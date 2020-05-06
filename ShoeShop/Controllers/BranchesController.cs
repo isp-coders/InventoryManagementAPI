@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using InventoryManagement.Application.Services.BranchesService;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShoeShop.Models;
 using ShoeShop.Repositories.IRepositories;
@@ -13,53 +14,39 @@ namespace ShoeShop.Controllers
     [ApiController]
     public class BranchesController : ControllerBase
     {
-        private readonly IBranchesRepository _branchesRepository;
-        public BranchesController(IBranchesRepository branchesRepository)
+        private readonly IBranchService _branchesService;
+        public BranchesController(IBranchService branchesRepository)
         {
-            _branchesRepository = branchesRepository;
+            _branchesService = branchesRepository;
         }
 
         // GET: api/Branches
         [HttpGet]
-        public async Task<ActionResult> GetBranches()
+        public ActionResult GetBranches()
         {
-            var result = await _branchesRepository.GetBranches();
+            var result = _branchesService.GetEntities();
             return Ok(result);
         }
 
         // PUT: api/Branches/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutColor(int id, Branch color)
+        public async Task<IActionResult> PutColor(int id, Branch branch)
         {
-            if (id != color.Id)
+            if (id != branch.Id)
             {
                 return BadRequest();
             }
-            var result = new Exception();
-            try
-            {
-                result = await _branchesRepository.PutBranch(id, color);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (result is KeyNotFoundException)
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
 
-            return NoContent();
+            var puttedBranch = await _branchesService.PutEntity(id, branch);
+
+            return Ok(puttedBranch);
         }
 
         // POST: api/Branches
         [HttpPost]
         public async Task<ActionResult<Branch>> PostColors(Branch[] color)
         {
-            await _branchesRepository.PostBranches(color);
+            await _branchesService.PostEntities(color);
             return Ok();
         }
 
@@ -67,8 +54,8 @@ namespace ShoeShop.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Branch>> DeleteColor(int id)
         {
-            var color = await _branchesRepository.DeleteBranch(id);
-            if (color is KeyNotFoundException)
+            var color = await _branchesService.DeleteEntity(id);
+            if (color == null)
             {
                 return NotFound();
             }

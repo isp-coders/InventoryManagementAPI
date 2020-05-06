@@ -1,4 +1,5 @@
 ﻿
+using InventoryManagement.Application.Services.SalesService;
 using Microsoft.AspNetCore.Mvc;
 using ShoeShop.DTOs;
 using ShoeShop.Repositories;
@@ -14,10 +15,10 @@ namespace ShoeShop.Controllers
     [ApiController]
     public class NormalSatisController : ControllerBase
     {
-        private readonly INormalSatisRepository _normalSatisRepository;
-        public NormalSatisController(INormalSatisRepository normalSatisRepository)
+        private readonly ISalesService _SalesService;
+        public NormalSatisController(ISalesService salesService)
         {
-            _normalSatisRepository = normalSatisRepository;
+            _SalesService = salesService;
         }
 
         // GET: api/Branches
@@ -29,25 +30,25 @@ namespace ShoeShop.Controllers
 
         [Route("GetProductDetails/{ProductFullCode}")]
         [HttpGet]
-        public async Task<ActionResult> GetProductDetails(string ProductFullCode)
+        public ActionResult GetProductDetails(string ProductFullCode)
         {
-            var result = _normalSatisRepository.GetProductDetails(ProductFullCode);
-            return Ok(await result);
+            var result = _SalesService.GetProductDetails(ProductFullCode);
+            return Ok(result);
         }
 
         [Route("SellProducts")]
         [HttpPost]
         public async Task<ActionResult> SellProducts(ProductSellingDto productSellingDto)
         {
-            await _normalSatisRepository.SellProducts(productSellingDto);
+            await _SalesService.SellProducts(productSellingDto);
             return Ok();
         }
 
         [Route("GetSelledProductsByUserId/{Id}/{StartDate?}/{EndDate?}")]
         [HttpGet]
-        public async Task<ActionResult> GetSelledProductsByUserId(int Id, DateTime StartDate, DateTime EndDate)
+        public ActionResult GetSelledProductsByUserId(int Id, DateTime StartDate, DateTime EndDate)
         {
-            return Ok(await _normalSatisRepository.GetSelledProductsByUserId(Id, StartDate, EndDate));
+            return Ok(_SalesService.GetSelledProductsByUserId(Id, StartDate, EndDate));
         }
     }
 }

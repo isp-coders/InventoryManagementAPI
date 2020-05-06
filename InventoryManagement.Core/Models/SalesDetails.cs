@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ShoeShop.Models
 {
-    public class Sale
+    public class SalesDetails
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }
@@ -16,7 +16,7 @@ namespace ShoeShop.Models
         public Branch Branch { get; set; }
         public List<SaleProduct> SaleProducts { get; set; }
         public List<SalePaymentMethod> SalePaymentMethods { get; set; }
-        public Sale()
+        public SalesDetails()
         {
             SaleProducts = new List<SaleProduct>();
             SalePaymentMethods = new List<SalePaymentMethod>();

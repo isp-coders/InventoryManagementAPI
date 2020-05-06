@@ -12,7 +12,7 @@ namespace ShoeShop.AutoMapper.Profiles
     {
         public SaleUserBranchProductsProfile()
         {
-            CreateMap<Sale, SaleUserBranchProductsDTO>()
+            CreateMap<SalesDetails, SaleUserBranchProductsDTO>()
                 .ForMember(q => q.Id, opt => opt.MapFrom(s => s.Id))
                 .ForMember(q => q.Date, opt => opt.MapFrom(s => s.Date))
                 .ForMember(q => q.BranchName, opt => opt.MapFrom(s => s.Branch.Name))

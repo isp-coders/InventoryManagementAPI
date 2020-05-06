@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using InventoryManagement.Application.Services.ProductService;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShoeShop.Models;
 using ShoeShop.Repositories.IRepositories;
@@ -13,17 +14,17 @@ namespace ShoeShop.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly IProductsRepository _productsRepository;
-        public ProductsController(IProductsRepository productsRepository)
+        private readonly IProductService _productService;
+        public ProductsController(IProductService productsService)
         {
-            _productsRepository = productsRepository;
+            _productService = productsService;
         }
 
         // GET: api/Products
         [HttpGet]
-        public async Task<ActionResult> GetProducts()
+        public ActionResult GetProducts()
         {
-            var result = await _productsRepository.GetProducts();
+            var result = _productService.GetEntities();
             return Ok(result);
         }
 
@@ -35,31 +36,21 @@ namespace ShoeShop.Controllers
             {
                 return BadRequest();
             }
-            var result = new Exception();
-            try
+            var result = await _productService.PutEntity(id, product);
+
+            if (result is null)
             {
-                result = await _productsRepository.PutProduct(id, product);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (result is KeyNotFoundException)
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
             }
 
-            return NoContent();
+            return Ok(result);
         }
 
         // POST: api/Products
         [HttpPost]
         public async Task<ActionResult<Product>> PostProducts(Product[] products)
         {
-            await _productsRepository.PostProducts(products);
+            await _productService.PostEntities(products);
             return Ok();
         }
 
@@ -67,8 +58,8 @@ namespace ShoeShop.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Product>> DeleteProduct(int id)
         {
-            var product = await _productsRepository.DeleteProduct(id);
-            if (product is KeyNotFoundException)
+            var product = await _productService.DeleteEntity(id);
+            if (product is null)
             {
                 return NotFound();
             }

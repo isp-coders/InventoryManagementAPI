@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using InventoryManagement.Application.Services.ColorService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,18 +16,18 @@ namespace ShoeShop.Controllers
     [ApiController]
     public class ColorsController : ControllerBase
     {
-        private readonly IColorsRepository _colorsRepository;
+        private readonly IColorService _colorService;
 
-        public ColorsController(IColorsRepository colorsRepository)
+        public ColorsController(IColorService colorService)
         {
-            _colorsRepository = colorsRepository;
+            _colorService = colorService;
         }
 
         // GET: api/Colors
         [HttpGet]
-        public async Task<ActionResult> GetColors()
+        public ActionResult GetColors()
         {
-            var result = await _colorsRepository.GetColors();
+            var result = _colorService.GetEntities();
             return Ok(result);
         }
 
@@ -34,7 +35,7 @@ namespace ShoeShop.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Color>> GetColor(int id)
         {
-            var color = await _colorsRepository.GetColor(id);
+            var color = await _colorService.FindEntity(id);
 
             if (color == null)
             {
@@ -52,24 +53,15 @@ namespace ShoeShop.Controllers
             {
                 return BadRequest();
             }
-            var result = new Exception();
-            try
+            var result = await _colorService.PutEntity(id, color);
+
+            if (result == null)
             {
-                result = await _colorsRepository.PutColor(id, color);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (result is KeyNotFoundException)
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
             }
 
-            return NoContent();
+
+            return Ok(result);
         }
 
         // POST: api/Colors
@@ -84,7 +76,7 @@ namespace ShoeShop.Controllers
         [HttpPost]
         public async Task<ActionResult<Color>> PostColors(Color[] color)
         {
-            await _colorsRepository.PostColors(color);
+            await _colorService.PostEntities(color);
             return Ok();
         }
 
@@ -92,8 +84,8 @@ namespace ShoeShop.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Color>> DeleteColor(int id)
         {
-            var color = await _colorsRepository.DeleteColor(id);
-            if (color is KeyNotFoundException)
+            var color = await _colorService.DeleteEntity(id);
+            if (color == null)
             {
                 return NotFound();
             }

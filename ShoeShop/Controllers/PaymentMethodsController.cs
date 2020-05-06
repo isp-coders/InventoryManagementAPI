@@ -14,18 +14,18 @@ namespace ShoeShop.Controllers
     public class PaymentMethodsController : ControllerBase
     {
 
-        private readonly IPaymentMethodsRepository _paymentMethodsRepository;
+        private readonly IPaymentMethodsRepository _paymentMethodsService;
 
         public PaymentMethodsController(IPaymentMethodsRepository paymentMethodsRepository)
         {
-            _paymentMethodsRepository = paymentMethodsRepository;
+            _paymentMethodsService = paymentMethodsRepository;
         }
 
         // GET: api/PaymentMethods
         [HttpGet]
-        public async Task<IActionResult> GetPaymentMethods()
+        public IActionResult GetPaymentMethods()
         {
-            var result = await _paymentMethodsRepository.GetPaymentMethods();
+            var result = _paymentMethodsService.GetEntities();
             return Ok(result);
         }
 
@@ -37,22 +37,13 @@ namespace ShoeShop.Controllers
             {
                 return BadRequest();
             }
-            var result = new Exception();
-            try
+            var result = await _paymentMethodsService.PutEntity(id, PaymentMethod);
+
+            if (result is null)
             {
-                result = await _paymentMethodsRepository.PutPaymentMethod(id, PaymentMethod);
+                return NotFound();
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (result is KeyNotFoundException)
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+
 
             return NoContent();
         }
@@ -61,7 +52,7 @@ namespace ShoeShop.Controllers
         [HttpPost]
         public async Task<ActionResult<PaymentMethod>> PostPaymentMethods(PaymentMethod[] PaymentMethod)
         {
-            await _paymentMethodsRepository.PostPaymentMethods(PaymentMethod);
+            await _paymentMethodsService.PostEntities(PaymentMethod);
             return Ok();
         }
 
@@ -69,8 +60,8 @@ namespace ShoeShop.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<PaymentMethod>> DeletePaymentMethod(int id)
         {
-            var PaymentMethod = await _paymentMethodsRepository.DeletePaymentMethod(id);
-            if (PaymentMethod is KeyNotFoundException)
+            var PaymentMethod = await _paymentMethodsService.DeleteEntity(id);
+            if (PaymentMethod is null)
             {
                 return NotFound();
             }
