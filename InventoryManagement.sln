@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoeShop", "ShoeShop\ShoeShop.csproj", "{902BAC90-CF2C-4BE5-89AE-062635C49307}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InventoryManagement.Interface", "ShoeShop\InventoryManagement.Interface.csproj", "{902BAC90-CF2C-4BE5-89AE-062635C49307}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InventoryManagement.EntityFrameworkCore", "InventoryManagement.EntityFrameworkCore\InventoryManagement.EntityFrameworkCore.csproj", "{A003313B-33C1-4BB9-8019-3C3688659E93}"
 EndProject
