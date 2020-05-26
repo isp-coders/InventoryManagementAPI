@@ -28,7 +28,7 @@ namespace InventoryManagement.EntityFrameworkCore.EntityFrameworkCore.Repositori
         {
             var Entity = await FindEntity(id);
             _context.Remove(Entity);
-
+            await _context.SaveChangesAsync();
             return Entity;
         }
 
