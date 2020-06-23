@@ -10,7 +10,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShoeShop.Controllers
+namespace InventoryManagement.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

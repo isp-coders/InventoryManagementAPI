@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ShoeShop.DTOs
+namespace InventoryManagement.DTOs
 {
     public class SoledProductDetailsDto
     {

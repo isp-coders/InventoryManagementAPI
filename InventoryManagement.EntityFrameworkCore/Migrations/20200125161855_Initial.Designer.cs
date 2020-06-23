@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ShoeShop.Data;
+using InventoryManagement.Data;
 
-namespace ShoeShop.Migrations
+namespace InventoryManagement.Migrations
 {
-    [DbContext(typeof(ShoeShopContext))]
+    [DbContext(typeof(Data.InventoryManagementDbContext))]
     [Migration("20200125161855_Initial")]
     partial class Initial
     {
@@ -21,7 +21,7 @@ namespace ShoeShop.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("ShoeShop.Models.Branch", b =>
+            modelBuilder.Entity("InventoryManagement.Models.Branch", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -52,7 +52,7 @@ namespace ShoeShop.Migrations
                     b.ToTable("Branches");
                 });
 
-            modelBuilder.Entity("ShoeShop.Models.Role", b =>
+            modelBuilder.Entity("InventoryManagement.Models.Role", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -76,7 +76,7 @@ namespace ShoeShop.Migrations
                     b.ToTable("Role");
                 });
 
-            modelBuilder.Entity("ShoeShop.Models.Sale", b =>
+            modelBuilder.Entity("InventoryManagement.Models.Sale", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -96,7 +96,7 @@ namespace ShoeShop.Migrations
                     b.ToTable("Sales");
                 });
 
-            modelBuilder.Entity("ShoeShop.Models.Seller", b =>
+            modelBuilder.Entity("InventoryManagement.Models.Seller", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -126,7 +126,7 @@ namespace ShoeShop.Migrations
                     b.ToTable("Sellers");
                 });
 
-            modelBuilder.Entity("ShoeShop.Models.Shoe", b =>
+            modelBuilder.Entity("InventoryManagement.Models.Shoe", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -170,38 +170,38 @@ namespace ShoeShop.Migrations
                     b.ToTable("Shoes");
                 });
 
-            modelBuilder.Entity("ShoeShop.Models.Branch", b =>
+            modelBuilder.Entity("InventoryManagement.Models.Branch", b =>
                 {
-                    b.HasOne("ShoeShop.Models.Sale", "Sale")
+                    b.HasOne("InventoryManagement.Models.Sale", "Sale")
                         .WithOne("Branch")
-                        .HasForeignKey("ShoeShop.Models.Branch", "SaleId")
+                        .HasForeignKey("InventoryManagement.Models.Branch", "SaleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShoeShop.Models.Shoe", "Shoe")
+                    b.HasOne("InventoryManagement.Models.Shoe", "Shoe")
                         .WithOne("Branch")
-                        .HasForeignKey("ShoeShop.Models.Branch", "ShoeId");
+                        .HasForeignKey("InventoryManagement.Models.Branch", "ShoeId");
                 });
 
-            modelBuilder.Entity("ShoeShop.Models.Role", b =>
+            modelBuilder.Entity("InventoryManagement.Models.Role", b =>
                 {
-                    b.HasOne("ShoeShop.Models.Seller", "Seller")
+                    b.HasOne("InventoryManagement.Models.Seller", "Seller")
                         .WithOne("Role")
-                        .HasForeignKey("ShoeShop.Models.Role", "SellerId")
+                        .HasForeignKey("InventoryManagement.Models.Role", "SellerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ShoeShop.Models.Sale", b =>
+            modelBuilder.Entity("InventoryManagement.Models.Sale", b =>
                 {
-                    b.HasOne("ShoeShop.Models.Seller", "Seller")
+                    b.HasOne("InventoryManagement.Models.Seller", "Seller")
                         .WithMany("Sales")
                         .HasForeignKey("SellerId");
                 });
 
-            modelBuilder.Entity("ShoeShop.Models.Shoe", b =>
+            modelBuilder.Entity("InventoryManagement.Models.Shoe", b =>
                 {
-                    b.HasOne("ShoeShop.Models.Sale", "Sale")
+                    b.HasOne("InventoryManagement.Models.Sale", "Sale")
                         .WithMany("Shoes")
                         .HasForeignKey("SaleId")
                         .OnDelete(DeleteBehavior.Cascade)

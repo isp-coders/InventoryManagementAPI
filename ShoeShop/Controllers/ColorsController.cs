@@ -6,11 +6,11 @@ using InventoryManagement.Application.Services.ColorService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ShoeShop.Data;
-using ShoeShop.Models;
-using ShoeShop.Repositories;
+using InventoryManagement.Data;
+using InventoryManagement.Models;
+using InventoryManagement.Repositories;
 
-namespace ShoeShop.Controllers
+namespace InventoryManagement.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

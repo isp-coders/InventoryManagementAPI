@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace ShoeShop.Migrations
+namespace InventoryManagement.Migrations
 {
     public partial class ColorMinorEdit : Migration
     {

@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using ShoeShop.DTOs;
-using ShoeShop.Models;
+using InventoryManagement.DTOs;
+using InventoryManagement.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ShoeShop.AutoMapper.Profiles
+namespace InventoryManagement.AutoMapper.Profiles
 {
     public class SaleUserBranchProductsProfile : Profile
     {

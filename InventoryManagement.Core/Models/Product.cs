@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ShoeShop.Models
+namespace InventoryManagement.Models
 {
     public class Product
     {

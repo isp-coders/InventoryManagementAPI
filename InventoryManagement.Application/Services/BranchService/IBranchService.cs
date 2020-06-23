@@ -1,5 +1,5 @@
 ﻿using InventoryManagement.Application.Services.BranchesService.DTOs;
-using ShoeShop.Models;
+using InventoryManagement.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;

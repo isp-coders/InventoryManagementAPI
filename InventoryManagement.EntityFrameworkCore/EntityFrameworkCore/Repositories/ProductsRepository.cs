@@ -1,20 +1,20 @@
 ﻿using InventoryManagement.EntityFrameworkCore.EntityFrameworkCore.Repositories;
 using Microsoft.EntityFrameworkCore;
-using ShoeShop.Data;
-using ShoeShop.Models;
-using ShoeShop.Repositories.IRepositories;
+using InventoryManagement.Data;
+using InventoryManagement.Models;
+using InventoryManagement.Repositories.IRepositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ShoeShop.Repositories
+namespace InventoryManagement.Repositories
 {
     public class ProductsRepository : Repository<Product>, IProductRepository
     {
-        private readonly ShoeShopContext _context;
+        private readonly InventoryManagementDbContext _context;
 
-        public ProductsRepository(ShoeShopContext context): base(context)
+        public ProductsRepository(InventoryManagementDbContext context): base(context)
         {
             _context = context;
         }

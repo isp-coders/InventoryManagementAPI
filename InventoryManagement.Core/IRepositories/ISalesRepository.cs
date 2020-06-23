@@ -1,11 +1,11 @@
 ﻿using InventoryManagement.Core.IRepositories;
-using ShoeShop.Models;
+using InventoryManagement.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ShoeShop.Repositories.IRepositories
+namespace InventoryManagement.Repositories.IRepositories
 {
     public interface ISalesRepository : IRepository<SalesDetails>
     {

@@ -1,14 +1,14 @@
 ﻿using InventoryManagement.Application.Services.BranchesService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ShoeShop.Models;
-using ShoeShop.Repositories.IRepositories;
+using InventoryManagement.Models;
+using InventoryManagement.Repositories.IRepositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ShoeShop.Controllers
+namespace InventoryManagement.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

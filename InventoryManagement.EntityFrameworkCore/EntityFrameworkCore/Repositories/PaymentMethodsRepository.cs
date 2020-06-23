@@ -1,19 +1,19 @@
 ﻿using InventoryManagement.EntityFrameworkCore.EntityFrameworkCore.Repositories;
 using Microsoft.EntityFrameworkCore;
-using ShoeShop.Data;
-using ShoeShop.Models;
-using ShoeShop.Repositories.IRepositories;
+using InventoryManagement.Data;
+using InventoryManagement.Models;
+using InventoryManagement.Repositories.IRepositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ShoeShop.Repositories
+namespace InventoryManagement.Repositories
 {
     public class PaymentMethodsRepository : Repository<PaymentMethod>, IPaymentMethodsRepository
     {
-        private readonly ShoeShopContext _context;
-        public PaymentMethodsRepository(ShoeShopContext context): base(context)
+        private readonly InventoryManagementDbContext _context;
+        public PaymentMethodsRepository(InventoryManagementDbContext context): base(context)
         {
             _context = context;
         }

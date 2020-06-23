@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using InventoryManagement.Core.IRepositories;
-using ShoeShop.DTOs;
-using ShoeShop.Models;
+using InventoryManagement.DTOs;
+using InventoryManagement.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

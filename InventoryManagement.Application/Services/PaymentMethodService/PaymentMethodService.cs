@@ -1,6 +1,6 @@
 ﻿using InventoryManagement.Application.Services.PaymentMethodRepository;
 using InventoryManagement.Core.IRepositories;
-using ShoeShop.Models;
+using InventoryManagement.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;

@@ -1,15 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ShoeShop.Models;
+using InventoryManagement.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ShoeShop.Data
+namespace InventoryManagement.Data
 {
-    public class ShoeShopContext : DbContext
+    public class InventoryManagementDbContext : DbContext
     {
-        public ShoeShopContext(DbContextOptions<ShoeShopContext> options) : base(options)
+        public InventoryManagementDbContext(DbContextOptions<InventoryManagementDbContext> options) : base(options)
         {
         }
 

@@ -1,7 +1,7 @@
 ﻿using InventoryManagement.Core.IRepositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
-using ShoeShop.Data;
+using InventoryManagement.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,14 +13,14 @@ namespace InventoryManagement.EntityFrameworkCore.EntityFrameworkCore.Repositori
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        private readonly ShoeShopContext _context;
+        private readonly InventoryManagementDbContext _context;
 
 
         /// <summary>
         /// Gets DbSet for given entity.
         /// </summary>
         public virtual DbSet<T> Table => _context.Set<T>();
-        public Repository(ShoeShopContext context)
+        public Repository(InventoryManagementDbContext context)
         {
             _context = context;
         }

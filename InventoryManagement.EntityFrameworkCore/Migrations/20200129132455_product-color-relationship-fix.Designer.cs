@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ShoeShop.Data;
+using InventoryManagement.Data;
 
-namespace ShoeShop.Migrations
+namespace InventoryManagement.Migrations
 {
-    [DbContext(typeof(ShoeShopContext))]
+    [DbContext(typeof(Data.InventoryManagementDbContext))]
     [Migration("20200129132455_product-color-relationship-fix")]
     partial class productcolorrelationshipfix
     {
@@ -21,7 +21,7 @@ namespace ShoeShop.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("ShoeShop.Models.Branch", b =>
+            modelBuilder.Entity("InventoryManagement.Models.Branch", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -39,7 +39,7 @@ namespace ShoeShop.Migrations
                     b.ToTable("Branches");
                 });
 
-            modelBuilder.Entity("ShoeShop.Models.Color", b =>
+            modelBuilder.Entity("InventoryManagement.Models.Color", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -57,7 +57,7 @@ namespace ShoeShop.Migrations
                     b.ToTable("Colors");
                 });
 
-            modelBuilder.Entity("ShoeShop.Models.Product", b =>
+            modelBuilder.Entity("InventoryManagement.Models.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -103,7 +103,7 @@ namespace ShoeShop.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("ShoeShop.Models.Role", b =>
+            modelBuilder.Entity("InventoryManagement.Models.Role", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -127,7 +127,7 @@ namespace ShoeShop.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("ShoeShop.Models.Sale", b =>
+            modelBuilder.Entity("InventoryManagement.Models.Sale", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -159,7 +159,7 @@ namespace ShoeShop.Migrations
                     b.ToTable("Sales");
                 });
 
-            modelBuilder.Entity("ShoeShop.Models.Seller", b =>
+            modelBuilder.Entity("InventoryManagement.Models.Seller", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -189,43 +189,43 @@ namespace ShoeShop.Migrations
                     b.ToTable("Sellers");
                 });
 
-            modelBuilder.Entity("ShoeShop.Models.Product", b =>
+            modelBuilder.Entity("InventoryManagement.Models.Product", b =>
                 {
-                    b.HasOne("ShoeShop.Models.Branch", "Branch")
+                    b.HasOne("InventoryManagement.Models.Branch", "Branch")
                         .WithMany("Products")
                         .HasForeignKey("BranchId");
 
-                    b.HasOne("ShoeShop.Models.Color", "Color")
+                    b.HasOne("InventoryManagement.Models.Color", "Color")
                         .WithMany("Products")
                         .HasForeignKey("ColorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ShoeShop.Models.Role", b =>
+            modelBuilder.Entity("InventoryManagement.Models.Role", b =>
                 {
-                    b.HasOne("ShoeShop.Models.Seller", "Seller")
+                    b.HasOne("InventoryManagement.Models.Seller", "Seller")
                         .WithOne("Role")
-                        .HasForeignKey("ShoeShop.Models.Role", "SellerId")
+                        .HasForeignKey("InventoryManagement.Models.Role", "SellerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ShoeShop.Models.Sale", b =>
+            modelBuilder.Entity("InventoryManagement.Models.Sale", b =>
                 {
-                    b.HasOne("ShoeShop.Models.Branch", "Branch")
+                    b.HasOne("InventoryManagement.Models.Branch", "Branch")
                         .WithOne("Sale")
-                        .HasForeignKey("ShoeShop.Models.Sale", "BranchId")
+                        .HasForeignKey("InventoryManagement.Models.Sale", "BranchId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShoeShop.Models.Product", "Product")
+                    b.HasOne("InventoryManagement.Models.Product", "Product")
                         .WithOne("Sale")
-                        .HasForeignKey("ShoeShop.Models.Sale", "ProductId")
+                        .HasForeignKey("InventoryManagement.Models.Sale", "ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShoeShop.Models.Seller", "Seller")
+                    b.HasOne("InventoryManagement.Models.Seller", "Seller")
                         .WithMany("Sales")
                         .HasForeignKey("SellerId");
                 });

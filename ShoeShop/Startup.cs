@@ -24,11 +24,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Serialization;
-using ShoeShop.Data;
-using ShoeShop.Repositories;
-using ShoeShop.Repositories.IRepositories;
+using InventoryManagement.Data;
+using InventoryManagement.Repositories;
+using InventoryManagement.Repositories.IRepositories;
 
-namespace ShoeShop
+namespace InventoryManagement
 {
     public class Startup
     {
@@ -43,7 +43,7 @@ namespace ShoeShop
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<ShoeShopContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ShopShoeDB")));
+            services.AddDbContext<InventoryManagementDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ShopShoeDB")));
             ConfigureIoC(services);
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
