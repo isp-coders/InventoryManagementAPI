@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using InventoryManagement.Application.Services.SalesService.DTOs;
 using InventoryManagement.Core.IRepositories;
 using InventoryManagement.DTOs;
 using InventoryManagement.Models;
@@ -10,12 +11,12 @@ using System.Threading.Tasks;
 
 namespace InventoryManagement.Application.Services.SalesService
 {
-    public class SalesService : Service<SalesDetails>, ISalesService
+    public class SalesService : Service<SalesDetails,SalesDetailsDto>, ISalesService
     {
         private readonly IRepository<SalesDetails> _SalesRepository;
         private readonly IRepository<Product> _ProductRepository;
         private readonly IMapper _mapper;
-        public SalesService(IRepository<SalesDetails> SalesRepository, IRepository<Product> ProductRepository, IMapper mapper) : base(SalesRepository)
+        public SalesService(IRepository<SalesDetails> SalesRepository, IRepository<Product> ProductRepository, IMapper mapper) : base(SalesRepository, mapper)
         {
             _SalesRepository = SalesRepository;
             _ProductRepository = ProductRepository;

@@ -53,7 +53,7 @@ namespace InventoryManagement
                        .AllowAnyHeader();
             }));
 
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            services.AddAutoMapper(typeof(InventoryManagement.Interface.AutoMapper.Profiles.BranchProfile).GetTypeInfo().Assembly);
             services.AddControllers().AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling =

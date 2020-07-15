@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using InventoryManagement.Data;
 using InventoryManagement.Models;
 using InventoryManagement.Repositories;
+using InventoryManagement.Application.Services.ColorService.DTOs;
 
 namespace InventoryManagement.Controllers
 {
@@ -47,7 +48,7 @@ namespace InventoryManagement.Controllers
 
         // PUT: api/Colors/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutColor(int id, Color color)
+        public async Task<IActionResult> PutColor(int id, ColorDto color)
         {
             if (id != color.Id)
             {
@@ -74,7 +75,7 @@ namespace InventoryManagement.Controllers
 
         // POST: api/Colors
         [HttpPost]
-        public async Task<ActionResult<Color>> PostColors(Color[] color)
+        public async Task<ActionResult<Color>> PostColors(ColorDto[] color)
         {
             await _colorService.PostEntities(color);
             return Ok();

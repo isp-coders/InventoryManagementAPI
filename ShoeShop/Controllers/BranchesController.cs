@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using InventoryManagement.Application.Services.BranchesService.DTOs;
 
 namespace InventoryManagement.Controllers
 {
@@ -30,7 +31,7 @@ namespace InventoryManagement.Controllers
 
         // PUT: api/Branches/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutColor(int id, Branch branch)
+        public async Task<IActionResult> PutColor(int id, BranchDto branch)
         {
             if (id != branch.Id)
             {
@@ -44,7 +45,7 @@ namespace InventoryManagement.Controllers
 
         // POST: api/Branches
         [HttpPost]
-        public async Task<ActionResult<Branch>> PostColors(Branch[] color)
+        public async Task<ActionResult<Branch>> PostColors(BranchDto[] color)
         {
             await _branchesService.PostEntities(color);
             return Ok();

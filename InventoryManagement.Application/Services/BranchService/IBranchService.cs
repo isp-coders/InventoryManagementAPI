@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace InventoryManagement.Application.Services.BranchesService
 {
-    public interface IBranchService : IService<Branch>
+    public interface IBranchService : IService<Branch,BranchDto>
     {
     }
 }

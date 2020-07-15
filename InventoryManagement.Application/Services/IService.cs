@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace InventoryManagement.Application.Services
 {
-    public interface IService<T>
+    public interface IService<T,TDto>
     {
-        Task<T> GetEntity(int Id);
-        List<T> GetEntities();
-        Task<T> PutEntity(int id, T entity);
-        Task<T[]> PostEntities(T[] entities);
-        Task<T> PostEntity(T entity);
-        Task<T> DeleteEntity(int id);
-        Task<T> FindEntity(int id);
+        Task<TDto> GetEntity(int Id);
+        List<TDto> GetEntities();
+        Task<TDto> PutEntity(int id, TDto entityDto);
+        Task<TDto[]> PostEntities(TDto[] entitiesDto);
+        Task<TDto> PostEntity(TDto entityDto);
+        Task<TDto> DeleteEntity(int id);
+        Task<TDto> FindEntity(int id);
     }
 }

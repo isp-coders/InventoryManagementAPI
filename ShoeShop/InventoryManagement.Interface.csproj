@@ -27,6 +27,7 @@
   <ItemGroup>
     <ProjectReference Include="..\InventoryManagement.Application\InventoryManagement.Application.csproj" />
     <ProjectReference Include="..\InventoryManagement.EntityFrameworkCore\InventoryManagement.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\InventoryManagement.Utils\InventoryManagement.Utils.csproj" />
   </ItemGroup>
 
 

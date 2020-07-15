@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using InventoryManagement.Application.Services.PaymentMethodRepository;
+using InventoryManagement.Application.Services.PaymentMethodService.DTOs;
 
 namespace InventoryManagement.Controllers
 {
@@ -14,9 +16,9 @@ namespace InventoryManagement.Controllers
     public class PaymentMethodsController : ControllerBase
     {
 
-        private readonly IPaymentMethodsRepository _paymentMethodsService;
+        private readonly IPaymentMethodService _paymentMethodsService;
 
-        public PaymentMethodsController(IPaymentMethodsRepository paymentMethodsRepository)
+        public PaymentMethodsController(IPaymentMethodService paymentMethodsRepository)
         {
             _paymentMethodsService = paymentMethodsRepository;
         }
@@ -31,7 +33,7 @@ namespace InventoryManagement.Controllers
 
         // PUT: api/PaymentMethods/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPaymentMethod(int id, PaymentMethod PaymentMethod)
+        public async Task<IActionResult> PutPaymentMethod(int id, PaymentMethodDto PaymentMethod)
         {
             if (id != PaymentMethod.Id)
             {
@@ -50,7 +52,7 @@ namespace InventoryManagement.Controllers
 
         // POST: api/PaymentMethods
         [HttpPost]
-        public async Task<ActionResult<PaymentMethod>> PostPaymentMethods(PaymentMethod[] PaymentMethod)
+        public async Task<ActionResult<PaymentMethod>> PostPaymentMethods(PaymentMethodDto[] PaymentMethod)
         {
             await _paymentMethodsService.PostEntities(PaymentMethod);
             return Ok();

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using InventoryManagement.Application.Services.ProductService.DTOs;
 
 namespace InventoryManagement.Controllers
 {
@@ -30,7 +31,7 @@ namespace InventoryManagement.Controllers
 
         // PUT: api/Products/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct(int id, Product product)
+        public async Task<IActionResult> PutProduct(int id, ProductDto product)
         {
             if (id != product.Id)
             {
@@ -48,7 +49,7 @@ namespace InventoryManagement.Controllers
 
         // POST: api/Products
         [HttpPost]
-        public async Task<ActionResult<Product>> PostProducts(Product[] products)
+        public async Task<ActionResult<Product>> PostProducts(ProductDto[] products)
         {
             await _productService.PostEntities(products);
             return Ok();

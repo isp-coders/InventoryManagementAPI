@@ -1,4 +1,5 @@
-﻿using InventoryManagement.Core.IRepositories;
+﻿using AutoMapper;
+using InventoryManagement.Core.IRepositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,48 +8,54 @@ using System.Threading.Tasks;
 
 namespace InventoryManagement.Application.Services
 {
-    public class Service<T> : IService<T>
+    public class Service<T, TDto> : IService<T, TDto>
     {
 
         private readonly IRepository<T> _Repository;
-        public Service(IRepository<T> Repository)
+        private readonly IMapper mapper;
+        public Service(IRepository<T> Repository, IMapper mapper)
         {
             _Repository = Repository;
+            this.mapper = mapper;
         }
 
-        public async Task<T> DeleteEntity(int id)
+        public async Task<TDto> DeleteEntity(int id)
         {
-            return await _Repository.DeleteEntity(id);
+            return mapper.Map<TDto>(await _Repository.DeleteEntity(id));
         }
 
-        public List<T> GetEntities()
+        public List<TDto> GetEntities()
         {
-            return _Repository.GetEntities().ToList();
+            var t = mapper.ProjectTo<TDto>(_Repository.GetEntities()).ToList();
+            return mapper.ProjectTo<TDto>(_Repository.GetEntities()).ToList();
         }
 
-        public async Task<T> GetEntity(int Id)
+        public async Task<TDto> GetEntity(int Id)
         {
-            return await _Repository.FindEntity(Id);
+            return mapper.Map<TDto>(await _Repository.FindEntity(Id));
         }
 
-        public async Task<T> PostEntity(T Entity)
+        public async Task<TDto> PostEntity(TDto EntityDto)
         {
-            return await _Repository.PostEntity(Entity);
+            T entity = mapper.Map<T>(EntityDto);
+            return mapper.Map<TDto>(await _Repository.PostEntity(entity));
         }
 
-        public async Task<T[]> PostEntities(T[] entities)
+        public async Task<TDto[]> PostEntities(TDto[] entitiesDto)
         {
-            return await _Repository.PostEntities(entities);
+            T[] entities = mapper.Map<T[]>(entitiesDto);
+            return mapper.Map<TDto[]>(await _Repository.PostEntities(entities));
         }
 
-        public async Task<T> PutEntity(int id, T entity)
+        public async Task<TDto> PutEntity(int id, TDto entityDto)
         {
-            return await _Repository.PutEntity(id, entity);
+            T entity = mapper.Map<T>(entityDto);
+            return mapper.Map<TDto>(await _Repository.PutEntity(id, entity));
         }
 
-        public async Task<T> FindEntity(int Id)
+        public async Task<TDto> FindEntity(int Id)
         {
-            return await _Repository.FindEntity(Id);
+            return mapper.Map<TDto>(await _Repository.FindEntity(Id));
         }
     }
 }

@@ -9,12 +9,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\ColorService\DTOs\" />
-    <Folder Include="Services\PaymentMethodService\DTOs\" />
-    <Folder Include="Services\ProductService\DTOs\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
   </ItemGroup>
 

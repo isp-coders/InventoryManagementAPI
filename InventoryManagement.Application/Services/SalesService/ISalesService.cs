@@ -1,4 +1,5 @@
-﻿using InventoryManagement.DTOs;
+﻿using InventoryManagement.Application.Services.SalesService.DTOs;
+using InventoryManagement.DTOs;
 using InventoryManagement.Models;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace InventoryManagement.Application.Services.SalesService
 {
-    public interface ISalesService : IService<SalesDetails>
+    public interface ISalesService : IService<SalesDetails,SalesDetailsDto>
     {
         ProductViewDto GetProductDetails(string ProductFullCode);
         Task SellProducts(ProductSellingDto productSellingDto);
