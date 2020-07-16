@@ -1,5 +1,9 @@
 ﻿using AutoMapper;
+using DevExtreme.AspNet.Data;
+using DevExtreme.AspNet.Data.ResponseModel;
 using InventoryManagement.Core.IRepositories;
+using InventoryManagement.Core.Models;
+using Sample;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,10 +28,9 @@ namespace InventoryManagement.Application.Services
             return mapper.Map<TDto>(await _Repository.DeleteEntity(id));
         }
 
-        public List<TDto> GetEntities()
+        public LoadResult GetEntities(DataSourceLoadOptions loadOptions)
         {
-            var t = mapper.ProjectTo<TDto>(_Repository.GetEntities()).ToList();
-            return mapper.ProjectTo<TDto>(_Repository.GetEntities()).ToList();
+            return DataSourceLoader.Load(mapper.ProjectTo<TDto>(_Repository.GetEntities()), loadOptions);
         }
 
         public async Task<TDto> GetEntity(int Id)

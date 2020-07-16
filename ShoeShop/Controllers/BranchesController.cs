@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using InventoryManagement.Application.Services.BranchesService.DTOs;
+using DevExtreme.AspNet.Data;
+using Sample;
 
 namespace InventoryManagement.Controllers
 {
@@ -23,9 +25,9 @@ namespace InventoryManagement.Controllers
 
         // GET: api/Branches
         [HttpGet]
-        public ActionResult GetBranches()
+        public ActionResult GetBranches(DataSourceLoadOptions loadOptions)
         {
-            var result = _branchesService.GetEntities();
+            var result = _branchesService.GetEntities(loadOptions);
             return Ok(result);
         }
 

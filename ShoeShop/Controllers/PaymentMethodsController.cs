@@ -8,6 +8,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using InventoryManagement.Application.Services.PaymentMethodRepository;
 using InventoryManagement.Application.Services.PaymentMethodService.DTOs;
+using DevExtreme.AspNet.Data;
+using Sample;
 
 namespace InventoryManagement.Controllers
 {
@@ -25,9 +27,9 @@ namespace InventoryManagement.Controllers
 
         // GET: api/PaymentMethods
         [HttpGet]
-        public IActionResult GetPaymentMethods()
+        public IActionResult GetPaymentMethods(DataSourceLoadOptions loadOptions)
         {
-            var result = _paymentMethodsService.GetEntities();
+            var result = _paymentMethodsService.GetEntities(loadOptions);
             return Ok(result);
         }
 

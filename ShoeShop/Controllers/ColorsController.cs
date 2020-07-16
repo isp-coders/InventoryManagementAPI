@@ -10,6 +10,8 @@ using InventoryManagement.Data;
 using InventoryManagement.Models;
 using InventoryManagement.Repositories;
 using InventoryManagement.Application.Services.ColorService.DTOs;
+using DevExtreme.AspNet.Data;
+using Sample;
 
 namespace InventoryManagement.Controllers
 {
@@ -26,9 +28,9 @@ namespace InventoryManagement.Controllers
 
         // GET: api/Colors
         [HttpGet]
-        public ActionResult GetColors()
+        public ActionResult GetColors(DataSourceLoadOptions loadOptions)
         {
-            var result = _colorService.GetEntities();
+            var result = _colorService.GetEntities(loadOptions);
             return Ok(result);
         }
 

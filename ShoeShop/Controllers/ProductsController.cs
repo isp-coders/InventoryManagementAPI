@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using InventoryManagement.Application.Services.ProductService.DTOs;
+using Sample;
 
 namespace InventoryManagement.Controllers
 {
@@ -23,9 +24,9 @@ namespace InventoryManagement.Controllers
 
         // GET: api/Products
         [HttpGet]
-        public ActionResult GetProducts()
+        public ActionResult GetProducts(DataSourceLoadOptions loadOptions)
         {
-            var result = _productService.GetEntities();
+            var result = _productService.GetEntities(loadOptions);
             return Ok(result);
         }
 
