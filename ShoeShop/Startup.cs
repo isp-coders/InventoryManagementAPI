@@ -12,7 +12,6 @@ using InventoryManagement.Application.Services.PaymentMethodService;
 using InventoryManagement.Application.Services.ProductService;
 using InventoryManagement.Application.Services.SalesService;
 using InventoryManagement.Core.IRepositories;
-using InventoryManagement.EntityFrameworkCore.EntityFrameworkCore.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -27,6 +26,7 @@ using Newtonsoft.Json.Serialization;
 using InventoryManagement.Data;
 using InventoryManagement.Repositories;
 using InventoryManagement.Repositories.IRepositories;
+using InventoryManagement.EntityFrameworkCore.EntityFrameworkCore.Repositories;
 
 namespace InventoryManagement
 {

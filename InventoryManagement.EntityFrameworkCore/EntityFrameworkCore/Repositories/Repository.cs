@@ -8,6 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace InventoryManagement.EntityFrameworkCore.EntityFrameworkCore.Repositories
 {
@@ -37,8 +38,10 @@ namespace InventoryManagement.EntityFrameworkCore.EntityFrameworkCore.Repositori
             return await _context.FindAsync<T>(id);
         }
 
-        public async Task<T[]> PostEntities(T[] Entities)
+        public async Task<List<T>> PostEntities(string values)
         {
+            List<T> Entities = new List<T>();
+            JsonConvert.PopulateObject(values, Entities);
             _context.AddRange(Entities);
             await _context.SaveChangesAsync();
 
@@ -53,8 +56,10 @@ namespace InventoryManagement.EntityFrameworkCore.EntityFrameworkCore.Repositori
             return Entity;
         }
 
-        public async Task<T> PutEntity(int id, T Entity)
+        public async Task<T> PutEntity(int id, string values)
         {
+            var Entity = await _context.FindAsync<T>(id);
+            JsonConvert.PopulateObject(values, Entity);
             _context.Entry(Entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 

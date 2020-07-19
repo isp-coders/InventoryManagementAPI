@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using InventoryManagement.Application.Services.BranchesService.DTOs;
 using DevExtreme.AspNet.Data;
 using Sample;
+using Newtonsoft.Json;
 
 namespace InventoryManagement.Controllers
 {
@@ -33,23 +34,18 @@ namespace InventoryManagement.Controllers
 
         // PUT: api/Branches/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutColor(int id, BranchDto branch)
+        public async Task<IActionResult> PutColor([FromForm] int key, [FromForm] string values)
         {
-            if (id != branch.Id)
-            {
-                return BadRequest();
-            }
-
-            var puttedBranch = await _branchesService.PutEntity(id, branch);
+            var puttedBranch = await _branchesService.PutEntity(key, values);
 
             return Ok(puttedBranch);
         }
 
         // POST: api/Branches
         [HttpPost]
-        public async Task<ActionResult<Branch>> PostColors(BranchDto[] color)
+        public async Task<ActionResult<Branch>> PostColors([FromForm] string values)
         {
-            await _branchesService.PostEntities(color);
+            await _branchesService.PostEntities(values);
             return Ok();
         }
 

@@ -2,7 +2,6 @@
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Data.ResponseModel;
 using InventoryManagement.Core.IRepositories;
-using InventoryManagement.Core.Models;
 using Sample;
 using System;
 using System.Collections.Generic;
@@ -44,16 +43,16 @@ namespace InventoryManagement.Application.Services
             return mapper.Map<TDto>(await _Repository.PostEntity(entity));
         }
 
-        public async Task<TDto[]> PostEntities(TDto[] entitiesDto)
+        public async Task<TDto[]> PostEntities(string values)
         {
-            T[] entities = mapper.Map<T[]>(entitiesDto);
-            return mapper.Map<TDto[]>(await _Repository.PostEntities(entities));
+            //T[] entities = mapper.Map<T[]>(entitiesDto);
+            return mapper.Map<TDto[]>(await _Repository.PostEntities(values));
         }
 
-        public async Task<TDto> PutEntity(int id, TDto entityDto)
+        public async Task<TDto> PutEntity(int id, string values)
         {
-            T entity = mapper.Map<T>(entityDto);
-            return mapper.Map<TDto>(await _Repository.PutEntity(id, entity));
+            //T entity = mapper.Map<T>(entityDto);
+            return mapper.Map<TDto>(await _Repository.PutEntity(id, values));
         }
 
         public async Task<TDto> FindEntity(int Id)

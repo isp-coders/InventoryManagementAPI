@@ -32,35 +32,31 @@ namespace InventoryManagement.Controllers
 
         // PUT: api/Products/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct(int id, ProductDto product)
+        public async Task<IActionResult> PutProduct([FromForm] int key, [FromForm] string values)
         {
-            if (id != product.Id)
-            {
-                return BadRequest();
-            }
-            var result = await _productService.PutEntity(id, product);
+            var result = await _productService.PutEntity(key, values);
 
             if (result is null)
             {
                 return NotFound();
             }
 
-            return Ok(result);
+            return Ok();
         }
 
         // POST: api/Products
         [HttpPost]
-        public async Task<ActionResult<Product>> PostProducts(ProductDto[] products)
+        public async Task<ActionResult<Product>> PostProducts([FromForm] string values)
         {
-            await _productService.PostEntities(products);
+            await _productService.PostEntities(values);
             return Ok();
         }
 
         // DELETE: api/Products/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Product>> DeleteProduct(int id)
+        [HttpDelete]
+        public async Task<ActionResult<Product>> DeleteProduct([FromForm] int key)
         {
-            var product = await _productService.DeleteEntity(id);
+            var product = await _productService.DeleteEntity(key);
             if (product is null)
             {
                 return NotFound();

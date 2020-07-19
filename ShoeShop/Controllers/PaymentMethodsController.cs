@@ -10,6 +10,7 @@ using InventoryManagement.Application.Services.PaymentMethodRepository;
 using InventoryManagement.Application.Services.PaymentMethodService.DTOs;
 using DevExtreme.AspNet.Data;
 using Sample;
+using Newtonsoft.Json;
 
 namespace InventoryManagement.Controllers
 {
@@ -35,13 +36,10 @@ namespace InventoryManagement.Controllers
 
         // PUT: api/PaymentMethods/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPaymentMethod(int id, PaymentMethodDto PaymentMethod)
+        public async Task<IActionResult> PutPaymentMethod([FromForm] int key, [FromForm] string values)
         {
-            if (id != PaymentMethod.Id)
-            {
-                return BadRequest();
-            }
-            var result = await _paymentMethodsService.PutEntity(id, PaymentMethod);
+
+            var result = await _paymentMethodsService.PutEntity(key, values);
 
             if (result is null)
             {
@@ -54,9 +52,9 @@ namespace InventoryManagement.Controllers
 
         // POST: api/PaymentMethods
         [HttpPost]
-        public async Task<ActionResult<PaymentMethod>> PostPaymentMethods(PaymentMethodDto[] PaymentMethod)
+        public async Task<ActionResult<PaymentMethod>> PostPaymentMethods([FromForm] string values)
         {
-            await _paymentMethodsService.PostEntities(PaymentMethod);
+            await _paymentMethodsService.PostEntities(values);
             return Ok();
         }
 

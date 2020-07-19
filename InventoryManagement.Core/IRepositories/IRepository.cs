@@ -9,9 +9,9 @@ namespace InventoryManagement.Core.IRepositories
 {
     public interface IRepository<T>
     {
-        Task<T> PutEntity(int id, T Entity);
+        Task<T> PutEntity(int id, string values);
         Task<T> PostEntity(T Entity);
-        Task<T[]> PostEntities(T[] Entities);
+        Task<List<T>> PostEntities(string values);
         Task<T> DeleteEntity(int id);
         ValueTask<T> FindEntity(int id);
         IQueryable<T> GetEntities();

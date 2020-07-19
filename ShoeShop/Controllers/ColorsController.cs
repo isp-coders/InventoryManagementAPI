@@ -3,15 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using InventoryManagement.Application.Services.ColorService;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using InventoryManagement.Data;
 using InventoryManagement.Models;
-using InventoryManagement.Repositories;
 using InventoryManagement.Application.Services.ColorService.DTOs;
-using DevExtreme.AspNet.Data;
 using Sample;
+using Newtonsoft.Json;
 
 namespace InventoryManagement.Controllers
 {
@@ -50,13 +46,9 @@ namespace InventoryManagement.Controllers
 
         // PUT: api/Colors/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutColor(int id, ColorDto color)
+        public async Task<IActionResult> PutColor([FromForm] int key, [FromForm] string values)
         {
-            if (id != color.Id)
-            {
-                return BadRequest();
-            }
-            var result = await _colorService.PutEntity(id, color);
+            var result = await _colorService.PutEntity(key, values);
 
             if (result == null)
             {
@@ -77,9 +69,9 @@ namespace InventoryManagement.Controllers
 
         // POST: api/Colors
         [HttpPost]
-        public async Task<ActionResult<Color>> PostColors(ColorDto[] color)
+        public async Task<ActionResult> PostColors([FromForm] string values)
         {
-            await _colorService.PostEntities(color);
+            await _colorService.PostEntities(values);
             return Ok();
         }
 
