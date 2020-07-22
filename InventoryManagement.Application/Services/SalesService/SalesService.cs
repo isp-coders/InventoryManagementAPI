@@ -11,15 +11,17 @@ using System.Threading.Tasks;
 
 namespace InventoryManagement.Application.Services.SalesService
 {
-    public class SalesService : Service<SalesDetails,SalesDetailsDto>, ISalesService
+    public class SalesService : Service<SalesDetails, SalesDetailsDto>, ISalesService
     {
         private readonly IRepository<SalesDetails> _SalesRepository;
         private readonly IRepository<Product> _ProductRepository;
+        private readonly IRepository<CustomerInfo> _CustomerRepository;
         private readonly IMapper _mapper;
-        public SalesService(IRepository<SalesDetails> SalesRepository, IRepository<Product> ProductRepository, IMapper mapper) : base(SalesRepository, mapper)
+        public SalesService(IRepository<CustomerInfo> _CustomerRepository, IRepository<SalesDetails> SalesRepository, IRepository<Product> ProductRepository, IMapper mapper) : base(SalesRepository, mapper)
         {
             _SalesRepository = SalesRepository;
             _ProductRepository = ProductRepository;
+            this._CustomerRepository = _CustomerRepository;
             _mapper = mapper;
         }
 
@@ -74,14 +76,30 @@ namespace InventoryManagement.Application.Services.SalesService
             sale.SaleProducts.AddRange(saleProducts);
 
 
+            // Create or Use existing Customer Info
+            CustomerInfo customerInfo = new CustomerInfo();
+            if (productSellingDto.CustomerInfoId == 0)
+            {
+                customerInfo.CustomerName = productSellingDto.CustomerName;
+                customerInfo.CustomerPhone = productSellingDto.CustomerPhone;
+            }
+            else
+            {
+                customerInfo = await _CustomerRepository.FindEntity(productSellingDto.CustomerInfoId);
+            }
+
             // Sale-PaymentMethod Relationship / Many-to-Many
             List<int> paymentMethodIds = productSellingDto.PaymentMethodIds;
             List<SalePaymentMethod> salePaymentMethods = new List<SalePaymentMethod>();
             paymentMethodIds.ForEach(Id =>
             {
                 SalePaymentMethod salePaymentMethodProperties = productSellingDto.SalePaymentMethods.Find(fi => fi.PaymentMethodId == Id);
-                salePaymentMethods.Add(new SalePaymentMethod { Sale = sale, Receipt = productSellingDto.Receipt, PaymentMethodId = Id, Amount = salePaymentMethodProperties.Amount, DefferedPaymentCount = salePaymentMethodProperties.DefferedPaymentCount });
+                salePaymentMethods.Add(new SalePaymentMethod { Sale = sale, Receipt = productSellingDto.Receipt, PaymentMethodId = Id, CustomerInfo = customerInfo, Amount = salePaymentMethodProperties.Amount, DefferedPaymentCount = salePaymentMethodProperties.DefferedPaymentCount });
             });
+
+
+
+
             sale.SalePaymentMethods.AddRange(salePaymentMethods);
 
 

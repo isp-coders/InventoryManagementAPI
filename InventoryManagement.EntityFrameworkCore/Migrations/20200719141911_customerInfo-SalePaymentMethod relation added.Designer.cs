@@ -4,14 +4,16 @@ using InventoryManagement.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace InventoryManagement.Migrations
 {
     [DbContext(typeof(InventoryManagementDbContext))]
-    partial class InventoryManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20200719141911_customerInfo-SalePaymentMethod relation added")]
+    partial class customerInfoSalePaymentMethodrelationadded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,7 +72,7 @@ namespace InventoryManagement.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CustomerInfo");
+                    b.ToTable("customerInfos");
                 });
 
             modelBuilder.Entity("InventoryManagement.Models.PaymentMethod", b =>
@@ -169,7 +171,7 @@ namespace InventoryManagement.Migrations
                     b.Property<double>("Amount")
                         .HasColumnType("float");
 
-                    b.Property<int>("CustomerInfoId")
+                    b.Property<int?>("CustomerInfoId")
                         .HasColumnType("int");
 
                     b.Property<int>("DefferedPaymentCount")
@@ -294,9 +296,7 @@ namespace InventoryManagement.Migrations
                 {
                     b.HasOne("InventoryManagement.Models.CustomerInfo", "CustomerInfo")
                         .WithMany("SalePaymentMethods")
-                        .HasForeignKey("CustomerInfoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CustomerInfoId");
 
                     b.HasOne("InventoryManagement.Models.PaymentMethod", "PaymentMethod")
                         .WithMany("SalePaymentMethods")

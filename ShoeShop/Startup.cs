@@ -27,6 +27,7 @@ using InventoryManagement.Data;
 using InventoryManagement.Repositories;
 using InventoryManagement.Repositories.IRepositories;
 using InventoryManagement.EntityFrameworkCore.EntityFrameworkCore.Repositories;
+using InventoryManagement.Application.Services.CustomerInfoService;
 
 namespace InventoryManagement
 {
@@ -99,6 +100,7 @@ namespace InventoryManagement
             services.AddTransient<IBranchService, BranchService>();
             services.AddTransient<ISalesService, SalesService>();
             services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<ICustomerInfoService, CustomerInfoService>();
 
 
             services.AddTransient(typeof(IRepository<>), typeof(Repository<>));

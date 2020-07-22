@@ -12,6 +12,9 @@ namespace InventoryManagement.DTOs
         public int UserId { get; set; }
         public string Receipt { get; set; }
         public int BranchId { get; set; }
+        public int CustomerInfoId { get; set; }
+        public string CustomerName { get; set; }
+        public string CustomerPhone { get; set; }
         public List<SalePaymentMethod> SalePaymentMethods { get; set; }
         public List<int> PaymentMethodIds { get; set; }
         public List<int> ProductIds { get; set; }

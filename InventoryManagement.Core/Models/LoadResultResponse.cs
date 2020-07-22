@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 
-namespace InventoryManagement.Core.Models
+namespace InventoryManagement.Models
 {
     public class LoadResultResponse
     {

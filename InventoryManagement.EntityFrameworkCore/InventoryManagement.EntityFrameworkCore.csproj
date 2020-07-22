@@ -5,6 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200719135649_customerInfo Added to salepopup.cs" />
+    <Compile Remove="Migrations\20200719135649_customerInfo Added to salepopup.Designer.cs" />
+    <Compile Remove="Migrations\20200719141255_customerInfo-SalePaymentMethod relation added.cs" />
+    <Compile Remove="Migrations\20200719141255_customerInfo-SalePaymentMethod relation added.Designer.cs" />
+    <Compile Remove="Migrations\20200720164457_Initial Relations in DB.cs" />
+    <Compile Remove="Migrations\20200720164457_Initial Relations in DB.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.5">
       <PrivateAssets>all</PrivateAssets>
