@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <DefaultItemExcludes>Reports\**</DefaultItemExcludes>
+    <UserSecretsId>cc3159bd-81c2-4dd5-80bd-887ce34d7821</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Data\nwind.db" />
