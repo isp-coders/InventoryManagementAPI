@@ -11,11 +11,13 @@ using InventoryManagement.Application.Services.BranchesService.DTOs;
 using DevExtreme.AspNet.Data;
 using Sample;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace InventoryManagement.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class BranchesController : ControllerBase
     {
         private readonly IBranchService _branchesService;

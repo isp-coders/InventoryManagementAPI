@@ -1,11 +1,9 @@
-﻿using InventoryManagement.Application.Services.BranchesService.DTOs;
-using InventoryManagement.Application.Services.SalesService.DTOs;
-using InventoryManagement.Core.Enums;
+﻿using InventoryManagement.Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace InventoryManagement.Application.DTOs
+namespace InventoryManagement.Application.Services.UserService.DTOs
 {
     public class UserDto
     {

@@ -4,14 +4,16 @@ using InventoryManagement.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace InventoryManagement.Migrations
 {
     [DbContext(typeof(InventoryManagementDbContext))]
-    partial class InventoryManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20200824070846_role-rolepermession")]
+    partial class rolerolepermession
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -186,9 +188,6 @@ namespace InventoryManagement.Migrations
                     b.Property<string>("Icon")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsParent")
-                        .HasColumnType("bit");
-
                     b.Property<string>("ParentId")
                         .HasColumnType("nvarchar(max)");
 
@@ -207,24 +206,6 @@ namespace InventoryManagement.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("RolePermessions");
-                });
-
-            modelBuilder.Entity("InventoryManagement.Models.SaleDetailsAndProduct", b =>
-                {
-                    b.Property<int>("SaleId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductCount")
-                        .HasColumnType("int");
-
-                    b.HasKey("SaleId", "ProductId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("SaleDetailsAndProduct");
                 });
 
             modelBuilder.Entity("InventoryManagement.Models.SalePaymentMethod", b =>
@@ -254,6 +235,24 @@ namespace InventoryManagement.Migrations
                     b.HasIndex("PaymentMethodId");
 
                     b.ToTable("SalePaymentMethodsRelation");
+                });
+
+            modelBuilder.Entity("InventoryManagement.Models.SaleProduct", b =>
+                {
+                    b.Property<int>("SaleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("SaleId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("SaleProduct");
                 });
 
             modelBuilder.Entity("InventoryManagement.Models.SalesDetails", b =>
@@ -377,21 +376,6 @@ namespace InventoryManagement.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("InventoryManagement.Models.SaleDetailsAndProduct", b =>
-                {
-                    b.HasOne("InventoryManagement.Models.Product", "Product")
-                        .WithMany("SaleDetailsAndProducts")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("InventoryManagement.Models.SalesDetails", "Sale")
-                        .WithMany("SaleDetailsAndProducts")
-                        .HasForeignKey("SaleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("InventoryManagement.Models.SalePaymentMethod", b =>
                 {
                     b.HasOne("InventoryManagement.Models.CustomerInfo", "CustomerInfo")
@@ -408,6 +392,21 @@ namespace InventoryManagement.Migrations
 
                     b.HasOne("InventoryManagement.Models.SalesDetails", "Sale")
                         .WithMany("SalePaymentMethods")
+                        .HasForeignKey("SaleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("InventoryManagement.Models.SaleProduct", b =>
+                {
+                    b.HasOne("InventoryManagement.Models.Product", "Product")
+                        .WithMany("SaleProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("InventoryManagement.Models.SalesDetails", "Sale")
+                        .WithMany("SaleProducts")
                         .HasForeignKey("SaleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

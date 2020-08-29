@@ -39,16 +39,27 @@ namespace InventoryManagement.Data
                 .HasForeignKey(bc => bc.PaymentMethodId);
 
 
-            modelBuilder.Entity<SaleProduct>()
+            modelBuilder.Entity<SaleDetailsAndProduct>()
 .HasKey(bc => new { bc.SaleId, bc.ProductId });
-            modelBuilder.Entity<SaleProduct>()
+            modelBuilder.Entity<SaleDetailsAndProduct>()
                 .HasOne(bc => bc.Sale)
-                .WithMany(b => b.SaleProducts)
+                .WithMany(b => b.SaleDetailsAndProducts)
                 .HasForeignKey(bc => bc.SaleId);
-            modelBuilder.Entity<SaleProduct>()
+            modelBuilder.Entity<SaleDetailsAndProduct>()
                 .HasOne(bc => bc.Product)
-                .WithMany(c => c.SaleProducts)
+                .WithMany(c => c.SaleDetailsAndProducts)
                 .HasForeignKey(bc => bc.ProductId);
+
+            modelBuilder.Entity<RoleAndRolePermession>()
+.HasKey(bc => new { bc.RoleId, bc.RolePermessionId });
+            modelBuilder.Entity<RoleAndRolePermession>()
+                .HasOne(bc => bc.Role)
+                .WithMany(b => b.RoleAndRolePermessions)
+                .HasForeignKey(bc => bc.RoleId);
+            modelBuilder.Entity<RoleAndRolePermession>()
+                .HasOne(bc => bc.RolePermession)
+                .WithMany(c => c.RoleAndRolePermessions)
+                .HasForeignKey(bc => bc.RolePermessionId);
         }
 
         public DbSet<Branch> Branches { get; set; }
@@ -61,5 +72,7 @@ namespace InventoryManagement.Data
         public DbSet<UserRole> UserRoleRelation { get; set; }
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
         public DbSet<SalePaymentMethod> SalePaymentMethodsRelation { get; set; }
+        public DbSet<RolePermession> RolePermessions { get; set; }
+        public DbSet<RoleAndRolePermession> RoleAndRolePermessions { get; set; }
     }
 }

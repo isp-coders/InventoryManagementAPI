@@ -9,11 +9,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using InventoryManagement.Application.Services.ProductService.DTOs;
 using Sample;
+using Microsoft.AspNetCore.Authorization;
 
 namespace InventoryManagement.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _productService;
@@ -31,7 +33,7 @@ namespace InventoryManagement.Controllers
         }
 
         // PUT: api/Products/5
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<IActionResult> PutProduct([FromForm] int key, [FromForm] string values)
         {
             var result = await _productService.PutEntity(key, values);

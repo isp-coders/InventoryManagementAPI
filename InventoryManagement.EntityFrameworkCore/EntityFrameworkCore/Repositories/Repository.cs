@@ -33,6 +33,28 @@ namespace InventoryManagement.EntityFrameworkCore.EntityFrameworkCore.Repositori
             return Entity;
         }
 
+        public IQueryable<T> GetQuery(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = "")
+        {
+            IQueryable<T> queryable = Table;
+            if (filter != null)
+            {
+                queryable = queryable.Where(filter);
+            }
+            string[] array = includeProperties.Split(new char[1]
+            {
+        ','
+            }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string navigationPropertyPath in array)
+            {
+                queryable = queryable.Include(navigationPropertyPath);
+            }
+            if (orderBy != null)
+            {
+                return orderBy(queryable);
+            }
+            return queryable;
+        }
+
         public async ValueTask<T> FindEntity(int id)
         {
             return await _context.FindAsync<T>(id);

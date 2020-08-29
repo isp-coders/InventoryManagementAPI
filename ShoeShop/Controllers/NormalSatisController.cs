@@ -9,11 +9,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace InventoryManagement.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class NormalSatisController : ControllerBase
     {
         private readonly ISalesService _SalesService;

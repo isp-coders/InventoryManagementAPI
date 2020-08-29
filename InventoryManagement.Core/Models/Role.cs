@@ -8,9 +8,9 @@ namespace InventoryManagement.Models
     public class Role
     {
         public int Id { get; set; }
+        public int RoleGroupId { get; set; }
         public string RoleName { get; set; }
-        public string PrivilegesList { get; set; }
-
+        public List<RoleAndRolePermession> RoleAndRolePermessions { get; set; }
         public List<UserRole> UserRoles { get; set; }
     }
 }

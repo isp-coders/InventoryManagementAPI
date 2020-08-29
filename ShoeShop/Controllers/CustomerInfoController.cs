@@ -1,5 +1,6 @@
 ﻿using InventoryManagement.Application.DTOs;
 using InventoryManagement.Application.Services.CustomerInfoService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sample;
 using System;
@@ -11,6 +12,7 @@ namespace InventoryManagement.Interface.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CustomerInfoController : ControllerBase
     {
         private readonly ICustomerInfoService customerInfo;

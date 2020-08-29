@@ -9,6 +9,7 @@ namespace InventoryManagement.Core.IRepositories
 {
     public interface IRepository<T>
     {
+        IQueryable<T> GetQuery(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = "");
         Task<T> PutEntity(int id, string values);
         Task<T> PostEntity(T Entity);
         Task<List<T>> PostEntities(string values);

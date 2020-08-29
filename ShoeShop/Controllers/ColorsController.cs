@@ -8,11 +8,13 @@ using InventoryManagement.Models;
 using InventoryManagement.Application.Services.ColorService.DTOs;
 using Sample;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace InventoryManagement.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ColorsController : ControllerBase
     {
         private readonly IColorService _colorService;
