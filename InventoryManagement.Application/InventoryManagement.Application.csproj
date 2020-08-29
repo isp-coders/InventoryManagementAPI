@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\InventoryManagement.Core\InventoryManagement.Core.csproj" />
+    <ProjectReference Include="..\InventoryManagement.Utils\InventoryManagement.Utils.csproj" />
   </ItemGroup>
 
   <ItemGroup>

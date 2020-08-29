@@ -5,13 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace InventoryManagement.Utils.AutoMapper.Profiles
+namespace InventoryManagement.Application.AutoMapper.Profiles
 {
-    class UserRoleProfile: Profile
+    class RoleProfile : Profile
     {
-        public UserRoleProfile()
+        public RoleProfile()
         {
-            CreateMap<UserRole, UserRoleDto>();
+            CreateMap<Role, RoleDto>();
         }
     }
 }

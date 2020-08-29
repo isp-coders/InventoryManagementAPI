@@ -16,11 +16,11 @@ namespace InventoryManagement.Application.Services.SalesService.DTOs
 
         public int BranchId { get; set; }
         public BranchDto Branch { get; set; }
-        public List<SaleProductDto> SaleProducts { get; set; }
+        public List<SaleDetailsAndProductDto> SaleDetailsAndProducts { get; set; }
         public List<SalePaymentMethodDto> SalePaymentMethods { get; set; }
         public SalesDetailsDto()
         {
-            SaleProducts = new List<SaleProductDto>();
+            SaleDetailsAndProducts = new List<SaleDetailsAndProductDto>();
             SalePaymentMethods = new List<SalePaymentMethodDto>();
         }
     }

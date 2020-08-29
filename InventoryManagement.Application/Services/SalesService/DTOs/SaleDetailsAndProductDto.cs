@@ -5,7 +5,7 @@ using System.Text;
 
 namespace InventoryManagement.Application.Services.SalesService.DTOs
 {
-    public class SaleProductDto
+    public class SaleDetailsAndProductDto
     {
         public int SaleId { get; set; }
         //public SalesDetailsDto Sale { get; set; }

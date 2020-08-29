@@ -14,11 +14,11 @@ namespace InventoryManagement.Models
 
         public int BranchId { get; set; }
         public Branch Branch { get; set; }
-        public List<SaleProduct> SaleProducts { get; set; }
+        public List<SaleDetailsAndProduct> SaleDetailsAndProducts { get; set; }
         public List<SalePaymentMethod> SalePaymentMethods { get; set; }
         public SalesDetails()
         {
-            SaleProducts = new List<SaleProduct>();
+            SaleDetailsAndProducts = new List<SaleDetailsAndProduct>();
             SalePaymentMethods = new List<SalePaymentMethod>();
         }
     }

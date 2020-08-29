@@ -5,13 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace InventoryManagement.Utils.AutoMapper.Profiles
+namespace InventoryManagement.Application.AutoMapper.Profiles
 {
-    class ToBranchProfile : Profile
+    public class BranchProfile : Profile
     {
-        public ToBranchProfile()
+        public BranchProfile()
         {
-            CreateMap<BranchDto, Branch>();
+            CreateMap<Branch, BranchDto>();
         }
     }
 }

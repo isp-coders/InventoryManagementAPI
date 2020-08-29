@@ -23,6 +23,6 @@ namespace InventoryManagement.Models
         public int? BranchId { get; set; }
         public Branch Branch { get; set; }
 
-        public List<SaleProduct> SaleProducts { get; set; }
+        public List<SaleDetailsAndProduct> SaleDetailsAndProducts { get; set; }
     }
 }

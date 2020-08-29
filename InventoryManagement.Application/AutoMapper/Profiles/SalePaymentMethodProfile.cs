@@ -5,13 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace InventoryManagement.Utils.AutoMapper.Profiles
+namespace InventoryManagement.Application.AutoMapper.Profiles
 {
-    class SaleProductProfile: Profile
+    class SalePaymentMethodProfile : Profile
     {
-        public SaleProductProfile()
+        public SalePaymentMethodProfile()
         {
-            CreateMap<SaleProduct, SaleProductDto>();
+            CreateMap<SalePaymentMethod, SalePaymentMethodDto>();
         }
     }
 }

@@ -4,9 +4,9 @@ using InventoryManagement.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 
-namespace InventoryManagement.AutoMapper.Profiles
+namespace InventoryManagement.Application.AutoMapper.Profiles
 {
     public class ProductProductViewProfile : Profile
     {
@@ -27,7 +27,7 @@ namespace InventoryManagement.AutoMapper.Profiles
                  .ForMember(q => q.Count, opt => opt.MapFrom(s => s.Count))
                  .ForMember(q => q.SellingPrice, opt => opt.MapFrom(s => s.SellingPrice))
                  .ForMember(q => q.Branch, opt => opt.MapFrom(s => s.Branch))
-                 .ForMember(q => q.Date, opt => opt.MapFrom(s => s.SaleProducts.Select(se => se.Sale.Date).ToString()));
+                 .ForMember(q => q.Date, opt => opt.MapFrom(s => s.SaleDetailsAndProducts.Select(se => se.Sale.Date).ToString()));
 
 
         }

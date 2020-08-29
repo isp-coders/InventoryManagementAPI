@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InventoryManagement.Core.Enums;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,12 +8,16 @@ namespace InventoryManagement.Application.DTOs
 {
     public class LoginResponse
     {
-        public string Key { get; set; }
-        public string Title { get; set; }
-        public string Type { get; set; }
-        public string Translate { get; set; }
-        public string Icon { get; set; }
-        public string URL { get; set; }
-        public List<LoginResponse> Children { get; set; }
+        public string UserName { get; set; }
+        public string UserCode { get; set; }
+        public UserStatus UserStatus { get; set; }
+        public string Token { get; set; }
+        public bool IsAuthenticated { get; set; }
+        public List<NavigationItems> NavigationItems { get; set; }
+
+        public LoginResponse()
+        {
+            NavigationItems = new List<NavigationItems>();
+        }
     }
 }

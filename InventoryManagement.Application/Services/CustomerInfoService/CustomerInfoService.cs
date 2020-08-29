@@ -14,7 +14,7 @@ namespace InventoryManagement.Application.Services.CustomerInfoService
         private readonly IMapper _mapper;
         public CustomerInfoService(IRepository<CustomerInfo> CustomerInfoRepository, IMapper _mapper) : base(CustomerInfoRepository, _mapper)
         {
-            CustomerInfoRepository = CustomerInfoRepository;
+            this.CustomerInfoRepository = CustomerInfoRepository;
         }
     }
 }

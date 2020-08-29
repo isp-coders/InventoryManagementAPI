@@ -3,16 +3,15 @@ using InventoryManagement.DTOs;
 using InventoryManagement.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 
-namespace InventoryManagement.AutoMapper.Profiles
+namespace InventoryManagement.Application.AutoMapper.Profiles
 {
     public class SoledProductDetailsProfile : Profile
     {
         public SoledProductDetailsProfile()
         {
-            CreateMap<SaleProduct, SoledProductDetailsDto>()
+            CreateMap<SaleDetailsAndProduct, SoledProductDetailsDto>()
     .ForMember(q => q.BranchName, opt => opt.MapFrom(s => s.Product.Branch.Name))
     .ForMember(q => q.ColorName, opt => opt.MapFrom(s => s.Product.Color.ColorName))
     .ForMember(q => q.Gender, opt => opt.MapFrom(s => s.Product.Gender))

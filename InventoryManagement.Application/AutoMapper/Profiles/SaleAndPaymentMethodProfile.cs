@@ -3,14 +3,13 @@ using InventoryManagement.DTOs;
 using InventoryManagement.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 
-namespace InventoryManagement.AutoMapper.Profiles
+namespace InventoryManagement.Application.AutoMapper.Profiles
 {
-    public class PaymentMethodProfile : Profile
+    public class SaleAndPaymentMethodProfile : Profile
     {
-        public PaymentMethodProfile()
+        public SaleAndPaymentMethodProfile()
         {
             CreateMap<SalePaymentMethod, PaymentDetailsDto>()
                  .ForMember(q => q.Amount, opt => opt.MapFrom(s => s.Amount))
