@@ -29,8 +29,8 @@
         <Item6 Ref="19" ControlType="XRLabel" Name="label1" Multiline="true" Text="Fiyat:&#xD;&#xA;" SizeF="72.3148346,29.010849" LocationFloat="19.9999924,110.044144" Dpi="254" Font="Times New Roman, 7pt" Padding="0,0,0,0,254">
           <StylePriority Ref="20" UseFont="false" UsePadding="false" />
         </Item6>
-        <Item7 Ref="21" ControlType="XRBarCode" Name="barCode1" Module="5.08" AutoModule="true" SizeF="360.2774,102.519981" LocationFloat="19.72255,11.00666" Dpi="254" Padding="0,0,0,0,254">
-          <Symbology Ref="22" Name="EAN8" />
+        <Item7 Ref="21" ControlType="XRBarCode" Name="barCode1" Module="5.08" AutoModule="true" SizeF="360.2774,102.519981" LocationFloat="11.7225494,11.00666" Dpi="254" Padding="0,0,0,0,254">
+          <Symbology Ref="22" Name="EAN13" />
           <ExpressionBindings>
             <Item1 Ref="23" EventName="BeforePrint" PropertyName="Text" Expression="[ProductFullCode]" />
           </ExpressionBindings>
