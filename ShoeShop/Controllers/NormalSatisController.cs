@@ -10,6 +10,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
+using AutoWrapper.Wrappers;
+using InventoryManagement.Utils;
+using InventoryManagement.Utils.Response;
+using System.Net;
+using AutoMapper;
 
 namespace InventoryManagement.Controllers
 {
@@ -19,41 +24,50 @@ namespace InventoryManagement.Controllers
     public class NormalSatisController : ControllerBase
     {
         private readonly ISalesService _SalesService;
-        public NormalSatisController(ISalesService salesService)
+        private readonly IMapper _mapper;
+        public NormalSatisController(ISalesService salesService, IMapper _mapper)
         {
             _SalesService = salesService;
-        }
-
-        // GET: api/Branches
-        [HttpGet]
-        public ActionResult GetBranches()
-        {
-            return Ok("ERROR");
+            this._mapper = _mapper;
         }
 
         [Route("GetProductDetails/{ProductFullCode}")]
         [HttpGet]
-        public ActionResult GetProductDetails(string ProductFullCode)
+        public UIResponse GetProductDetails(string ProductFullCode)
         {
             var result = _SalesService.GetProductDetails(ProductFullCode);
-            return Ok(result);
+
+            UIResponse response = new UIResponse();
+            if (result is null)
+            {
+                throw new ApiException(new UIResponse("EXCEPTIONS.NO_SUCH_PRODUCT", HttpStatusCode.NotFound));
+            }
+            else
+            {
+                response.StatusCode = HttpStatusCode.OK;
+                response.Entity = result;
+            }
+            return response;
+
         }
 
         [Route("SellProducts")]
         [HttpPost]
-        public async Task<ActionResult> SellProducts([FromForm] string values)
+        public async Task<UIResponse> SellProducts([FromForm] string values)
         {
             ProductSellingDto productSellingDto = new ProductSellingDto();
             JsonConvert.PopulateObject(values, productSellingDto);
             await _SalesService.SellProducts(productSellingDto);
-            return Ok();
+            return new UIResponse { StatusCode = HttpStatusCode.OK };
         }
 
         [Route("GetSelledProductsByUserId/{Id}/{StartDate?}/{EndDate?}")]
         [HttpGet]
-        public ActionResult GetSelledProductsByUserId(int Id, DateTime StartDate, DateTime EndDate)
+        public UIResponse GetSelledProductsByUserId(int Id, DateTime StartDate, DateTime EndDate)
         {
-            return Ok(_SalesService.GetSelledProductsByUserId(Id, StartDate, EndDate));
+            var result = _SalesService.GetSelledProductsByUserId(Id, StartDate, EndDate);
+            UIResponse uIResponse = new UIResponse() { Entity = result, StatusCode = HttpStatusCode.OK };
+            return uIResponse;
         }
     }
 }

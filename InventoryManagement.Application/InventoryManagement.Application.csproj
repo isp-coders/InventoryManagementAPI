@@ -14,4 +14,8 @@
     <PackageReference Include="DevExtreme.AspNet.Data" Version="2.6.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="AutoMapper\NewFolder\" />
+  </ItemGroup>
+
 </Project>

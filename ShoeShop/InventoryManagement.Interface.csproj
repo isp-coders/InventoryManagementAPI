@@ -31,6 +31,10 @@
     <ProjectReference Include="..\InventoryManagement.Utils\InventoryManagement.Utils.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Response\" />
+  </ItemGroup>
+
 
 
 </Project>

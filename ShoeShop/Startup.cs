@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
 using InventoryManagement.Application.Services.BranchesService;
 using InventoryManagement.Application.Services.ColorService;
@@ -16,7 +13,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,6 +27,8 @@ using InventoryManagement.Application.Services.CustomerInfoService;
 using InventoryManagement.Application.Services.RoleService;
 using InventoryManagement.Application.Services.UserService;
 using InventoryManagement.Utils.Helpers;
+using AutoWrapper;
+using InventoryManagement.Utils.Response;
 
 namespace InventoryManagement
 {
@@ -139,7 +137,7 @@ namespace InventoryManagement
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-
+            app.UseApiResponseAndExceptionWrapper<UIResponse>(new AutoWrapperOptions { UseCustomSchema = true, ShowStatusCode = true });
             app.UseAuthentication();
             app.UseRouting();
             app.UseAuthorization();
