@@ -12,7 +12,7 @@ namespace InventoryManagement.DTOs
         public string UserCode { get; set; }
         public DateTime Date { get; set; }
         public string BranchName { get; set; }
-        public double Total { get; set; }
+        public decimal Total { get; set; }
         public List<SoledProductDetailsDto> SoledProductDetails { get; set; }
         public List<PaymentDetailsDto> PaymentDetails { get; set; }
     }

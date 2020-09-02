@@ -59,6 +59,7 @@ namespace InventoryManagement.Controllers
             JsonConvert.PopulateObject(values, productSellingDto);
             await _SalesService.SellProducts(productSellingDto);
             return new UIResponse { StatusCode = HttpStatusCode.OK };
+
         }
 
         [Route("GetSelledProductsByUserId/{Id}/{StartDate?}/{EndDate?}")]

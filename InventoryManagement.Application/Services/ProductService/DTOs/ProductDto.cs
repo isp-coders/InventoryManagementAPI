@@ -17,8 +17,8 @@ namespace InventoryManagement.Application.Services.ProductService.DTOs
         public int ColorId { get; set; }
         public ColorDto Color { get; set; }
         public bool Gender { get; set; }
-        public double Price { get; set; }
-        public double SellingPrice { get; set; }
+        public decimal Price { get; set; }
+        public decimal SellingPrice { get; set; }
         public string ProductYear { get; set; }
         public int Size { get; set; }
         public int Count { get; set; }

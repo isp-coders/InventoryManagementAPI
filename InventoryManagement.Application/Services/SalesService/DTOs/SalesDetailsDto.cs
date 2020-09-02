@@ -10,7 +10,7 @@ namespace InventoryManagement.Application.Services.SalesService.DTOs
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }
-        public double Total { get; set; }
+        public decimal Total { get; set; }
         public int UserId { get; set; }
         public UserDto User { get; set; }
 

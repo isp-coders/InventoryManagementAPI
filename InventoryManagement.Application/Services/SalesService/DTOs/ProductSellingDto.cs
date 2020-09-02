@@ -8,7 +8,7 @@ namespace InventoryManagement.DTOs
 {
     public class ProductSellingDto
     {
-        public int Total { get; set; }
+        public decimal Total { get; set; }
         public int UserId { get; set; }
         public string Receipt { get; set; }
         public int BranchId { get; set; }

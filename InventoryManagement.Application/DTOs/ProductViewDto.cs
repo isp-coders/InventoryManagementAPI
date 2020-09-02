@@ -20,7 +20,7 @@ namespace InventoryManagement.DTOs
         public int Size { get; set; }
         public int Count { get; set; }
         public string BranchName { get; set; }
-        public double SellingPrice { get; set; }
+        public decimal SellingPrice { get; set; }
         public int TempId { get; set; }
         public int BranchId { get; set; }
         public Branch Branch { get; set; }
