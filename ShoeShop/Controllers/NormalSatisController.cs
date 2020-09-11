@@ -1,20 +1,14 @@
-﻿
-using InventoryManagement.Application.Services.SalesService;
+﻿using InventoryManagement.Application.Services.SalesService;
 using Microsoft.AspNetCore.Mvc;
 using InventoryManagement.DTOs;
-using InventoryManagement.Repositories;
-using InventoryManagement.Repositories.IRepositories;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
-using AutoWrapper.Wrappers;
-using InventoryManagement.Utils;
 using InventoryManagement.Utils.Response;
 using System.Net;
 using AutoMapper;
+using InventoryManagement.Utils.Exceptions;
 
 namespace InventoryManagement.Controllers
 {
@@ -40,7 +34,7 @@ namespace InventoryManagement.Controllers
             UIResponse response = new UIResponse();
             if (result is null)
             {
-                throw new ApiException(new UIResponse("EXCEPTIONS.NO_SUCH_PRODUCT", HttpStatusCode.NotFound));
+                throw new InventoryManagementException("EXCEPTIONS.NO_SUCH_PRODUCT", HttpStatusCode.NotFound);
             }
             else
             {

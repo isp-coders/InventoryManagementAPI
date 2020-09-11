@@ -1,19 +1,12 @@
 ﻿using InventoryManagement.Application.Services.ProductService;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using InventoryManagement.Models;
-using InventoryManagement.Repositories.IRepositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using InventoryManagement.Application.Services.ProductService.DTOs;
 using Sample;
 using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
 using InventoryManagement.Utils.Response;
 using System.Net;
-using AutoWrapper.Wrappers;
+using InventoryManagement.Utils.Exceptions;
 
 namespace InventoryManagement.Controllers
 {
@@ -72,7 +65,7 @@ namespace InventoryManagement.Controllers
             UIResponse response = new UIResponse();
             if (product is null)
             {
-                throw new ApiException(new UIResponse("EXCEPTIONS.NO_SUCH_PRODUCT", HttpStatusCode.NotFound));
+                throw new InventoryManagementException("EXCEPTIONS.NO_SUCH_PRODUCT", HttpStatusCode.NotFound);
             }
             else
             {

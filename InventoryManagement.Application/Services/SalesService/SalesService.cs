@@ -1,16 +1,13 @@
 ﻿using AutoMapper;
-using AutoWrapper.Wrappers;
-using InventoryManagement.Application.DTOs;
 using InventoryManagement.Application.Services.SalesService.DTOs;
 using InventoryManagement.Core.IRepositories;
 using InventoryManagement.DTOs;
 using InventoryManagement.Models;
-using InventoryManagement.Utils.Response;
+using InventoryManagement.Utils.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace InventoryManagement.Application.Services.SalesService
@@ -81,7 +78,8 @@ namespace InventoryManagement.Application.Services.SalesService
                 }
                 else
                 {
-                    throw new ApiException(new UIResponse("EXCEPTIONS.NO_ENOUGHT_COUNT", HttpStatusCode.BadRequest));
+                    //throw new ApiException(new UIResponse("EXCEPTIONS.NO_ENOUGHT_COUNT", HttpStatusCode.BadRequest));
+                    throw new InventoryManagementException("EXCEPTIONS.NO_ENOUGHT_COUNT", HttpStatusCode.BadRequest);
                 }
 
             });
