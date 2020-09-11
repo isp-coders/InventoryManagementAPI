@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using DevExpress.XtraReports.Web.Extensions;
 using InventoryManagement.Reporting.Services;
 using Newtonsoft.Json.Serialization;
+using System.Globalization;
 
 namespace InventoryManagement.Reporting
 {
@@ -58,6 +59,12 @@ namespace InventoryManagement.Reporting
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
+
+            var cultureInfo = new CultureInfo("tr-TR");
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+
+
             var reportingLogger = loggerFactory.CreateLogger("DXReporting");
             DevExpress.XtraReports.Web.ClientControls.LoggerService.Initialize((exception, message) =>
             {
