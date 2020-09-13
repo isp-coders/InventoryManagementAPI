@@ -69,7 +69,6 @@ namespace InventoryManagement.Application.Services.SalesService
 
                 // Substract the soled products' count from the product table
                 Product entity = _ProductRepository.FindEntity(fe.Id).Result;
-                entity.Count -= fe.Count;
                 if (entity.Count >= 0)
                 {
 

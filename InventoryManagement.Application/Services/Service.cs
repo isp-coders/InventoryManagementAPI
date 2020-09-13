@@ -2,6 +2,7 @@
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Data.ResponseModel;
 using InventoryManagement.Core.IRepositories;
+using Newtonsoft.Json;
 using Sample;
 using System;
 using System.Collections.Generic;
@@ -45,8 +46,10 @@ namespace InventoryManagement.Application.Services
 
         public async Task<TDto[]> PostEntities(string values)
         {
-            //T[] entities = mapper.Map<T[]>(entitiesDto);
-            return mapper.Map<TDto[]>(await _Repository.PostEntities(values));
+            List<T> Entities = new List<T>();
+            JsonConvert.PopulateObject(values, Entities);
+            //T[] EntitiesDto = mapper.Map<T[]>(entitiesDto);
+            return mapper.Map<TDto[]>(await _Repository.PostEntities(Entities));
         }
 
         public async Task<TDto> PutEntity(int id, string values)

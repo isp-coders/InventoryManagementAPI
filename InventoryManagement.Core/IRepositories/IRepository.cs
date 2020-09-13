@@ -12,7 +12,7 @@ namespace InventoryManagement.Core.IRepositories
         IQueryable<T> GetQuery(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = "");
         Task<T> PutEntity(int id, string values);
         Task<T> PostEntity(T Entity);
-        Task<List<T>> PostEntities(string values);
+        Task<List<T>> PostEntities(List<T> Entities);
         Task<T> DeleteEntity(int id);
         ValueTask<T> FindEntity(int id);
         IQueryable<T> GetEntities();

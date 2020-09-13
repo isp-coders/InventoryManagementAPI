@@ -53,8 +53,8 @@ namespace InventoryManagement.Controllers
         [HttpPost]
         public async Task<UIResponse> PostProducts([FromForm] string values)
         {
-            await _productService.PostEntities(values);
-            return new UIResponse { StatusCode = HttpStatusCode.OK };
+            var result = await _productService.AddNewProducts(values);
+            return result;
         }
 
         // DELETE: api/Products/5
