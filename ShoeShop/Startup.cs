@@ -27,8 +27,6 @@ using InventoryManagement.Application.Services.CustomerInfoService;
 using InventoryManagement.Application.Services.RoleService;
 using InventoryManagement.Application.Services.UserService;
 using InventoryManagement.Utils.Helpers;
-using AutoWrapper;
-using InventoryManagement.Utils.Response;
 
 namespace InventoryManagement
 {
@@ -126,18 +124,17 @@ namespace InventoryManagement
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
                 // This helps to return Error explanation through resoponse
                 app.UseDeveloperExceptionPage();
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseExceptionHandler("/error");
             app.UseCors("MyPolicy");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            app.UseApiResponseAndExceptionWrapper<UIResponse>(new AutoWrapperOptions { UseCustomSchema = true, ShowStatusCode = true });
             app.UseAuthentication();
             app.UseRouting();
             app.UseAuthorization();

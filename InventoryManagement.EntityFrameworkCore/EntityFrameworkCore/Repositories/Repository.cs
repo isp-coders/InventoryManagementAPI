@@ -60,10 +60,10 @@ namespace InventoryManagement.EntityFrameworkCore.EntityFrameworkCore.Repositori
             return await _context.FindAsync<T>(id);
         }
 
-        public async Task<List<T>> PostEntities(string values)
+        public async Task<List<T>> PostEntities(List<T> Entities)
         {
-            List<T> Entities = new List<T>();
-            JsonConvert.PopulateObject(values, Entities);
+            //List<T> Entities = new List<T>();
+            //JsonConvert.PopulateObject(values, Entities);
             _context.AddRange(Entities);
             await _context.SaveChangesAsync();
 

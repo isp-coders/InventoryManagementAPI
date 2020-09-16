@@ -1,28 +1,24 @@
-﻿using AutoWrapper;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.Net;
-using System.Text;
 
 namespace InventoryManagement.Utils.Response
 {
     public class UIResponse
     {
-        [AutoWrapperPropertyMap(Prop.Result)]
+        //[AutoWrapperPropertyMap(Prop.Result)]
         public IEnumerable data { get; set; }
         public int totalCount { get; set; }
         public int groupCount { get; set; }
         public object[] summary { get; set; }
         public object Entity { get; set; }
         public string Type { get; set; }
-        [AutoWrapperPropertyMap(Prop.Message)]
+        //[AutoWrapperPropertyMap(Prop.Message)]
         public string Message { get; set; }
-        [AutoWrapperPropertyMap(Prop.IsError)]
+        //[AutoWrapperPropertyMap(Prop.IsError)]
         public bool IsError { get; set; }
-        [AutoWrapperPropertyMap(Prop.ResponseException)]
+        //[AutoWrapperPropertyMap(Prop.ResponseException)]
         public object Error { get; set; }
-        [AutoWrapperPropertyMap(Prop.StatusCode)]
+        //[AutoWrapperPropertyMap(Prop.StatusCode)]
         public HttpStatusCode StatusCode { get; set; }
 
         public UIResponse()

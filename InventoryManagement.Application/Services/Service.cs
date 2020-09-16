@@ -2,6 +2,7 @@
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Data.ResponseModel;
 using InventoryManagement.Core.IRepositories;
+using Newtonsoft.Json;
 using Sample;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,9 @@ namespace InventoryManagement.Application.Services
 
         public LoadResult GetEntities(DataSourceLoadOptions loadOptions)
         {
-            return DataSourceLoader.Load(mapper.ProjectTo<TDto>(_Repository.GetEntities()), loadOptions);
+            var loadResult = DataSourceLoader.Load(_Repository.GetEntities(), loadOptions);
+            loadResult.data = mapper.Map<IEnumerable<TDto>>(loadResult.data as IEnumerable<T>);
+            return loadResult;
         }
 
         public async Task<TDto> GetEntity(int Id)
@@ -45,8 +48,10 @@ namespace InventoryManagement.Application.Services
 
         public async Task<TDto[]> PostEntities(string values)
         {
-            //T[] entities = mapper.Map<T[]>(entitiesDto);
-            return mapper.Map<TDto[]>(await _Repository.PostEntities(values));
+            List<T> Entities = new List<T>();
+            JsonConvert.PopulateObject(values, Entities);
+            //T[] EntitiesDto = mapper.Map<T[]>(entitiesDto);
+            return mapper.Map<TDto[]>(await _Repository.PostEntities(Entities));
         }
 
         public async Task<TDto> PutEntity(int id, string values)

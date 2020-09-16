@@ -55,7 +55,7 @@ namespace InventoryManagement.Reporting.Services
             // This method is called only for valid URLs after the IsValidUrl method is called.
             string reportName = url.Substring(0, url.IndexOf("?"));
             string paramName = url.Substring(url.IndexOf("?") + 1, url.IndexOf("=") - (url.IndexOf("?") + 1));
-            string paramValue = url.Substring(url.IndexOf("=") + 1);
+            string[] paramValue = url.Substring(url.IndexOf("=") + 1).Split(",");
             try
             {
                 if (Directory.EnumerateFiles(ReportDirectory).Select(Path.GetFileNameWithoutExtension).Contains(reportName))
@@ -67,7 +67,7 @@ namespace InventoryManagement.Reporting.Services
                     using (MemoryStream ms = new MemoryStream())
                     {
                         XtraReport report = ReportsFactory.Reports[reportName]();
-                        report.Parameters[paramName].Value = new string[] { paramValue };
+                        report.Parameters[paramName].Value = paramValue;
                         report.Parameters[paramName].Visible = true;
                         report.RequestParameters = false;
                         report.SaveLayoutToXml(ms);
