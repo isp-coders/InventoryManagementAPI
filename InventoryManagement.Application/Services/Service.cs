@@ -30,7 +30,9 @@ namespace InventoryManagement.Application.Services
 
         public LoadResult GetEntities(DataSourceLoadOptions loadOptions)
         {
-            return DataSourceLoader.Load(mapper.ProjectTo<TDto>(_Repository.GetEntities()), loadOptions);
+            var loadResult = DataSourceLoader.Load(_Repository.GetEntities(), loadOptions);
+            loadResult.data = mapper.Map<IEnumerable<TDto>>(loadResult.data as IEnumerable<T>);
+            return loadResult;
         }
 
         public async Task<TDto> GetEntity(int Id)
