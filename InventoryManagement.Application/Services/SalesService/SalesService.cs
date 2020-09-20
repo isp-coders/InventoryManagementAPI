@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
+using DevExtreme.AspNet.Data;
+using DevExtreme.AspNet.Data.ResponseModel;
 using InventoryManagement.Application.Services.SalesService.DTOs;
 using InventoryManagement.Core.IRepositories;
 using InventoryManagement.DTOs;
 using InventoryManagement.Models;
+using InventoryManagement.Repositories.IRepositories;
 using InventoryManagement.Utils.Exceptions;
+using Sample;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +18,11 @@ namespace InventoryManagement.Application.Services.SalesService
 {
     public class SalesService : Service<SalesDetails, SalesDetailsDto>, ISalesService
     {
-        private readonly IRepository<SalesDetails> _SalesRepository;
+        private readonly ISalesRepository _SalesRepository;
         private readonly IRepository<Product> _ProductRepository;
         private readonly IRepository<CustomerInfo> _CustomerRepository;
         private readonly IMapper _mapper;
-        public SalesService(IRepository<CustomerInfo> _CustomerRepository, IRepository<SalesDetails> SalesRepository, IRepository<Product> ProductRepository, IMapper mapper) : base(SalesRepository, mapper)
+        public SalesService(IRepository<CustomerInfo> _CustomerRepository, ISalesRepository SalesRepository, IRepository<Product> ProductRepository, IMapper mapper) : base(SalesRepository, mapper)
         {
             _SalesRepository = SalesRepository;
             _ProductRepository = ProductRepository;
@@ -32,12 +36,11 @@ namespace InventoryManagement.Application.Services.SalesService
             return _mapper.ProjectTo<ProductViewDto>(_ProductRepository.GetEntities()).FirstOrDefault(si => si.ProductFullCode == ProductFullCode);
         }
 
-        public List<SaleUserBranchProductsDTO> GetSelledProductsByUserId(int UserId, DateTime? StartDate, DateTime? EndDate)
+        public LoadResult GetSelledProductsByUserId(int UserId, DataSourceLoadOptions loadOptions)
         {
-            if (StartDate != DateTime.MinValue)
-                return _mapper.ProjectTo<SaleUserBranchProductsDTO>(_SalesRepository.GetEntities().Where(wh => wh.UserId == UserId && wh.Date >= StartDate && wh.Date <= EndDate)).ToList();
-            else
-                return _mapper.ProjectTo<SaleUserBranchProductsDTO>(_SalesRepository.GetEntities().Where(wh => wh.UserId == UserId)).ToList();
+            var loadResult = DataSourceLoader.Load(_SalesRepository.GetSaleDetailsWithSubProperties().Where(wh => wh.UserId == UserId), loadOptions);
+            loadResult.data = _mapper.Map<List<SaleUserBranchProductsDTO>>(loadResult.data.Cast<SalesDetails>().ToList());
+            return loadResult;
         }
 
         public async Task SellProducts(ProductSellingDto productSellingDto)

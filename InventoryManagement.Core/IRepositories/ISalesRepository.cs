@@ -9,6 +9,7 @@ namespace InventoryManagement.Repositories.IRepositories
 {
     public interface ISalesRepository : IRepository<SalesDetails>
     {
+        IQueryable<SalesDetails> GetSaleDetailsWithSubProperties();
         //Task<ProductViewDto> GetProductDetails(string ProductFullCode);
         //Task SellProducts(ProductSellingDto productSellingDto);
         //Task<List<SaleUserBranchProductsDTO>> GetSelledProductsByUserId(int UserId, DateTime? StartDate, DateTime? EndDate);

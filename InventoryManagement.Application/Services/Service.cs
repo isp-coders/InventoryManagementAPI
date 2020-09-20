@@ -31,7 +31,7 @@ namespace InventoryManagement.Application.Services
         public LoadResult GetEntities(DataSourceLoadOptions loadOptions)
         {
             var loadResult = DataSourceLoader.Load(_Repository.GetEntities(), loadOptions);
-            loadResult.data = mapper.Map<IEnumerable<TDto>>(loadResult.data as IEnumerable<T>);
+            loadResult.data = mapper.Map<IEnumerable<TDto>>(loadResult.data.Cast<T>().ToList());
             return loadResult;
         }
 
