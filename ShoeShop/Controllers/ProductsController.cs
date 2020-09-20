@@ -27,7 +27,7 @@ namespace InventoryManagement.Controllers
         [HttpGet]
         public UIResponse GetProducts(DataSourceLoadOptions loadOptions)
         {
-            var result = _productService.GetEntities(loadOptions);
+            var result = _productService.GetProducts(loadOptions);
             return _mapper.Map<UIResponse>(result);
         }
 

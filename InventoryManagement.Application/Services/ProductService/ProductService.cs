@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
+using DevExtreme.AspNet.Data;
+using DevExtreme.AspNet.Data.ResponseModel;
 using InventoryManagement.Application.DTOs;
 using InventoryManagement.Application.Services.ProductService.DTOs;
 using InventoryManagement.Core.IRepositories;
 using InventoryManagement.Models;
 using InventoryManagement.Utils.Response;
 using Newtonsoft.Json;
+using Sample;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,6 +56,14 @@ namespace InventoryManagement.Application.Services.ProductService
             if (AddedNewProducts.Count > 0)
                 await _ProductRepository.PostEntities(AddedNewProducts);
             return new UIResponse { Entity = addProductsDto, StatusCode = HttpStatusCode.OK, IsError = addProductsDto.ExistedProducts.Count > 0, Message = "EXCEPTIONS.EXISTING_PRODUCTS" };
+        }
+
+        public LoadResult GetProducts(DataSourceLoadOptions loadOptions)
+        {
+            loadOptions.RemoteGrouping = false;
+            var loadResult = DataSourceLoader.Load(_ProductRepository.GetEntities(), loadOptions);
+            loadResult.data = _mapper.Map<IEnumerable<ProductDto>>(loadResult.data.Cast<Product>().ToList());
+            return loadResult;
         }
     }
 }
