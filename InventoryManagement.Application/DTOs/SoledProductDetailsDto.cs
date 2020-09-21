@@ -13,7 +13,7 @@ namespace InventoryManagement.DTOs
         public string ColorName { get; set; }
         public bool Gender { get; set; }
         public string ProductYear { get; set; }
-        public int Size { get; set; }
+        public float Size { get; set; }
         public int ProductCount { get; set; }
         public string BranchName { get; set; }
     }

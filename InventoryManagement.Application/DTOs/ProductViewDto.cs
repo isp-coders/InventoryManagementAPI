@@ -17,7 +17,7 @@ namespace InventoryManagement.DTOs
         public bool Gender { get; set; }
         public string Price { get; set; }
         public string ProductYear { get; set; }
-        public int Size { get; set; }
+        public float Size { get; set; }
         public int Count { get; set; }
         public string BranchName { get; set; }
         public decimal SellingPrice { get; set; }

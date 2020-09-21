@@ -27,11 +27,13 @@ namespace InventoryManagement.Data
             modelBuilder.Entity<UserRole>()
                 .HasOne(bc => bc.User)
                 .WithMany(b => b.UserRoles)
-                .HasForeignKey(bc => bc.UserId);
+                .HasForeignKey(bc => bc.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<UserRole>()
                 .HasOne(bc => bc.Role)
                 .WithMany(c => c.UserRoles)
-                .HasForeignKey(bc => bc.RoleId);
+                .HasForeignKey(bc => bc.RoleId)
+                .OnDelete(DeleteBehavior.Restrict);
 
 
             modelBuilder.Entity<SalePaymentMethod>()
@@ -39,11 +41,13 @@ namespace InventoryManagement.Data
             modelBuilder.Entity<SalePaymentMethod>()
                 .HasOne(bc => bc.Sale)
                 .WithMany(b => b.SalePaymentMethods)
-                .HasForeignKey(bc => bc.SaleId);
+                .HasForeignKey(bc => bc.SaleId)
+                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<SalePaymentMethod>()
                 .HasOne(bc => bc.PaymentMethod)
                 .WithMany(c => c.SalePaymentMethods)
-                .HasForeignKey(bc => bc.PaymentMethodId);
+                .HasForeignKey(bc => bc.PaymentMethodId)
+                .OnDelete(DeleteBehavior.Restrict);
 
 
             modelBuilder.Entity<SaleDetailsAndProduct>()
@@ -51,22 +55,26 @@ namespace InventoryManagement.Data
             modelBuilder.Entity<SaleDetailsAndProduct>()
                 .HasOne(bc => bc.Sale)
                 .WithMany(b => b.SaleDetailsAndProducts)
-                .HasForeignKey(bc => bc.SaleId);
+                .HasForeignKey(bc => bc.SaleId)
+                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<SaleDetailsAndProduct>()
                 .HasOne(bc => bc.Product)
                 .WithMany(c => c.SaleDetailsAndProducts)
-                .HasForeignKey(bc => bc.ProductId);
+                .HasForeignKey(bc => bc.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<RoleAndRolePermession>()
 .HasKey(bc => new { bc.RoleId, bc.RolePermessionId });
             modelBuilder.Entity<RoleAndRolePermession>()
                 .HasOne(bc => bc.Role)
                 .WithMany(b => b.RoleAndRolePermessions)
-                .HasForeignKey(bc => bc.RoleId);
+                .HasForeignKey(bc => bc.RoleId)
+                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<RoleAndRolePermession>()
                 .HasOne(bc => bc.RolePermession)
                 .WithMany(c => c.RoleAndRolePermessions)
-                .HasForeignKey(bc => bc.RolePermessionId);
+                .HasForeignKey(bc => bc.RolePermessionId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
         public DbSet<Branch> Branches { get; set; }
