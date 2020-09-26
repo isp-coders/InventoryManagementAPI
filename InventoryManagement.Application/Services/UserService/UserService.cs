@@ -117,6 +117,7 @@ namespace InventoryManagement.Application.Services.UserService
 
         private void SetUserCreds(LoginResponse loginResponse, User user)
         {
+            loginResponse.UserId = user.Id;
             loginResponse.UserName = user.UserName;
             loginResponse.UserCode = user.UserCode;
         }

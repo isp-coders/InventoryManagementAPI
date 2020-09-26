@@ -1,4 +1,5 @@
-﻿using InventoryManagement.Application.Services.RolePermessionsService;
+﻿using InventoryManagement.Application.DTOs;
+using InventoryManagement.Application.Services.RolePermessionsService;
 using InventoryManagement.Application.Services.RoleService;
 using InventoryManagement.Application.Services.RoleService.DTOs;
 using Microsoft.AspNetCore.Authorization;
@@ -32,6 +33,29 @@ namespace InventoryManagement.Interface.Controllers
         {
             var result = roleService.GetEntities(loadOptions, inc => inc.RoleAndRolePermessions, inc => inc.RoleAndRolePermessions.Select(se => se.RolePermession));
             return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("AddRoles")]
+        public async Task<ActionResult> AddRoles([FromForm] string values)
+        {
+            RoleDto Entity = new RoleDto();
+            JsonConvert.PopulateObject(values, Entity);
+            var result = await roleService.PostEntity(Entity);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("DeleteRole")]
+        public async Task<ActionResult<RoleDto>> DeleteRole([FromForm] int key)
+        {
+            var roleDto = await roleService.DeleteEntity(key);
+            if (roleDto == null)
+            {
+                return NotFound();
+            }
+
+            return Ok();
         }
 
 
