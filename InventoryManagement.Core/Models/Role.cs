@@ -11,6 +11,6 @@ namespace InventoryManagement.Models
         public int RoleGroupId { get; set; }
         public string RoleName { get; set; }
         public List<RoleAndRolePermession> RoleAndRolePermessions { get; set; }
-        public List<UserRole> UserRoles { get; set; }
+        public List<User> Users { get; set; }
     }
 }

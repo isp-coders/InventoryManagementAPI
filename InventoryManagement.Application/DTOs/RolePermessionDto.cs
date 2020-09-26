@@ -1,10 +1,11 @@
-﻿using System;
+﻿using InventoryManagement.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace InventoryManagement.Models
+namespace InventoryManagement.Application.DTOs
 {
-    public class RolePermession
+    public class RolePermessionDto
     {
         public int Id { get; set; }
         public string RoleKey { get; set; }
@@ -15,12 +16,5 @@ namespace InventoryManagement.Models
         public int ParentId { get; set; }
         public bool IsParent { get; set; }
         public int Priority { get; set; }
-
-        //public long? RolePriority { get; set; }
-        //public string ControllerName { get; set; }
-        //public string ActionName { get; set; }
-
-
-        public List<RoleAndRolePermession> RoleAndRolePermessions { get; set; }
     }
 }

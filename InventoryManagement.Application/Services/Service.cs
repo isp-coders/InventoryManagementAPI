@@ -7,6 +7,7 @@ using Sample;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,9 +29,9 @@ namespace InventoryManagement.Application.Services
             return mapper.Map<TDto>(await _Repository.DeleteEntity(id));
         }
 
-        public LoadResult GetEntities(DataSourceLoadOptions loadOptions)
+        public LoadResult GetEntities(DataSourceLoadOptions loadOptions, params Expression<Func<T, object>>[] includes)
         {
-            var loadResult = DataSourceLoader.Load(_Repository.GetEntities(), loadOptions);
+            var loadResult = DataSourceLoader.Load(_Repository.GetEntities(includes), loadOptions);
             loadResult.data = mapper.Map<IEnumerable<TDto>>(loadResult.data.Cast<T>().ToList());
             return loadResult;
         }

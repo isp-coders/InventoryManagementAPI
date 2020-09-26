@@ -29,6 +29,7 @@ using InventoryManagement.Application.Services.UserService;
 using InventoryManagement.Utils.Helpers;
 using DevExtreme.AspNet.Data.Aggregation;
 using InventoryManagement.Interface.Devextreme.Aggreagators;
+using InventoryManagement.Application.Services.RolePermessionsService;
 
 namespace InventoryManagement
 {
@@ -113,6 +114,8 @@ namespace InventoryManagement
             services.AddTransient<ICustomerInfoService, CustomerInfoService>();
             services.AddTransient<IRoleService, RoleService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IRolePermessionsService, RolePermessionsService>();
+            
 
 
 
