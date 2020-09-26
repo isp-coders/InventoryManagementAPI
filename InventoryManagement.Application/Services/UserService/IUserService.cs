@@ -11,5 +11,6 @@ namespace InventoryManagement.Application.Services.UserService
     {
         LoginResponse Login(LoginRequest loginRequest);
         Task<UserDto> InsertUser(UserDto userDto);
+        Task<UserDto> UpdateUser(int key, string values);
     }
 }

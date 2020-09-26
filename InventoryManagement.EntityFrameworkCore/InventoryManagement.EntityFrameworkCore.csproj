@@ -11,6 +11,30 @@
     <Compile Remove="Migrations\20200719141255_customerInfo-SalePaymentMethod relation added.Designer.cs" />
     <Compile Remove="Migrations\20200720164457_Initial Relations in DB.cs" />
     <Compile Remove="Migrations\20200720164457_Initial Relations in DB.Designer.cs" />
+    <Compile Remove="Migrations\20200922054939_RoleAndRolePermession-table-Id-made-DB-Generated.cs" />
+    <Compile Remove="Migrations\20200922054939_RoleAndRolePermession-table-Id-made-DB-Generated.Designer.cs" />
+    <Compile Remove="Migrations\20200925044607_user and role arasındaki relation one to many yapıldı.cs" />
+    <Compile Remove="Migrations\20200925044607_user and role arasındaki relation one to many yapıldı.Designer.cs" />
+    <Compile Remove="Migrations\20200925044959_minor.cs" />
+    <Compile Remove="Migrations\20200925044959_minor.Designer.cs" />
+    <Compile Remove="Migrations\20200925045154_minor.cs" />
+    <Compile Remove="Migrations\20200925045154_minor.Designer.cs" />
+    <Compile Remove="Migrations\20200925045337_minor.cs" />
+    <Compile Remove="Migrations\20200925045337_minor.Designer.cs" />
+    <Compile Remove="Migrations\20200925045637_minor.cs" />
+    <Compile Remove="Migrations\20200925045637_minor.Designer.cs" />
+    <Compile Remove="Migrations\20200925045918_minor.cs" />
+    <Compile Remove="Migrations\20200925045918_minor.Designer.cs" />
+    <Compile Remove="Migrations\20200925050015_minor.cs" />
+    <Compile Remove="Migrations\20200925050015_minor.Designer.cs" />
+    <Compile Remove="Migrations\20200925050118_minor.cs" />
+    <Compile Remove="Migrations\20200925050118_minor.Designer.cs" />
+    <Compile Remove="Migrations\20200925050458_user and role arasındaki relation one to many yapıldı.cs" />
+    <Compile Remove="Migrations\20200925050458_user and role arasındaki relation one to many yapıldı.Designer.cs" />
+    <Compile Remove="Migrations\20200925051342_minor1.cs" />
+    <Compile Remove="Migrations\20200925051342_minor1.Designer.cs" />
+    <Compile Remove="Migrations\20200925051419_minor1.cs" />
+    <Compile Remove="Migrations\20200925051419_minor1.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

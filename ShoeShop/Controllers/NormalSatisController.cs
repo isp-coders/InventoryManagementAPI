@@ -9,6 +9,7 @@ using InventoryManagement.Utils.Response;
 using System.Net;
 using AutoMapper;
 using InventoryManagement.Utils.Exceptions;
+using Sample;
 
 namespace InventoryManagement.Controllers
 {
@@ -34,7 +35,7 @@ namespace InventoryManagement.Controllers
             UIResponse response = new UIResponse();
             if (result is null)
             {
-                throw new InventoryManagementException("EXCEPTIONS.NO_SUCH_PRODUCT", HttpStatusCode.NotFound);
+                throw new InventoryManagementException("EXCEPTIONS.NO_SUCH_PRODUCT", HttpStatusCode.OK);
             }
             else
             {
@@ -56,12 +57,12 @@ namespace InventoryManagement.Controllers
 
         }
 
-        [Route("GetSelledProductsByUserId/{Id}/{StartDate?}/{EndDate?}")]
+        [Route("GetSelledProductsByUserId")]
         [HttpGet]
-        public UIResponse GetSelledProductsByUserId(int Id, DateTime StartDate, DateTime EndDate)
+        public UIResponse GetSelledProductsByUserId(int Id, DataSourceLoadOptions loadOptions)
         {
-            var result = _SalesService.GetSelledProductsByUserId(Id, StartDate, EndDate);
-            UIResponse uIResponse = new UIResponse() { Entity = result, StatusCode = HttpStatusCode.OK };
+            var result = _SalesService.GetSelledProductsByUserId(Id, loadOptions);
+            UIResponse uIResponse = new UIResponse() { data = result.data, groupCount = result.groupCount, summary = result.summary, totalCount = result.totalCount, StatusCode = HttpStatusCode.OK };
             return uIResponse;
         }
     }

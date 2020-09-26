@@ -12,8 +12,9 @@ namespace InventoryManagement.Models
         public string Title { get; set; }
         public string Translate { get; set; }
         public string URL { get; set; }
-        public string ParentId { get; set; }
+        public int ParentId { get; set; }
         public bool IsParent { get; set; }
+        public int Priority { get; set; }
 
         //public long? RolePriority { get; set; }
         //public string ControllerName { get; set; }

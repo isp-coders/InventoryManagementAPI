@@ -1,6 +1,7 @@
 ﻿using InventoryManagement.Core.Enums;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace InventoryManagement.Models
@@ -22,14 +23,14 @@ namespace InventoryManagement.Models
         public string LastName { get; set; }
         public int? BranchId { get; set; }
         public Branch Branch { get; set; }
+        public int RoleId { get; set; }
+        public Role Role { get; set; }
 
         public List<SalesDetails> Sales { get; set; }
-        public List<UserRole> UserRoles { get; set; }
 
         public User()
         {
             Sales = new List<SalesDetails>();
-            UserRoles = new List<UserRole>();
         }
     }
 }

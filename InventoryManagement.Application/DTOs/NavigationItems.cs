@@ -14,5 +14,9 @@ namespace InventoryManagement.Application.DTOs
         public string URL { get; set; }
 
         public List<NavigationItems> Children { get; set; }
+        public NavigationItems()
+        {
+            Children = new List<NavigationItems>();
+        }
     }
 }

@@ -7,11 +7,11 @@ using System.Text;
 
 namespace InventoryManagement.Application.AutoMapper.Profiles
 {
-    class UserRoleProfile : Profile
+    public class RolePermessionProfile : Profile
     {
-        public UserRoleProfile()
+        public RolePermessionProfile()
         {
-            CreateMap<UserRole, UserRoleDto>();
+            CreateMap<RolePermession, RolePermessionDto>();
         }
     }
 }

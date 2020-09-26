@@ -15,7 +15,7 @@ namespace InventoryManagement.Utils.Response
         //[AutoWrapperPropertyMap(Prop.Message)]
         public string Message { get; set; }
         //[AutoWrapperPropertyMap(Prop.IsError)]
-        public bool IsError { get; set; }
+        public bool IsError { get; set; } = false;
         //[AutoWrapperPropertyMap(Prop.ResponseException)]
         public object Error { get; set; }
         //[AutoWrapperPropertyMap(Prop.StatusCode)]

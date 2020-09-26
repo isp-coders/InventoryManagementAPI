@@ -27,6 +27,9 @@ using InventoryManagement.Application.Services.CustomerInfoService;
 using InventoryManagement.Application.Services.RoleService;
 using InventoryManagement.Application.Services.UserService;
 using InventoryManagement.Utils.Helpers;
+using DevExtreme.AspNet.Data.Aggregation;
+using InventoryManagement.Interface.Devextreme.Aggreagators;
+using InventoryManagement.Application.Services.RolePermessionsService;
 
 namespace InventoryManagement
 {
@@ -42,6 +45,8 @@ namespace InventoryManagement
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            CustomAggregators.RegisterAggregator("ProductSellingPrice", typeof(ProductSellingPriceAggreagtor<>));
+            CustomAggregators.RegisterAggregator("ProductPrice", typeof(ProductPriceAggregator<>));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 .AddJwtBearer(options =>
 {
@@ -109,6 +114,8 @@ namespace InventoryManagement
             services.AddTransient<ICustomerInfoService, CustomerInfoService>();
             services.AddTransient<IRoleService, RoleService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IRolePermessionsService, RolePermessionsService>();
+            
 
 
 

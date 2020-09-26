@@ -20,7 +20,7 @@ namespace InventoryManagement.Application.Services.ProductService.DTOs
         public decimal Price { get; set; }
         public decimal SellingPrice { get; set; }
         public string ProductYear { get; set; }
-        public int Size { get; set; }
+        public float Size { get; set; }
         public int Count { get; set; }
 
         public int? BranchId { get; set; }

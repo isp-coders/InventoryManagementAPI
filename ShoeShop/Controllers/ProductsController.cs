@@ -27,7 +27,7 @@ namespace InventoryManagement.Controllers
         [HttpGet]
         public UIResponse GetProducts(DataSourceLoadOptions loadOptions)
         {
-            var result = _productService.GetEntities(loadOptions);
+            var result = _productService.GetProducts(loadOptions);
             return _mapper.Map<UIResponse>(result);
         }
 
@@ -54,6 +54,13 @@ namespace InventoryManagement.Controllers
         public async Task<UIResponse> PostProducts([FromForm] string values)
         {
             var result = await _productService.AddNewProducts(values);
+            return result;
+        }
+
+        [HttpGet("IncreaseProductCount")]
+        public async Task<UIResponse> IncreaseProductCount(int ProductId, int Count)
+        {
+            var result = await _productService.IncreaseProductCount(ProductId, Count);
             return result;
         }
 
