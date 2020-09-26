@@ -9,6 +9,8 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using System.Reflection;
+using System.Collections;
 
 namespace InventoryManagement.EntityFrameworkCore.EntityFrameworkCore.Repositories
 {
@@ -33,6 +35,17 @@ namespace InventoryManagement.EntityFrameworkCore.EntityFrameworkCore.Repositori
             return Entity;
         }
 
+        public async Task DeleteWhere(Expression<Func<T, bool>> predicate)
+        {
+            IQueryable<T> queryable = Table;
+            if (predicate != null)
+            {
+                IQueryable<T> entities = queryable.AsNoTracking().Where(predicate);
+                _context.RemoveRange(entities);
+                await _context.SaveChangesAsync();
+            }
+        }
+
         public IQueryable<T> GetQuery(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = "")
         {
             IQueryable<T> queryable = Table;
@@ -52,7 +65,7 @@ namespace InventoryManagement.EntityFrameworkCore.EntityFrameworkCore.Repositori
             {
                 return orderBy(queryable);
             }
-            return queryable;
+            return queryable.AsNoTracking();
         }
 
         public async ValueTask<T> FindEntity(int id)
@@ -88,6 +101,14 @@ namespace InventoryManagement.EntityFrameworkCore.EntityFrameworkCore.Repositori
             return Entity;
         }
 
+        public async Task<T> ModifyEntity(T Entity)
+        {
+            _context.Entry(Entity).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            return Entity;
+        }
+
         public IQueryable<T> GetIncludableEntities<EntityToInclude>(params Expression<Func<T, EntityToInclude>>[] navigationPropertyPaths)
         {
             IQueryable<T> queryableEntities = Table.AsQueryable();
@@ -106,9 +127,46 @@ namespace InventoryManagement.EntityFrameworkCore.EntityFrameworkCore.Repositori
 
         }
 
-        public IQueryable<T> GetEntities()
+        public IQueryable<T> GetEntities(params Expression<Func<T, object>>[] includes)
         {
-            return Table.AsQueryable();
+            var query = Table.AsQueryable();
+            if (includes != null)
+            {
+                foreach (var item in includes)
+                {
+                    var IsIncludable = item.Body.GetType().GetProperty("Arguments") != null;
+                    if (IsIncludable)
+                    {
+                        var Body = item.GetType().GetProperty("Body").GetValue(item, null);
+                        IList Arguments = Body.GetType().GetProperty("Arguments").GetValue(Body, null) as IList;
+
+                        List<string> navigations = new List<string>();
+
+                        //var Include = query.Include(Arguments[0] as MemberExpression);
+                        foreach (var property in Arguments)
+                        {
+                            navigations.Add(property.ToString().Split(".")[1]);
+                            //var ii = property;
+                        }
+
+                        string mainNavigation = navigations[0];
+                        query.Include(mainNavigation);
+                        navigations.RemoveAt(0);
+                        navigations.ForEach(nav =>
+                        {
+                            query = query.Include(String.Concat(mainNavigation, ".", nav));
+                        });
+                    }
+                    else
+                    {
+                        //                        query = includes.Aggregate(query,
+                        //(current, include) => current.Include(include));
+                        query = query.Include(item);
+                    }
+                }
+            }
+            return query;
         }
+
     }
 }

@@ -4,14 +4,16 @@ using InventoryManagement.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace InventoryManagement.Migrations
 {
     [DbContext(typeof(InventoryManagementDbContext))]
-    partial class InventoryManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20200921054309_EditingAuthorities-To-RoleAndRolePermessionTable")]
+    partial class EditingAuthoritiesToRoleAndRolePermessionTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -170,9 +172,7 @@ namespace InventoryManagement.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.HasKey("RoleId", "RolePermessionId");
 
@@ -194,11 +194,8 @@ namespace InventoryManagement.Migrations
                     b.Property<bool>("IsParent")
                         .HasColumnType("bit");
 
-                    b.Property<int>("ParentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Priority")
-                        .HasColumnType("int");
+                    b.Property<string>("ParentId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RoleKey")
                         .HasColumnType("nvarchar(max)");
@@ -323,9 +320,6 @@ namespace InventoryManagement.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Salt")
                         .HasColumnType("nvarchar(max)");
 
@@ -342,9 +336,22 @@ namespace InventoryManagement.Migrations
 
                     b.HasIndex("BranchId");
 
-                    b.HasIndex("RoleId");
-
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("InventoryManagement.Models.UserRole", b =>
+                {
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RoleId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserRoleRelation");
                 });
 
             modelBuilder.Entity("InventoryManagement.Models.Product", b =>
@@ -433,10 +440,19 @@ namespace InventoryManagement.Migrations
                         .WithMany("Users")
                         .HasForeignKey("BranchId")
                         .OnDelete(DeleteBehavior.Restrict);
+                });
 
+            modelBuilder.Entity("InventoryManagement.Models.UserRole", b =>
+                {
                     b.HasOne("InventoryManagement.Models.Role", "Role")
-                        .WithMany("Users")
+                        .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("InventoryManagement.Models.User", "User")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
