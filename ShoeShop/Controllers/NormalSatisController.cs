@@ -62,7 +62,7 @@ namespace InventoryManagement.Controllers
         public UIResponse GetSelledProductsByUserId(int Id, DataSourceLoadOptions loadOptions)
         {
             var result = _SalesService.GetSelledProductsByUserId(Id, loadOptions);
-            UIResponse uIResponse = new UIResponse() { data = result.data, StatusCode = HttpStatusCode.OK };
+            UIResponse uIResponse = new UIResponse() { data = result.data, groupCount = result.groupCount, summary = result.summary, totalCount = result.totalCount, StatusCode = HttpStatusCode.OK };
             return uIResponse;
         }
     }

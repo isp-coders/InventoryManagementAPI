@@ -45,7 +45,7 @@ namespace InventoryManagement.Controllers
 
         // POST: api/Branches
         [HttpPost]
-        public async Task<ActionResult<Branch>> PostColors([FromForm] string values)
+        public async Task<ActionResult<BranchDto>> PostColors([FromForm] string values)
         {
             await _branchesService.PostEntities(values);
             return Ok();
@@ -53,7 +53,7 @@ namespace InventoryManagement.Controllers
 
         // DELETE: api/Branches/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Branch>> DeleteColor(int id)
+        public async Task<ActionResult<BranchDto>> DeleteColor(int id)
         {
             var color = await _branchesService.DeleteEntity(id);
             if (color == null)
