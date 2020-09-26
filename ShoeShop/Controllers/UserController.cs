@@ -1,6 +1,7 @@
 ﻿using InventoryManagement.Application.DTOs;
 using InventoryManagement.Application.Services.UserService;
 using InventoryManagement.Utils.Helpers;
+using InventoryManagement.Utils.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -39,14 +40,15 @@ namespace InventoryManagement.Interface.Controllers
             LoginRequest loginRequest = new LoginRequest();
             JsonConvert.PopulateObject(values, loginRequest);
 
-            var loginResponse = userService.Login(loginRequest);
+            UIResponse response = userService.Login(loginRequest);
+            LoginResponse loginResponse = response.Entity as LoginResponse;
             if (loginResponse.IsAuthenticated)
             {
                 loginResponse.Token = generateJwtToken(loginRequest);
             }
 
             return JsonConvert.SerializeObject(
-     loginResponse,
+     response,
      Formatting.Indented,
      new JsonSerializerSettings
      {

@@ -4,6 +4,7 @@ using InventoryManagement.Core.Enums;
 using InventoryManagement.Core.IRepositories;
 using InventoryManagement.Models;
 using InventoryManagement.Utils.Helpers;
+using InventoryManagement.Utils.Response;
 using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
 using System;
@@ -31,7 +32,7 @@ namespace InventoryManagement.Application.Services.UserService
 
 
 
-        public LoginResponse Login(LoginRequest loginRequest)
+        public UIResponse Login(LoginRequest loginRequest)
         {
             LoginResponse loginResponse = new LoginResponse();
 
@@ -43,7 +44,7 @@ namespace InventoryManagement.Application.Services.UserService
             {
                 //result.ResponseCode = ResponseCode.Error;
                 //result.UIMessage = ErrorMessage.InvalidUserNamePassword;
-                return new LoginResponse() { IsAuthenticated = false };
+                return new UIResponse { Entity = new LoginResponse() { IsAuthenticated = false }, IsError = true, Message = "ADMIN_MODULE.LOGIN.WRNOG_LOGIN_CREDENTIALS" };
             }
 
             SetUserCreds(loginResponse, user);
@@ -84,7 +85,7 @@ namespace InventoryManagement.Application.Services.UserService
 
             }
 
-            return loginResponse;
+            return new UIResponse { Entity = loginResponse };
 
         }
 

@@ -1,5 +1,6 @@
 ﻿using InventoryManagement.Application.DTOs;
 using InventoryManagement.Models;
+using InventoryManagement.Utils.Response;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +10,7 @@ namespace InventoryManagement.Application.Services.UserService
 {
     public interface IUserService : IService<User, UserDto>
     {
-        LoginResponse Login(LoginRequest loginRequest);
+        UIResponse Login(LoginRequest loginRequest);
         Task<UserDto> InsertUser(UserDto userDto);
         Task<UserDto> UpdateUser(int key, string values);
     }
