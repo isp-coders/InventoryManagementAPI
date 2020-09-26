@@ -91,6 +91,14 @@ namespace InventoryManagement.EntityFrameworkCore.EntityFrameworkCore.Repositori
             return Entity;
         }
 
+        public async Task<T> PutEntity(T Entity)
+        {
+            _context.Entry(Entity).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            return Entity;
+        }
+
         public async Task<T> PutEntity(int id, string values)
         {
             var Entity = await _context.FindAsync<T>(id);

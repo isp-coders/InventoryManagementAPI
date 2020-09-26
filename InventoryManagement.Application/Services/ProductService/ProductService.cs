@@ -65,5 +65,22 @@ namespace InventoryManagement.Application.Services.ProductService
             loadResult.data = _mapper.Map<IEnumerable<ProductDto>>(loadResult.data.Cast<Product>().ToList());
             return loadResult;
         }
+
+        public async Task<UIResponse> IncreaseProductCount(int ProductId, int Count)
+        {
+            Product product = _ProductRepository.GetQuery(gq => gq.Id == ProductId).FirstOrDefault();
+            if (product != null)
+            {
+                product.Count += Count;
+                if (product.Count < 0)
+                {
+                    product.Count = 0;
+                }
+            }
+            await _ProductRepository.PutEntity(product);
+
+            return new UIResponse { Entity = _mapper.Map<ProductDto>(product), StatusCode = HttpStatusCode.OK, IsError = false };
+
+        }
     }
 }

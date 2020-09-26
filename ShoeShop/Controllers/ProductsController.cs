@@ -57,6 +57,13 @@ namespace InventoryManagement.Controllers
             return result;
         }
 
+        [HttpGet("IncreaseProductCount")]
+        public async Task<UIResponse> IncreaseProductCount(int ProductId, int Count)
+        {
+            var result = await _productService.IncreaseProductCount(ProductId, Count);
+            return result;
+        }
+
         // DELETE: api/Products/5
         [HttpDelete]
         public async Task<ActionResult<UIResponse>> DeleteProduct([FromForm] int key)

@@ -12,7 +12,8 @@ namespace InventoryManagement.Application.Services.ProductService
 {
     public interface IProductService : IService<Product, ProductDto>
     {
-        public Task<UIResponse> AddNewProducts(string values);
+        Task<UIResponse> AddNewProducts(string values);
+        Task<UIResponse> IncreaseProductCount(int ProductId, int Count);
         LoadResult GetProducts(DataSourceLoadOptions loadOptions);
     }
 }

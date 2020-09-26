@@ -11,6 +11,7 @@ namespace InventoryManagement.Core.IRepositories
     {
         IQueryable<T> GetQuery(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = "");
         Task<T> PutEntity(int id, string values);
+        Task<T> PutEntity(T Entity);
         Task<T> ModifyEntity(T Entity);
         Task<T> PostEntity(T Entity);
         Task<List<T>> PostEntities(List<T> Entities);
