@@ -5,6 +5,7 @@ using InventoryManagement.Core.IRepositories;
 using InventoryManagement.Models;
 using InventoryManagement.Utils.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,14 +18,12 @@ namespace InventoryManagement.Application.Services.UserService
     public class UserService : Service<User, UserDto>, IUserService
     {
         private readonly IRepository<User> UserRepository;
-        private readonly IRepository<UserRole> UserAndRoleRepository;
         private readonly IRepository<RoleAndRolePermession> RoleAndPermessionRepository;
         private readonly IMapper _mapper;
 
-        public UserService(IRepository<User> UserRepository, IRepository<UserRole> UserAndRoleRepository, IRepository<RoleAndRolePermession> RoleAndPermessionRepository, IMapper _mapper) : base(UserRepository, _mapper)
+        public UserService(IRepository<User> UserRepository, IRepository<RoleAndRolePermession> RoleAndPermessionRepository, IMapper _mapper) : base(UserRepository, _mapper)
         {
             this.UserRepository = UserRepository;
-            this.UserAndRoleRepository = UserAndRoleRepository;
             this.RoleAndPermessionRepository = RoleAndPermessionRepository;
             this._mapper = _mapper;
 
@@ -35,7 +34,7 @@ namespace InventoryManagement.Application.Services.UserService
         public LoginResponse Login(LoginRequest loginRequest)
         {
             LoginResponse loginResponse = new LoginResponse();
-            
+
             string PasswordHash = CalculateHashForNetCore(loginRequest.Password);
             User user = UserRepository.GetQuery(qu => qu.UserName == loginRequest.UserName).FirstOrDefault();
 
@@ -47,49 +46,107 @@ namespace InventoryManagement.Application.Services.UserService
                 return new LoginResponse() { IsAuthenticated = false };
             }
 
-            SetUserCreds(loginResponse,user);
-            var role = UserAndRoleRepository.GetQuery(gq => gq.UserId == user.Id).FirstOrDefault();
+            SetUserCreds(loginResponse, user);
+            var role = UserRepository.GetQuery(gq => gq.Id == user.Id).Select(se => se.Role).FirstOrDefault();
             if (role != null)
             {
                 loginResponse.IsAuthenticated = true;
-                var UserPermissions = RoleAndPermessionRepository.GetQuery(gq => gq.RoleId == role.RoleId).Select(se => se.RolePermession).ToList();
-                var ParentMenus = UserPermissions.Where(wh => wh.IsParent).ToList();
-
+                var UserPermissions = RoleAndPermessionRepository.GetQuery(gq => gq.RoleId == role.Id).Select(se => se.RolePermession).OrderBy(ob => ob.Priority).ToList();
+                var ParentMenus = UserPermissions.Where(wh => wh.ParentId == 0).ToList();
                 ParentMenus.ForEach(fe =>
                 {
-                    var children = UserPermissions.Where(wh => wh.ParentId == fe.RoleKey);
-                    loginResponse.NavigationItems.Add(new NavigationItems
-                    {
-                        Icon = fe.Icon,
-                        Key = fe.RoleKey,
-                        Title = fe.Title,
-                        Translate = fe.Translate,
-                        Type = children.Any() ? "collapsable" : "item",
-                        URL = fe.URL,
-                        Children = children.Select(se => new NavigationItems
-                        {
-                            Icon = se.Icon,
-                            Key = se.RoleKey,
-                            Title = se.Title,
-                            Translate = se.Translate,
-                            Type = "item",
-                            URL = se.URL,
-                            Children = new List<NavigationItems>()
-                        }).ToList()
-                    });
+                    loginResponse.NavigationItems.Add(UserPermissionsCreator(fe, UserPermissions));
                 });
+
+                //ParentMenus.ForEach(fe =>
+                //{
+                //    var children = UserPermissions.Where(wh => wh.ParentId == fe.Id).ToList();
+                //    loginResponse.NavigationItems.Add(new NavigationItems
+                //    {
+                //        Icon = fe.Icon,
+                //        Key = fe.RoleKey,
+                //        Title = fe.Title,
+                //        Translate = fe.Translate,
+                //        Type = children.Any() ? "collapsable" : "item",
+                //        URL = fe.URL,
+                //        Children = children.Select(se => new NavigationItems
+                //        {
+                //            Icon = se.Icon,
+                //            Key = se.RoleKey,
+                //            Title = se.Title,
+                //            Translate = se.Translate,
+                //            Type = "item",
+                //            URL = se.URL,
+                //            Children = new List<NavigationItems>()
+                //        }).ToList()
+                //    });
+                //});
 
             }
 
-
             return loginResponse;
 
+        }
+
+        public NavigationItems UserPermissionsCreator(RolePermession ParentMenue, List<RolePermession> UserPermessions)
+        {
+            NavigationItems navigationItems = new NavigationItems() { Icon = ParentMenue.Icon, Key = ParentMenue.RoleKey, Title = ParentMenue.Title, Translate = ParentMenue.Translate, URL = ParentMenue.URL, Type = "collapsable" };
+            var parentChildren = UserPermessions.Where(wh => wh.ParentId == ParentMenue.Id).ToList();
+            parentChildren.ForEach(child =>
+            {
+                if (child.IsParent)
+                {
+                    navigationItems.Children.Add(UserPermissionsCreator(child, UserPermessions));
+                }
+                else
+                {
+                    navigationItems.Children.Add(new NavigationItems
+                    {
+                        Icon = child.Icon,
+                        Key = child.RoleKey,
+                        Title = child.Title,
+                        Translate = child.Translate,
+                        Type = "item",
+                        URL = child.URL,
+                        Children = new List<NavigationItems>()
+                    });
+                }
+            });
+            return navigationItems;
         }
 
         private void SetUserCreds(LoginResponse loginResponse, User user)
         {
             loginResponse.UserName = user.UserName;
             loginResponse.UserCode = user.UserCode;
+        }
+
+
+        public async Task<UserDto> UpdateUser(int key, string values)
+        {
+            var newuser = new User();
+            JsonConvert.PopulateObject(values, newuser);
+            var user = UserRepository.GetQuery(u => u.Id == key).FirstOrDefault();
+
+            if (newuser.Password != null && newuser.Password != user.Password)
+            {
+                newuser.Salt = Guid.NewGuid().ToString();
+
+                string newPass = CalculateHashForNetCore(newuser.Password);
+                newPass = newPass + newuser.Salt;
+                string compPass = CalculateHashForNetCore(newPass);
+                newuser.Password = compPass;
+                user.Password = newuser.Password;
+            }
+            JsonConvert.PopulateObject(values, user);
+            if (newuser.Password != null)
+            {
+                user.Salt = newuser.Salt;
+                user.Password = newuser.Password;
+            }
+
+            await UserRepository.ModifyEntity(user);
+            return _mapper.Map<UserDto>(user);
         }
 
         public async Task<UserDto> InsertUser(UserDto userDto)

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Sample;
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,7 @@ namespace InventoryManagement.Interface.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("Login")]
-        public ActionResult<LoginResponse> Login([FromForm] string values)
+        public string Login([FromForm] string values)
         {
             LoginRequest loginRequest = new LoginRequest();
             JsonConvert.PopulateObject(values, loginRequest);
@@ -44,10 +45,18 @@ namespace InventoryManagement.Interface.Controllers
                 loginResponse.Token = generateJwtToken(loginRequest);
             }
 
-            return Ok(loginResponse);
+            return JsonConvert.SerializeObject(
+     loginResponse,
+     Formatting.Indented,
+     new JsonSerializerSettings
+     {
+         ContractResolver = new CamelCasePropertyNamesContractResolver()
+     }
+ );
+            //return Ok(loginResponse);
         }
 
-        
+
         [HttpPost]
         [Route("InsertUser")]
         public async Task<ActionResult<UserDto>> InsertUser([FromForm] string values)
@@ -58,11 +67,20 @@ namespace InventoryManagement.Interface.Controllers
             return Ok();
         }
 
+
+        [HttpPost]
+        [Route("UpdateUser")]
+        public async Task<ActionResult<UserDto>> UpdateUser([FromForm] int key, [FromForm] string values)
+        {
+            await userService.UpdateUser(key, values);
+            return Ok();
+        }
+
         [HttpGet]
         [Route("GetUsers")]
         public ActionResult GetUsers(DataSourceLoadOptions loadOptions)
         {
-            var result = userService.GetEntities(loadOptions);
+            var result = userService.GetEntities(loadOptions, inc => inc.Role);
             return Ok(result);
         }
 
