@@ -1,17 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using InventoryManagement.Application.Services.PaymentMethodRepository;
 using InventoryManagement.Models;
-using InventoryManagement.Repositories.IRepositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using InventoryManagement.Application.Services.PaymentMethodRepository;
-using InventoryManagement.Application.Services.PaymentMethodService.DTOs;
-using DevExtreme.AspNet.Data;
-using Sample;
-using Newtonsoft.Json;
+using InventoryManagement.Utils.Response;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Sample;
+using System.Threading.Tasks;
 
 namespace InventoryManagement.Controllers
 {
@@ -65,12 +58,13 @@ namespace InventoryManagement.Controllers
         public async Task<ActionResult<PaymentMethod>> DeletePaymentMethod(int id)
         {
             var PaymentMethod = await _paymentMethodsService.DeleteEntity(id);
-            if (PaymentMethod is null)
+
+            if (PaymentMethod == null)
             {
-                return NotFound();
+                return NotFound(new UIResponse() { IsError = true, Message = "STOCK_MODULE.MASTER_DATA.NOT_FOUND" });
             }
 
-            return Ok();
+            return Ok(new UIResponse() { Entity = PaymentMethod });
         }
     }
 }
