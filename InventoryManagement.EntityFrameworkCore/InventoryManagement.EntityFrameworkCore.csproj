@@ -35,6 +35,8 @@
     <Compile Remove="Migrations\20200925051342_minor1.Designer.cs" />
     <Compile Remove="Migrations\20200925051419_minor1.cs" />
     <Compile Remove="Migrations\20200925051419_minor1.Designer.cs" />
+    <Compile Remove="Migrations\20200927093326_userRoleRelation problem.cs" />
+    <Compile Remove="Migrations\20200927093326_userRoleRelation problem.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
