@@ -1,17 +1,10 @@
 ﻿using InventoryManagement.Application.Services.BranchesService;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using InventoryManagement.Models;
-using InventoryManagement.Repositories.IRepositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using InventoryManagement.Application.Services.BranchesService.DTOs;
-using DevExtreme.AspNet.Data;
-using Sample;
-using Newtonsoft.Json;
+using InventoryManagement.Utils.Response;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Sample;
+using System.Threading.Tasks;
 
 namespace InventoryManagement.Controllers
 {
@@ -55,13 +48,13 @@ namespace InventoryManagement.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<BranchDto>> DeleteColor(int id)
         {
-            var color = await _branchesService.DeleteEntity(id);
-            if (color == null)
+            var branch = await _branchesService.DeleteEntity(id);
+            if (branch == null)
             {
-                return NotFound();
+                return NotFound(new UIResponse() { IsError = true, Message = "STOCK_MODULE.MASTER_DATA.NOT_FOUND" });
             }
 
-            return Ok();
+            return Ok(new UIResponse() { Entity = branch });
         }
     }
 }
