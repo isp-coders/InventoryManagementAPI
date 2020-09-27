@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using InventoryManagement.Application.Services.ColorService;
-using Microsoft.AspNetCore.Mvc;
-using InventoryManagement.Models;
+﻿using InventoryManagement.Application.Services.ColorService;
 using InventoryManagement.Application.Services.ColorService.DTOs;
-using Sample;
-using Newtonsoft.Json;
+using InventoryManagement.Utils.Response;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Sample;
+using System.Threading.Tasks;
 
 namespace InventoryManagement.Controllers
 {
@@ -34,7 +30,7 @@ namespace InventoryManagement.Controllers
 
         // GET: api/Colors/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Color>> GetColor(int id)
+        public async Task<ActionResult<ColorDto>> GetColor(int id)
         {
             var color = await _colorService.FindEntity(id);
 
@@ -79,15 +75,15 @@ namespace InventoryManagement.Controllers
 
         // DELETE: api/Colors/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Color>> DeleteColor(int id)
+        public async Task<ActionResult<ColorDto>> DeleteColor(int id)
         {
             var color = await _colorService.DeleteEntity(id);
             if (color == null)
             {
-                return NotFound();
+                return NotFound(new UIResponse() { IsError = true, Message = "STOCK_MODULE.MASTER_DATA.NOT_FOUND" });
             }
 
-            return Ok();
+            return Ok(new UIResponse() { Entity = color });
         }
     }
 }

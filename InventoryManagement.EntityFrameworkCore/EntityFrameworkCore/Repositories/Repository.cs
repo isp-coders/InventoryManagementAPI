@@ -1,16 +1,13 @@
 ﻿using InventoryManagement.Core.IRepositories;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 using InventoryManagement.Data;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using System.Reflection;
-using System.Collections;
 
 namespace InventoryManagement.EntityFrameworkCore.EntityFrameworkCore.Repositories
 {
@@ -30,7 +27,15 @@ namespace InventoryManagement.EntityFrameworkCore.EntityFrameworkCore.Repositori
         public async Task<T> DeleteEntity(int id)
         {
             var Entity = await FindEntity(id);
-            _context.Remove(Entity);
+            if (Entity != null)
+            {
+                _context.Remove(Entity);
+            }
+            else
+            {
+                return null;
+            }
+
             await _context.SaveChangesAsync();
             return Entity;
         }
