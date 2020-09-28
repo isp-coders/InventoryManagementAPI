@@ -5,6 +5,7 @@ using InventoryManagement.Application.DTOs;
 using InventoryManagement.Application.Services.RoleService.DTOs;
 using InventoryManagement.Core.IRepositories;
 using InventoryManagement.Models;
+using InventoryManagement.Utils.Response;
 using Sample;
 using System;
 using System.Collections.Generic;
@@ -28,9 +29,9 @@ namespace InventoryManagement.Application.Services.RoleService
         }
 
 
-        public LoadResult GetRoleAuthorities(int RoleId, DataSourceLoadOptions loadOptions)
+        public UIResponse GetRoleAuthorities(int RoleId, DataSourceLoadOptions loadOptions)
         {
-            return DataSourceLoader.Load(RoleRepository.GetEntities().Where(wh => wh.Id == RoleId), loadOptions);
+            return _mapper.Map<UIResponse>(DataSourceLoader.Load(RoleRepository.GetEntities().Where(wh => wh.Id == RoleId), loadOptions));
         }
 
         public async Task SaveRolePermessions(RoleIdAndPermessions SaveRolePermessions)

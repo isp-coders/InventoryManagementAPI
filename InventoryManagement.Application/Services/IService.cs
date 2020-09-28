@@ -1,5 +1,6 @@
 ﻿using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Data.ResponseModel;
+using InventoryManagement.Utils.Response;
 using Sample;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace InventoryManagement.Application.Services
     public interface IService<T, TDto>
     {
         Task<TDto> GetEntity(int Id);
-        LoadResult GetEntities(DataSourceLoadOptions loadOptions, params Expression<Func<T, object>>[] includes);
+        UIResponse GetEntities(DataSourceLoadOptions loadOptions, params Expression<Func<T, object>>[] includes);
         Task<TDto> PutEntity(int id, string values);
         Task<TDto[]> PostEntities(string values);
         Task<TDto> PostEntity(TDto entityDto);
