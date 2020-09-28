@@ -4,14 +4,16 @@ using InventoryManagement.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace InventoryManagement.Migrations
 {
     [DbContext(typeof(InventoryManagementDbContext))]
-    partial class InventoryManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20200928043701_Add Product Properties Table")]
+    partial class AddProductPropertiesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,7 +21,7 @@ namespace InventoryManagement.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("InventoryManagement.Core.Models.ProductProperty", b =>
+            modelBuilder.Entity("InventoryManagement.Core.Models.ProductProperties", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -50,21 +52,6 @@ namespace InventoryManagement.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ProductTypes");
-                });
-
-            modelBuilder.Entity("InventoryManagement.Core.Models.ProductTypeAndProperty", b =>
-                {
-                    b.Property<int>("ProductPropertyId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductTypeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ProductPropertyId", "ProductTypeId");
-
-                    b.HasIndex("ProductTypeId");
-
-                    b.ToTable("ProductTypeAndProperties");
                 });
 
             modelBuilder.Entity("InventoryManagement.Models.Branch", b =>
@@ -398,21 +385,6 @@ namespace InventoryManagement.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("InventoryManagement.Core.Models.ProductTypeAndProperty", b =>
-                {
-                    b.HasOne("InventoryManagement.Core.Models.ProductProperty", "ProductProperty")
-                        .WithMany("ProductTypeAndProperties")
-                        .HasForeignKey("ProductPropertyId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("InventoryManagement.Core.Models.ProductType", "ProductType")
-                        .WithMany("ProductTypeAndProperties")
-                        .HasForeignKey("ProductTypeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("InventoryManagement.Models.Product", b =>

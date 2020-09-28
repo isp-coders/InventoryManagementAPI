@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using InventoryManagement.Core.Models;
 
 namespace InventoryManagement.Data
 {
@@ -22,18 +23,18 @@ namespace InventoryManagement.Data
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
 
-    //        modelBuilder.Entity<UserRole>()
-    //.HasKey(bc => new { bc.RoleId, bc.UserId });
-    //        modelBuilder.Entity<UserRole>()
-    //            .HasOne(bc => bc.User)
-    //            .WithMany(b => b.UserRoles)
-    //            .HasForeignKey(bc => bc.UserId)
-    //            .OnDelete(DeleteBehavior.Restrict);
-    //        modelBuilder.Entity<UserRole>()
-    //            .HasOne(bc => bc.Role)
-    //            .WithMany(c => c.UserRoles)
-    //            .HasForeignKey(bc => bc.RoleId)
-    //            .OnDelete(DeleteBehavior.Restrict);
+            //        modelBuilder.Entity<UserRole>()
+            //.HasKey(bc => new { bc.RoleId, bc.UserId });
+            //        modelBuilder.Entity<UserRole>()
+            //            .HasOne(bc => bc.User)
+            //            .WithMany(b => b.UserRoles)
+            //            .HasForeignKey(bc => bc.UserId)
+            //            .OnDelete(DeleteBehavior.Restrict);
+            //        modelBuilder.Entity<UserRole>()
+            //            .HasOne(bc => bc.Role)
+            //            .WithMany(c => c.UserRoles)
+            //            .HasForeignKey(bc => bc.RoleId)
+            //            .OnDelete(DeleteBehavior.Restrict);
 
 
             modelBuilder.Entity<SalePaymentMethod>()
@@ -75,6 +76,19 @@ namespace InventoryManagement.Data
                 .WithMany(c => c.RoleAndRolePermessions)
                 .HasForeignKey(bc => bc.RolePermessionId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ProductTypeAndProperty>()
+.HasKey(bc => new { bc.ProductPropertyId, bc.ProductTypeId });
+            modelBuilder.Entity<ProductTypeAndProperty>()
+                .HasOne(bc => bc.ProductProperty)
+                .WithMany(b => b.ProductTypeAndProperties)
+                .HasForeignKey(bc => bc.ProductPropertyId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<ProductTypeAndProperty>()
+                .HasOne(bc => bc.ProductType)
+                .WithMany(c => c.ProductTypeAndProperties)
+                .HasForeignKey(bc => bc.ProductTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
         public DbSet<Branch> Branches { get; set; }
@@ -84,10 +98,12 @@ namespace InventoryManagement.Data
         public DbSet<Color> Colors { get; set; }
         public DbSet<CustomerInfo> CustomerInfo { get; set; }
         public DbSet<Role> Roles { get; set; }
-        //public DbSet<UserRole> UserRoleRelation { get; set; }
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
         public DbSet<SalePaymentMethod> SalePaymentMethodsRelation { get; set; }
         public DbSet<RolePermession> RolePermessions { get; set; }
         public DbSet<RoleAndRolePermession> RoleAndRolePermessions { get; set; }
+        public DbSet<ProductType> ProductTypes { get; set; }
+        public DbSet<ProductProperty> ProductProperties { get; set; }
+        public DbSet<ProductTypeAndProperty> ProductTypeAndProperties { get; set; }
     }
 }

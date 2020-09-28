@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InventoryManagement.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -22,6 +23,10 @@ namespace InventoryManagement.Models
 
         public int? BranchId { get; set; }
         public Branch Branch { get; set; }
+
+        public int ProductTypeId { get; set; }
+        public ProductType ProductType { get; set; }
+
 
         public List<SaleDetailsAndProduct> SaleDetailsAndProducts { get; set; }
     }
