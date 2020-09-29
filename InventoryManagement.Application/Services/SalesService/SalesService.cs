@@ -41,6 +41,10 @@ namespace InventoryManagement.Application.Services.SalesService
         {
 
             var loadResult = DataSourceLoader.Load(_SalesRepository.GetSaleDetailsWithSubProperties().Where(wh => wh.UserId == UserId), loadOptions);
+            if (loadResult.data.OfType<SalesDetails>().Any())
+            {
+                loadResult.data = _mapper.Map<List<SaleUserBranchProductsDTO>>(loadResult.data.Cast<SalesDetails>().ToList());
+            }
             UIResponse response = _mapper.Map<UIResponse>(loadResult);
             return response;
         }

@@ -62,6 +62,10 @@ namespace InventoryManagement.Application.Services.ProductService
         {
             loadOptions.RemoteGrouping = false;
             var loadResult = DataSourceLoader.Load(_ProductRepository.GetEntities(), loadOptions);
+            if (loadResult.data.OfType<Product>().Any())
+            {
+                loadResult.data = _mapper.Map<List<ProductDto>>(loadResult.data.Cast<Product>().ToList());
+            }
             UIResponse response = _mapper.Map<UIResponse>(loadResult);
             return response;
         }

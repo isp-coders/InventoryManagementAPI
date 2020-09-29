@@ -33,6 +33,10 @@ namespace InventoryManagement.Application.Services
         public UIResponse GetEntities(DataSourceLoadOptions loadOptions, params Expression<Func<T, object>>[] includes)
         {
             var loadResult = DataSourceLoader.Load(_Repository.GetEntities(includes), loadOptions);
+            if (loadResult.data.OfType<T>().Any())
+            {
+                loadResult.data = mapper.Map<List<TDto>>(loadResult.data.Cast<T>().ToList());
+            }
             UIResponse response = mapper.Map<UIResponse>(loadResult);
             return response;
         }
