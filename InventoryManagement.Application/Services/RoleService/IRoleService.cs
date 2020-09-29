@@ -2,6 +2,7 @@
 using InventoryManagement.Application.DTOs;
 using InventoryManagement.Application.Services.RoleService.DTOs;
 using InventoryManagement.Models;
+using InventoryManagement.Utils.Response;
 using Sample;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace InventoryManagement.Application.Services.RoleService
 {
     public interface IRoleService : IService<Role, RoleDto>
     {
-        LoadResult GetRoleAuthorities(int RoleId, DataSourceLoadOptions loadOptions);
+        UIResponse GetRoleAuthorities(int RoleId, DataSourceLoadOptions loadOptions);
         Task SaveRolePermessions(RoleIdAndPermessions SaveRolePermessions);
     }
 }

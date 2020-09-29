@@ -2,6 +2,7 @@
 using InventoryManagement.Application.Services.SalesService.DTOs;
 using InventoryManagement.DTOs;
 using InventoryManagement.Models;
+using InventoryManagement.Utils.Response;
 using Sample;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,6 @@ namespace InventoryManagement.Application.Services.SalesService
     {
         ProductViewDto GetProductDetails(string ProductFullCode);
         Task SellProducts(ProductSellingDto productSellingDto);
-        LoadResult GetSelledProductsByUserId(int UserId, DataSourceLoadOptions loadOptions);
+        UIResponse GetSelledProductsByUserId(int UserId, DataSourceLoadOptions loadOptions);
     }
 }

@@ -19,7 +19,7 @@ namespace InventoryManagement.Utils.Response
         //[AutoWrapperPropertyMap(Prop.ResponseException)]
         public object Error { get; set; }
         //[AutoWrapperPropertyMap(Prop.StatusCode)]
-        public HttpStatusCode StatusCode { get; set; }
+        public HttpStatusCode StatusCode { get; set; } = HttpStatusCode.OK;
 
         public UIResponse()
         {

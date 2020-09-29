@@ -19,6 +19,54 @@ namespace InventoryManagement.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("InventoryManagement.Core.Models.ProductProperty", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductProperties");
+                });
+
+            modelBuilder.Entity("InventoryManagement.Core.Models.ProductType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductTypes");
+                });
+
+            modelBuilder.Entity("InventoryManagement.Core.Models.ProductTypeAndProperty", b =>
+                {
+                    b.Property<int>("ProductPropertyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductTypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductPropertyId", "ProductTypeId");
+
+                    b.HasIndex("ProductTypeId");
+
+                    b.ToTable("ProductTypeAndProperties");
+                });
+
             modelBuilder.Entity("InventoryManagement.Models.Branch", b =>
                 {
                     b.Property<int>("Id")
@@ -122,6 +170,9 @@ namespace InventoryManagement.Migrations
                     b.Property<string>("ProductName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ProductTypeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ProductYear")
                         .HasColumnType("nvarchar(max)");
 
@@ -136,6 +187,8 @@ namespace InventoryManagement.Migrations
                     b.HasIndex("BranchId");
 
                     b.HasIndex("ColorId");
+
+                    b.HasIndex("ProductTypeId");
 
                     b.ToTable("Products");
                 });
@@ -347,6 +400,21 @@ namespace InventoryManagement.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("InventoryManagement.Core.Models.ProductTypeAndProperty", b =>
+                {
+                    b.HasOne("InventoryManagement.Core.Models.ProductProperty", "ProductProperty")
+                        .WithMany("ProductTypeAndProperties")
+                        .HasForeignKey("ProductPropertyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("InventoryManagement.Core.Models.ProductType", "ProductType")
+                        .WithMany("ProductTypeAndProperties")
+                        .HasForeignKey("ProductTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("InventoryManagement.Models.Product", b =>
                 {
                     b.HasOne("InventoryManagement.Models.Branch", "Branch")
@@ -357,6 +425,12 @@ namespace InventoryManagement.Migrations
                     b.HasOne("InventoryManagement.Models.Color", "Color")
                         .WithMany("Products")
                         .HasForeignKey("ColorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("InventoryManagement.Core.Models.ProductType", "ProductType")
+                        .WithMany("Products")
+                        .HasForeignKey("ProductTypeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

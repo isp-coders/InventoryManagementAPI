@@ -58,12 +58,16 @@ namespace InventoryManagement.Application.Services.ProductService
             return new UIResponse { Entity = addProductsDto, StatusCode = HttpStatusCode.OK, IsError = addProductsDto.ExistedProducts.Count > 0, Message = "EXCEPTIONS.EXISTING_PRODUCTS" };
         }
 
-        public LoadResult GetProducts(DataSourceLoadOptions loadOptions)
+        public UIResponse GetProducts(DataSourceLoadOptions loadOptions)
         {
             loadOptions.RemoteGrouping = false;
             var loadResult = DataSourceLoader.Load(_ProductRepository.GetEntities(), loadOptions);
-            loadResult.data = _mapper.Map<IEnumerable<ProductDto>>(loadResult.data.Cast<Product>().ToList());
-            return loadResult;
+            if (loadResult.data.OfType<Product>().Any())
+            {
+                loadResult.data = _mapper.Map<List<ProductDto>>(loadResult.data.Cast<Product>().ToList());
+            }
+            UIResponse response = _mapper.Map<UIResponse>(loadResult);
+            return response;
         }
 
         public async Task<UIResponse> IncreaseProductCount(int ProductId, int Count)

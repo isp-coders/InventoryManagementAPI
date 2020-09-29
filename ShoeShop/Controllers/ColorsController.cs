@@ -3,6 +3,7 @@ using InventoryManagement.Application.Services.ColorService.DTOs;
 using InventoryManagement.Utils.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Sample;
 using System.Threading.Tasks;
 
@@ -21,7 +22,7 @@ namespace InventoryManagement.Controllers
         }
 
         // GET: api/Colors
-        [HttpGet]
+        [HttpGet("Get")]
         public ActionResult GetColors(DataSourceLoadOptions loadOptions)
         {
             var result = _colorService.GetEntities(loadOptions);
@@ -43,7 +44,7 @@ namespace InventoryManagement.Controllers
         }
 
         // PUT: api/Colors/5
-        [HttpPut("{id}")]
+        [HttpPost("Update/{id}")]
         public async Task<IActionResult> PutColor([FromForm] int key, [FromForm] string values)
         {
             var result = await _colorService.PutEntity(key, values);
@@ -57,27 +58,21 @@ namespace InventoryManagement.Controllers
             return Ok(result);
         }
 
-        // POST: api/Colors
-        //[HttpPost]
-        //public async Task<ActionResult<Color>> PostColor(Color color)
-        //{
-        //    await _colorsRepository.PostColor(color);
-        //    return Ok();
-        //}
 
-        // POST: api/Colors
-        [HttpPost]
-        public async Task<ActionResult> PostColors([FromForm] string values)
+        [HttpPost("Insert")]
+        public async Task<ActionResult> PostColor([FromForm] string values)
         {
-            await _colorService.PostEntities(values);
+            ColorDto Entity = new ColorDto();
+            JsonConvert.PopulateObject(values, Entity);
+            await _colorService.PostEntity(Entity);
             return Ok();
         }
 
         // DELETE: api/Colors/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<ColorDto>> DeleteColor(int id)
+        [HttpPost("Delete")]
+        public async Task<ActionResult<ColorDto>> DeleteColor( [FromForm] int Key)
         {
-            var color = await _colorService.DeleteEntity(id);
+            var color = await _colorService.DeleteEntity(Key);
             if (color == null)
             {
                 return NotFound(new UIResponse() { IsError = true, Message = "STOCK_MODULE.MASTER_DATA.NOT_FOUND" });

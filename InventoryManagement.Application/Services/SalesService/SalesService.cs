@@ -7,6 +7,7 @@ using InventoryManagement.DTOs;
 using InventoryManagement.Models;
 using InventoryManagement.Repositories.IRepositories;
 using InventoryManagement.Utils.Exceptions;
+using InventoryManagement.Utils.Response;
 using Sample;
 using System;
 using System.Collections.Generic;
@@ -36,11 +37,16 @@ namespace InventoryManagement.Application.Services.SalesService
             return _mapper.ProjectTo<ProductViewDto>(_ProductRepository.GetEntities()).FirstOrDefault(si => si.ProductFullCode == ProductFullCode);
         }
 
-        public LoadResult GetSelledProductsByUserId(int UserId, DataSourceLoadOptions loadOptions)
+        public UIResponse GetSelledProductsByUserId(int UserId, DataSourceLoadOptions loadOptions)
         {
+
             var loadResult = DataSourceLoader.Load(_SalesRepository.GetSaleDetailsWithSubProperties().Where(wh => wh.UserId == UserId), loadOptions);
-            loadResult.data = _mapper.Map<List<SaleUserBranchProductsDTO>>(loadResult.data.Cast<SalesDetails>().ToList());
-            return loadResult;
+            if (loadResult.data.OfType<SalesDetails>().Any())
+            {
+                loadResult.data = _mapper.Map<List<SaleUserBranchProductsDTO>>(loadResult.data.Cast<SalesDetails>().ToList());
+            }
+            UIResponse response = _mapper.Map<UIResponse>(loadResult);
+            return response;
         }
 
         public async Task SellProducts(ProductSellingDto productSellingDto)

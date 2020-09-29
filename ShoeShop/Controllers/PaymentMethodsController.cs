@@ -1,8 +1,10 @@
 ﻿using InventoryManagement.Application.Services.PaymentMethodRepository;
+using InventoryManagement.Application.Services.PaymentMethodService.DTOs;
 using InventoryManagement.Models;
 using InventoryManagement.Utils.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Sample;
 using System.Threading.Tasks;
 
@@ -22,7 +24,7 @@ namespace InventoryManagement.Controllers
         }
 
         // GET: api/PaymentMethods
-        [HttpGet]
+        [HttpGet("Get")]
         public IActionResult GetPaymentMethods(DataSourceLoadOptions loadOptions)
         {
             var result = _paymentMethodsService.GetEntities(loadOptions);
@@ -30,7 +32,7 @@ namespace InventoryManagement.Controllers
         }
 
         // PUT: api/PaymentMethods/5
-        [HttpPut("{id}")]
+        [HttpPost("Update/{id}")]
         public async Task<IActionResult> PutPaymentMethod([FromForm] int key, [FromForm] string values)
         {
 
@@ -46,18 +48,20 @@ namespace InventoryManagement.Controllers
         }
 
         // POST: api/PaymentMethods
-        [HttpPost]
-        public async Task<ActionResult<PaymentMethod>> PostPaymentMethods([FromForm] string values)
+        [HttpPost("Insert")]
+        public async Task<ActionResult<PaymentMethodDto>> PostPaymentMethod([FromForm] string values)
         {
-            await _paymentMethodsService.PostEntities(values);
+            PaymentMethodDto Entity = new PaymentMethodDto();
+            JsonConvert.PopulateObject(values, Entity);
+            await _paymentMethodsService.PostEntity(Entity);
             return Ok();
         }
 
         // DELETE: api/PaymentMethods/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<PaymentMethod>> DeletePaymentMethod(int id)
+        [HttpPost("Delete")]
+        public async Task<ActionResult<PaymentMethod>> DeletePaymentMethod([FromForm] int Key)
         {
-            var PaymentMethod = await _paymentMethodsService.DeleteEntity(id);
+            var PaymentMethod = await _paymentMethodsService.DeleteEntity(Key);
 
             if (PaymentMethod == null)
             {

@@ -2,6 +2,7 @@
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Data.ResponseModel;
 using InventoryManagement.Core.IRepositories;
+using InventoryManagement.Utils.Response;
 using Newtonsoft.Json;
 using Sample;
 using System;
@@ -29,11 +30,15 @@ namespace InventoryManagement.Application.Services
             return mapper.Map<TDto>(await _Repository.DeleteEntity(id));
         }
 
-        public LoadResult GetEntities(DataSourceLoadOptions loadOptions, params Expression<Func<T, object>>[] includes)
+        public UIResponse GetEntities(DataSourceLoadOptions loadOptions, params Expression<Func<T, object>>[] includes)
         {
             var loadResult = DataSourceLoader.Load(_Repository.GetEntities(includes), loadOptions);
-            loadResult.data = mapper.Map<IEnumerable<TDto>>(loadResult.data.Cast<T>().ToList());
-            return loadResult;
+            if (loadResult.data.OfType<T>().Any())
+            {
+                loadResult.data = mapper.Map<List<TDto>>(loadResult.data.Cast<T>().ToList());
+            }
+            UIResponse response = mapper.Map<UIResponse>(loadResult);
+            return response;
         }
 
         public async Task<TDto> GetEntity(int Id)

@@ -14,6 +14,6 @@ namespace InventoryManagement.Application.Services.ProductService
     {
         Task<UIResponse> AddNewProducts(string values);
         Task<UIResponse> IncreaseProductCount(int ProductId, int Count);
-        LoadResult GetProducts(DataSourceLoadOptions loadOptions);
+        UIResponse GetProducts(DataSourceLoadOptions loadOptions);
     }
 }
