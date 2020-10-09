@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace InventoryManagement.Models
@@ -8,6 +9,7 @@ namespace InventoryManagement.Models
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Total { get; set; }
         public int UserId { get; set; }
         public User User { get; set; }

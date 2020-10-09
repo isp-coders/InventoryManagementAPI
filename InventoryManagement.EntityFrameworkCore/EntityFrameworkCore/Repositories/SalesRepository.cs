@@ -18,7 +18,7 @@ namespace InventoryManagement.Repositories
 
         public IQueryable<SalesDetails> GetSaleDetailsWithSubProperties()
         {
-            return _context.Sales.Include(inc => inc.User).Include(inc => inc.Branch).Include(th => th.SaleDetailsAndProducts).ThenInclude(th => th.Product).Include(th => th.SalePaymentMethods).ThenInclude(th => th.PaymentMethod).AsQueryable();
+            return _context.Sales.Include(inc => inc.User).Include(inc => inc.Branch).Include(th => th.SaleDetailsAndProducts).ThenInclude(th => th.Product).ThenInclude(inc => inc.Color).Include(th => th.SalePaymentMethods).ThenInclude(th => th.PaymentMethod).AsQueryable();
         }
     }
 }

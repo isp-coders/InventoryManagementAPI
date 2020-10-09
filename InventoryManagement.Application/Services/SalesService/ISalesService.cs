@@ -13,7 +13,7 @@ namespace InventoryManagement.Application.Services.SalesService
 {
     public interface ISalesService : IService<SalesDetails, SalesDetailsDto>
     {
-        ProductViewDto GetProductDetails(string ProductFullCode);
+        ProductViewDto GetProductDetails(string ProductBarcode);
         Task SellProducts(ProductSellingDto productSellingDto);
         UIResponse GetSelledProductsByUserId(int UserId, DataSourceLoadOptions loadOptions);
     }

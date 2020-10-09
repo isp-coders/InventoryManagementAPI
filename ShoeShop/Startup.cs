@@ -32,6 +32,7 @@ using InventoryManagement.Interface.Devextreme.Aggreagators;
 using InventoryManagement.Application.Services.RolePermessionsService;
 using InventoryManagement.Application.Services.ProductTypeService;
 using InventoryManagement.Application.Services.ProductPropertyService;
+using Newtonsoft.Json;
 
 namespace InventoryManagement
 {
@@ -76,7 +77,7 @@ namespace InventoryManagement
 
 
 
-            services.AddControllersWithViews();
+            //services.AddControllersWithViews();
             services.Configure<TokenSettings>(Configuration.GetSection("TokenSettings"));
             services.AddDbContext<InventoryManagementDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ShopShoeDB")));
             ConfigureIoC(services);
@@ -92,7 +93,7 @@ namespace InventoryManagement
             services.AddControllers().AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling =
-            Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            ReferenceLoopHandling.Ignore;
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
             });
         }

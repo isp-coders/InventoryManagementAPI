@@ -26,11 +26,11 @@ namespace InventoryManagement.Controllers
             this._mapper = _mapper;
         }
 
-        [Route("GetProductDetails/{ProductFullCode}")]
+        [Route("GetProductDetails/{ProductBarcode}")]
         [HttpGet]
-        public UIResponse GetProductDetails(string ProductFullCode)
+        public UIResponse GetProductDetails(string ProductBarcode)
         {
-            var result = _SalesService.GetProductDetails(ProductFullCode);
+            var result = _SalesService.GetProductDetails(ProductBarcode);
 
             UIResponse response = new UIResponse();
             if (result is null)
