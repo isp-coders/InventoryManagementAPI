@@ -4,14 +4,16 @@ using InventoryManagement.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace InventoryManagement.Migrations
 {
     [DbContext(typeof(InventoryManagementDbContext))]
-    partial class InventoryManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20201001043339_Translate Property To ProductProperty")]
+    partial class TranslatePropertyToProductProperty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,28 +28,13 @@ namespace InventoryManagement.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("DataField")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EditorType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FormItemEditorOptions")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("GridColumnConf")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("GridColumnEditorOptions")
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Translate")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Type")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Validation")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -167,28 +154,22 @@ namespace InventoryManagement.Migrations
                     b.Property<int?>("BranchId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ColorId")
+                    b.Property<int>("ColorId")
                         .HasColumnType("int");
 
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ExpirationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Gender")
-                        .HasColumnType("int");
+                    b.Property<bool>("Gender")
+                        .HasColumnType("bit");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("ProductBarcode")
+                    b.Property<string>("ProductCode")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProductCode")
+                    b.Property<string>("ProductFullCode")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProductName")
@@ -449,7 +430,8 @@ namespace InventoryManagement.Migrations
                     b.HasOne("InventoryManagement.Models.Color", "Color")
                         .WithMany("Products")
                         .HasForeignKey("ColorId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("InventoryManagement.Core.Models.ProductType", "ProductType")
                         .WithMany("Products")

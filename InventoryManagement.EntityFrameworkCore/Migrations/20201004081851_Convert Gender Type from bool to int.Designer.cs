@@ -4,14 +4,16 @@ using InventoryManagement.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace InventoryManagement.Migrations
 {
     [DbContext(typeof(InventoryManagementDbContext))]
-    partial class InventoryManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20201004081851_Convert Gender Type from bool to int")]
+    partial class ConvertGenderTypefrombooltoint
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,9 +37,6 @@ namespace InventoryManagement.Migrations
                     b.Property<string>("FormItemEditorOptions")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("GridColumnConf")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("GridColumnEditorOptions")
                         .HasColumnType("nvarchar(max)");
 
@@ -49,6 +48,9 @@ namespace InventoryManagement.Migrations
 
                     b.Property<string>("Validation")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("ValidationConf")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
