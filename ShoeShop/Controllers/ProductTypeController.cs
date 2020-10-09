@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Sample;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace InventoryManagement.Interface.Controllers
@@ -24,7 +25,7 @@ namespace InventoryManagement.Interface.Controllers
         [HttpGet("Get")]
         public ActionResult GetProductTypes(DataSourceLoadOptions loadOptions)
         {
-            var result = _productTypeService.GetEntities(loadOptions);
+            var result = _productTypeService.GetEntities(loadOptions, inc => inc.ProductTypeAndProperties, inc => inc.ProductTypeAndProperties.Select(se => se.ProductProperty));
             return Ok(result);
         }
 
@@ -59,5 +60,16 @@ namespace InventoryManagement.Interface.Controllers
 
             return Ok(new UIResponse() { Entity = productType });
         }
+
+        [HttpPost("AddPropertiesToProductType")]
+        public async Task<ActionResult<UIResponse>> AddPropertiesToProductType([FromForm] string values)
+        {
+            AddPropertiesToProductTypeDto addPropertiesToProductTypeDto = new AddPropertiesToProductTypeDto();
+            JsonConvert.PopulateObject(values, addPropertiesToProductTypeDto);
+            UIResponse response = await _productTypeService.AddPropertiesToProductType(addPropertiesToProductTypeDto);
+            return Ok(response);
+        }
+
+
     }
 }

@@ -31,10 +31,10 @@ namespace InventoryManagement.Application.Services.SalesService
             _mapper = mapper;
         }
 
-        public ProductViewDto GetProductDetails(string ProductFullCode)
+        public ProductViewDto GetProductDetails(string ProductBarcode)
         {
             //Expression<Func<TEntity, TProperty>> navigationPropertyPath 
-            return _mapper.ProjectTo<ProductViewDto>(_ProductRepository.GetEntities()).FirstOrDefault(si => si.ProductFullCode == ProductFullCode);
+            return _mapper.Map<ProductViewDto>(_ProductRepository.GetEntities().FirstOrDefault(si => si.ProductBarcode == ProductBarcode));
         }
 
         public UIResponse GetSelledProductsByUserId(int UserId, DataSourceLoadOptions loadOptions)

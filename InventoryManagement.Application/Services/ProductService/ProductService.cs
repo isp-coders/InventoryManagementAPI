@@ -33,14 +33,24 @@ namespace InventoryManagement.Application.Services.ProductService
             List<Product> Products = new List<Product>();
             JsonConvert.PopulateObject(values, Products);
 
-            HashSet<string> ProductFullCodeList = new HashSet<string>(_ProductRepository.GetQuery().Select(se => se.ProductFullCode));
-
+            CheckBarcodeAndAddIt(Products);
 
             AddProductsDto addProductsDto = new AddProductsDto();
             List<Product> AddedNewProducts = new List<Product>();
+            CheckExistedProductCodes(Products, addProductsDto, AddedNewProducts);
+
+            if (AddedNewProducts.Count > 0)
+                await _ProductRepository.PostEntities(AddedNewProducts);
+            return new UIResponse { Entity = addProductsDto, StatusCode = HttpStatusCode.OK, IsError = addProductsDto.ExistedProducts.Count > 0, Message = "EXCEPTIONS.EXISTING_PRODUCTS" };
+        }
+
+        private void CheckExistedProductCodes(List<Product> Products, AddProductsDto addProductsDto, List<Product> AddedNewProducts)
+        {
+            HashSet<string> ProductCodeList = new HashSet<string>(_ProductRepository.GetQuery().Select(se => se.ProductCode));
+
             Products.ForEach(product =>
             {
-                var isExists = ProductFullCodeList.Contains(product.ProductFullCode);
+                var isExists = ProductCodeList.Contains(product.ProductCode);
                 var productDto = _mapper.Map<ProductDto>(product);
                 if (isExists)
                 {
@@ -52,10 +62,34 @@ namespace InventoryManagement.Application.Services.ProductService
                     addProductsDto.AddedProducts.Add(productDto);
                 }
             });
+        }
 
-            if (AddedNewProducts.Count > 0)
-                await _ProductRepository.PostEntities(AddedNewProducts);
-            return new UIResponse { Entity = addProductsDto, StatusCode = HttpStatusCode.OK, IsError = addProductsDto.ExistedProducts.Count > 0, Message = "EXCEPTIONS.EXISTING_PRODUCTS" };
+        private void CheckBarcodeAndAddIt(List<Product> Products)
+        {
+            HashSet<string> ProductFullCodeList = new HashSet<string>(_ProductRepository.GetQuery().Select(se => se.ProductBarcode));
+            foreach (var item in Products)
+            {
+                if (item.ProductBarcode == null)
+                {
+                    string newBarcode = GenerateBarcode();
+                    while (ProductFullCodeList.Any(an => an == newBarcode))
+                    {
+                        newBarcode = GenerateBarcode();
+                    }
+                    item.ProductBarcode = newBarcode;
+                    ProductFullCodeList.Add(newBarcode);
+                }
+            }
+        }
+
+        private string GenerateBarcode()
+        {
+            var random = new Random();
+            string s = string.Empty;
+            for (int i = 0; i < 12; i++)
+                s = String.Concat(s, random.Next(10).ToString());
+
+            return s;
         }
 
         public UIResponse GetProducts(DataSourceLoadOptions loadOptions)
