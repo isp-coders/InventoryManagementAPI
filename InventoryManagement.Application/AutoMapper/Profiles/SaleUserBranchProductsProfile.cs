@@ -18,7 +18,9 @@ namespace InventoryManagement.Application.AutoMapper.Profiles
                 .ForMember(q => q.Total, opt => opt.MapFrom(s => s.Total))
                 .ForMember(q => q.User, opt => opt.MapFrom(s => s.User))
                 .ForMember(q => q.SoledProductDetails, opt => opt.MapFrom(s => s.SaleDetailsAndProducts))
-                .ForMember(q => q.PaymentDetails, opt => opt.MapFrom(s => s.SalePaymentMethods));
+                .ForMember(q => q.PaymentDetails, opt => opt.MapFrom(s => s.SalePaymentMethods))
+                .ForMember(q => q.RefundAmount, opt => opt.MapFrom(s => s.RefundAmount))
+                ;
         }
     }
 }

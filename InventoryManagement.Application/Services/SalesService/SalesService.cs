@@ -2,6 +2,7 @@
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Data.ResponseModel;
 using InventoryManagement.Application.Services.SalesService.DTOs;
+using InventoryManagement.Core.Enums;
 using InventoryManagement.Core.IRepositories;
 using InventoryManagement.DTOs;
 using InventoryManagement.Models;
@@ -22,19 +23,25 @@ namespace InventoryManagement.Application.Services.SalesService
         private readonly ISalesRepository _SalesRepository;
         private readonly IRepository<Product> _ProductRepository;
         private readonly IRepository<CustomerInfo> _CustomerRepository;
+        private readonly IRepository<SalePaymentMethod> _SalePaymentMethod;
+        private readonly IRepository<SaleDetailsAndProduct> _SaleDetailsAndProduct;
         private readonly IMapper _mapper;
-        public SalesService(IRepository<CustomerInfo> _CustomerRepository, ISalesRepository SalesRepository, IRepository<Product> ProductRepository, IMapper mapper) : base(SalesRepository, mapper)
+        private readonly IUnitOfWork unitOfWork;
+        public SalesService(IRepository<CustomerInfo> _CustomerRepository, ISalesRepository SalesRepository, IRepository<Product> ProductRepository, IRepository<SalePaymentMethod> _SalePaymentMethod, IRepository<SaleDetailsAndProduct> _SaleDetailsAndProduct, IUnitOfWork unitOfWork, IMapper mapper) : base(SalesRepository, mapper)
         {
             _SalesRepository = SalesRepository;
             _ProductRepository = ProductRepository;
             this._CustomerRepository = _CustomerRepository;
+            this._SalePaymentMethod = _SalePaymentMethod;
+            this._SaleDetailsAndProduct = _SaleDetailsAndProduct;
+            this.unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
         public ProductViewDto GetProductDetails(string ProductBarcode)
         {
             //Expression<Func<TEntity, TProperty>> navigationPropertyPath 
-            return _mapper.Map<ProductViewDto>(_ProductRepository.GetEntities().FirstOrDefault(si => si.ProductBarcode == ProductBarcode));
+            return _mapper.Map<ProductViewDto>(_ProductRepository.GetEntities(inc => inc.Branch, inc => inc.Color).FirstOrDefault(si => si.ProductBarcode == ProductBarcode));
         }
 
         public UIResponse GetSelledProductsByUserId(int UserId, DataSourceLoadOptions loadOptions)
@@ -49,63 +56,191 @@ namespace InventoryManagement.Application.Services.SalesService
             return response;
         }
 
+        public UIResponse GetCustomerPurchasedProducts(int CustomerInfoId, DataSourceLoadOptions loadOptions)
+        {
+            var loadResult = DataSourceLoader.Load(_SalePaymentMethod.GetEntities(inc => inc.Sale, inc => inc.Sale.SaleDetailsAndProducts.Select(se => se.Product).Select(se => se.Branch), inc => inc.Sale.SaleDetailsAndProducts.Select(se => se.Product).Select(se => se.Color), inc => inc.CustomerInfo, inc => inc.PaymentMethod).Where(wh => wh.CustomerInfoId == CustomerInfoId), loadOptions);
+            if (loadResult.data.OfType<SalePaymentMethod>().Any())
+            {
+                loadResult.data = _mapper.Map<List<SalePaymentMethodDto>>(loadResult.data.Cast<SalePaymentMethod>().ToList());
+            }
+            UIResponse response = _mapper.Map<UIResponse>(loadResult);
+            return response;
+        }
+
         public async Task SellProducts(ProductSellingDto productSellingDto)
         {
-            // Sale is the main object that connects all other classes
-            SalesDetails sale = new SalesDetails { Date = DateTime.Now, Total = productSellingDto.Total };
-
-            sale.BranchId = productSellingDto.BranchId;
-            sale.UserId = productSellingDto.UserId;
-
-            #region Unusable Code
-            //The Following Code is used when we want to add new records.
-            //// Sale-Branch Relationship / One-to-Many
-            //Branch branch = productSellingDto.Branch;
-            //sale.Branch = branch;
-
-            //// Sale-User Relationship / One-to-Many
-            //User user = _context.Users.Find(productSellingDto.UserId);
-            //sale.User = user; 
-            #endregion
-
-
-            // Sale-Product Relationship / Many-to-Many
-            List<int> productIds = productSellingDto.ProductIds;
-            List<SaleDetailsAndProduct> saleProducts = new List<SaleDetailsAndProduct>();
-            // We grouped by Id because we want the same products to be saved as one product with their count.
-            productIds.GroupBy(Id => Id).Select(se => new { Id = se.Key, Count = se.Count() }).ToList().ForEach(fe =>
+            try
             {
+                unitOfWork.BeginTransaction();
+                // Sale is the main object that connects all other classes
+                SalesDetails sale = new SalesDetails { Date = DateTime.Now, Total = productSellingDto.Total, BranchId = productSellingDto.BranchId, UserId = productSellingDto.UserId };
 
+
+                // Sale-Product Relationship / Many-to-Many
+                AddSaleDetails(productSellingDto, sale);
+
+
+                //Create or Use existing Customer Info
+                CustomerInfo customerInfo = await CreateOrUsingExistingCustomerInfo(productSellingDto);
+
+                SavePaymentMethods(productSellingDto, sale, customerInfo);
+
+                await _SalesRepository.PostEntity(sale);
+
+                await _SalesRepository.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                unitOfWork.RollBackTransaction();
+                throw e;
+            }
+            finally
+            {
+                unitOfWork.CommitTransaction();
+            }
+
+
+        }
+
+        public async Task<UIResponse> RefundProducts(List<SaleDetailsAndProductDto> saleDetailsAndProductDtos)
+        {
+            try
+            {
+                unitOfWork.BeginTransaction();
+                foreach (var saleDetailsAndProduct in saleDetailsAndProductDtos)
+                {
+                    int ProductId = saleDetailsAndProduct.ProductId;
+
+                    var SaleDetails = _SalesRepository.GetQuery(gq => gq.Id == saleDetailsAndProduct.SaleId).First();
+                    SaleDetails.RefundAmount += saleDetailsAndProduct.Price;
+                    _SalesRepository.PutEntity(SaleDetails);
+
+                    var SaleDetailsAndProduct = _SaleDetailsAndProduct.GetEntities(ge => ge.Product).First(gq => gq.SaleId == saleDetailsAndProduct.SaleId && gq.ProductId == ProductId);
+                    SaleDetailsAndProduct.Operations = SaleOperation.RETURNED;
+                    SaleDetailsAndProduct.Product.Count += 1;
+
+                    _SaleDetailsAndProduct.PutEntity(SaleDetailsAndProduct);
+                    await _SaleDetailsAndProduct.SaveChangesAsync();
+                }
+
+                return new UIResponse { };
+            }
+            catch (Exception e)
+            {
+                unitOfWork.RollBackTransaction();
+                throw e;
+            }
+            finally
+            {
+                unitOfWork.CommitTransaction();
+            }
+        }
+
+        public async Task<UIResponse> ChangeProducts(ChangeProductDto changeProductDto)
+        {
+            try
+            {
+                unitOfWork.BeginTransaction();
+                decimal total = 0;
+                if (changeProductDto.productsToChangeWith.Total > 0)
+                    total = changeProductDto.productsToChangeWith.Total;
+                else
+                    total = 0;
+                SalesDetails sale = new SalesDetails { Date = DateTime.Now, Total = total, BranchId = changeProductDto.productsToChangeWith.BranchId, UserId = changeProductDto.productsToChangeWith.UserId };
+
+                AddSaleDetails(changeProductDto.productsToChangeWith, sale);
+
+
+                //Create or Use existing Customer Info
+                CustomerInfo customerInfo = await CreateOrUsingExistingCustomerInfo(changeProductDto.productsToChangeWith);
+
+                SavePaymentMethods(changeProductDto.productsToChangeWith, sale, customerInfo);
+
+                await _SalesRepository.PostEntity(sale);
+
+
+
+                if (changeProductDto.productsToChangeWith.Total < 0)
+                {
+                    var SaleDetails = _SalesRepository.GetQuery(gq => gq.Id == changeProductDto.purchasedProductsToChange[0].SaleId).First();
+                    SaleDetails.RefundAmount += Math.Abs(changeProductDto.productsToChangeWith.Total);
+                    _SalesRepository.PutEntity(SaleDetails);
+                }
+
+
+                foreach (var saleDetailsAndProduct in changeProductDto.purchasedProductsToChange)
+                {
+                    int ProductId = saleDetailsAndProduct.ProductId;
+
+
+
+                    var SaleDetailsAndProduct = _SaleDetailsAndProduct.GetEntities(ge => ge.Product).First(gq => gq.SaleId == saleDetailsAndProduct.SaleId && gq.ProductId == ProductId);
+                    SaleDetailsAndProduct.Operations = SaleOperation.CHANGED;
+                    SaleDetailsAndProduct.Product.Count += 1;
+                    _SaleDetailsAndProduct.PutEntity(SaleDetailsAndProduct);
+                }
+
+                await _SaleDetailsAndProduct.SaveChangesAsync();
+
+                return new UIResponse { };
+            }
+            catch (Exception e)
+            {
+                unitOfWork.RollBackTransaction();
+                throw e;
+            }
+            finally
+            {
+                unitOfWork.CommitTransaction();
+            }
+        }
+
+        private void AddSaleDetails(ProductSellingDto productSellingDto, SalesDetails sale)
+        {
+            ProductIdsAndPrices productsPriceAndIds = productSellingDto.ProductIdsAndPrices;
+            List<SaleDetailsAndProduct> saleProducts = new List<SaleDetailsAndProduct>();
+
+            foreach (var (Id, index) in productsPriceAndIds.ProductIds.Select((v, i) => (v, i)))
+            {
                 // Substract the soled products' count from the product table
-                Product entity = _ProductRepository.FindEntity(fe.Id).Result;
-                if (entity.Count >= 0)
+                Product entity = _ProductRepository.FindEntity(Id).Result;
+                if (entity.Count > 0)
                 {
 
-                    entity.Count -= fe.Count;
-                    saleProducts.Add(new SaleDetailsAndProduct { Sale = sale, ProductId = fe.Id, ProductCount = fe.Count });
+                    entity.Count -= 1;
+                    saleProducts.Add(new SaleDetailsAndProduct { Sale = sale, ProductId = Id, ProductCount = 1, Price = productsPriceAndIds.SellingPrices[index] });
                 }
                 else
                 {
-                    //throw new ApiException(new UIResponse("EXCEPTIONS.NO_ENOUGHT_COUNT", HttpStatusCode.BadRequest));
                     throw new InventoryManagementException("EXCEPTIONS.NO_ENOUGHT_COUNT", HttpStatusCode.BadRequest);
                 }
+            }
+            if (saleProducts.Count > 0)
+                sale.SaleDetailsAndProducts.AddRange(saleProducts);
+        }
 
-            });
-            sale.SaleDetailsAndProducts.AddRange(saleProducts);
-
-
-            // Create or Use existing Customer Info
+        private async Task<CustomerInfo> CreateOrUsingExistingCustomerInfo(ProductSellingDto productSellingDto)
+        {
             CustomerInfo customerInfo = new CustomerInfo();
             if (productSellingDto.CustomerInfoId == 0)
             {
-                customerInfo.CustomerName = productSellingDto.CustomerName;
-                customerInfo.CustomerPhone = productSellingDto.CustomerPhone;
+                if (!(String.IsNullOrEmpty(productSellingDto.CustomerName) && String.IsNullOrEmpty(productSellingDto.CustomerPhone)))
+                {
+                    customerInfo.CustomerName = productSellingDto.CustomerName;
+                    customerInfo.CustomerPhone = productSellingDto.CustomerPhone;
+                }
+
             }
             else
             {
                 customerInfo = await _CustomerRepository.FindEntity(productSellingDto.CustomerInfoId);
             }
 
+            return customerInfo;
+        }
+
+        private static void SavePaymentMethods(ProductSellingDto productSellingDto, SalesDetails sale, CustomerInfo customerInfo)
+        {
             // Sale-PaymentMethod Relationship / Many-to-Many
             List<int> paymentMethodIds = productSellingDto.PaymentMethodIds;
             List<SalePaymentMethod> salePaymentMethods = new List<SalePaymentMethod>();
@@ -116,13 +251,7 @@ namespace InventoryManagement.Application.Services.SalesService
             });
 
 
-
-
             sale.SalePaymentMethods.AddRange(salePaymentMethods);
-
-
-            await _SalesRepository.PostEntity(sale);
-
         }
     }
 }

@@ -10,6 +10,8 @@ using System.Net;
 using AutoMapper;
 using InventoryManagement.Utils.Exceptions;
 using Sample;
+using InventoryManagement.Application.Services.SalesService.DTOs;
+using System.Collections.Generic;
 
 namespace InventoryManagement.Controllers
 {
@@ -64,5 +66,34 @@ namespace InventoryManagement.Controllers
             var result = _SalesService.GetSelledProductsByUserId(Id, loadOptions);
             return result;
         }
+
+        [Route("GetCustomerPurchasedProducts")]
+        [HttpGet]
+        public UIResponse GetCustomerPurchasedProducts(int CustomerInfoId, DataSourceLoadOptions loadOptions)
+        {
+            var result = _SalesService.GetCustomerPurchasedProducts(CustomerInfoId, loadOptions);
+            return result;
+        }
+
+        [Route("RefundProducts")]
+        [HttpPost]
+        public async Task<UIResponse> RefundProducts([FromForm] string values)
+        {
+            List<SaleDetailsAndProductDto> saleDetailsAndProductDtos = new List<SaleDetailsAndProductDto>();
+            JsonConvert.PopulateObject(values, saleDetailsAndProductDtos);
+            var result = await _SalesService.RefundProducts(saleDetailsAndProductDtos);
+            return result;
+        }
+
+        [Route("ChangeProducts")]
+        [HttpPost]
+        public async Task<UIResponse> ChangeProducts([FromForm] string values)
+        {
+            ChangeProductDto ChangeProductDto = new ChangeProductDto();
+            JsonConvert.PopulateObject(values, ChangeProductDto);
+            var result = await _SalesService.ChangeProducts(ChangeProductDto);
+            return result;
+        }
+
     }
 }

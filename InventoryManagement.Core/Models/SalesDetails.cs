@@ -11,6 +11,8 @@ namespace InventoryManagement.Models
         public DateTime Date { get; set; }
         [Column(TypeName = "decimal(18,2)")]
         public decimal Total { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal RefundAmount { get; set; }
         public int UserId { get; set; }
         public User User { get; set; }
 
@@ -18,6 +20,7 @@ namespace InventoryManagement.Models
         public Branch Branch { get; set; }
         public List<SaleDetailsAndProduct> SaleDetailsAndProducts { get; set; }
         public List<SalePaymentMethod> SalePaymentMethods { get; set; }
+
         public SalesDetails()
         {
             SaleDetailsAndProducts = new List<SaleDetailsAndProduct>();
