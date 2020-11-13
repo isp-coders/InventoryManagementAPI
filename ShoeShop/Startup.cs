@@ -33,6 +33,7 @@ using InventoryManagement.Application.Services.RolePermessionsService;
 using InventoryManagement.Application.Services.ProductTypeService;
 using InventoryManagement.Application.Services.ProductPropertyService;
 using Newtonsoft.Json;
+using InventoryManagement.EntityFrameworkCore.EntityFrameworkCore;
 
 namespace InventoryManagement
 {
@@ -100,6 +101,8 @@ namespace InventoryManagement
 
         private static void ConfigureIoC(IServiceCollection services)
         {
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+
 
             services.AddTransient<IColorsRepository, ColorsRepository>();
             services.AddTransient<IBranchesRepository, BranchesRepository>();

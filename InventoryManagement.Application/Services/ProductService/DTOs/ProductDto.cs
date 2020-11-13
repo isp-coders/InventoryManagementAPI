@@ -27,7 +27,7 @@ namespace InventoryManagement.Application.Services.ProductService.DTOs
 
         public int? BranchId { get; set; }
         public BranchDto Branch { get; set; }
-
+        [Newtonsoft.Json.JsonIgnore]
         public List<SaleDetailsAndProductDto> SaleDetailsAndProducts { get; set; }
     }
 }

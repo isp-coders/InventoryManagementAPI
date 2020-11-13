@@ -35,13 +35,14 @@ namespace InventoryManagement.Application.Services.ProductService
 
             CheckBarcodeAndAddIt(Products);
 
-            AddProductsDto addProductsDto = new AddProductsDto();
-            List<Product> AddedNewProducts = new List<Product>();
-            CheckExistedProductCodes(Products, addProductsDto, AddedNewProducts);
+            //AddProductsDto addProductsDto = new AddProductsDto();
+            //List<Product> AddedNewProducts = new List<Product>();
+            //CheckExistedProductCodes(Products, addProductsDto, AddedNewProducts);
 
-            if (AddedNewProducts.Count > 0)
-                await _ProductRepository.PostEntities(AddedNewProducts);
-            return new UIResponse { Entity = addProductsDto, StatusCode = HttpStatusCode.OK, IsError = addProductsDto.ExistedProducts.Count > 0, Message = "EXCEPTIONS.EXISTING_PRODUCTS" };
+            //if (AddedNewProducts.Count > 0)
+            await _ProductRepository.PostEntities(Products);
+            await _ProductRepository.SaveChangesAsync();
+            return new UIResponse { data = Products, StatusCode = HttpStatusCode.OK };
         }
 
         private void CheckExistedProductCodes(List<Product> Products, AddProductsDto addProductsDto, List<Product> AddedNewProducts)
@@ -115,7 +116,8 @@ namespace InventoryManagement.Application.Services.ProductService
                     product.Count = 0;
                 }
             }
-            await _ProductRepository.PutEntity(product);
+            _ProductRepository.PutEntity(product);
+            await _ProductRepository.SaveChangesAsync();
 
             return new UIResponse { Entity = _mapper.Map<ProductDto>(product), StatusCode = HttpStatusCode.OK, IsError = false };
 

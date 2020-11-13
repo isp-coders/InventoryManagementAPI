@@ -27,7 +27,9 @@ namespace InventoryManagement.Application.Services
 
         public async Task<TDto> DeleteEntity(int id)
         {
-            return mapper.Map<TDto>(await _Repository.DeleteEntity(id));
+            var DeleteEntity = await _Repository.DeleteEntity(id);
+            await _Repository.SaveChangesAsync();
+            return mapper.Map<TDto>(DeleteEntity);
         }
 
         public UIResponse GetEntities(DataSourceLoadOptions loadOptions, params Expression<Func<T, object>>[] includes)
@@ -49,21 +51,25 @@ namespace InventoryManagement.Application.Services
         public async Task<TDto> PostEntity(TDto EntityDto)
         {
             T entity = mapper.Map<T>(EntityDto);
-            return mapper.Map<TDto>(await _Repository.PostEntity(entity));
+            var postedEntity = await _Repository.PostEntity(entity);
+            await _Repository.SaveChangesAsync();
+            return mapper.Map<TDto>(postedEntity);
         }
 
         public async Task<TDto[]> PostEntities(string values)
         {
             List<T> Entities = new List<T>();
             JsonConvert.PopulateObject(values, Entities);
-            //T[] EntitiesDto = mapper.Map<T[]>(entitiesDto);
-            return mapper.Map<TDto[]>(await _Repository.PostEntities(Entities));
+            var postedEntities = await _Repository.PostEntities(Entities);
+            await _Repository.SaveChangesAsync();
+            return mapper.Map<TDto[]>(postedEntities);
         }
 
         public async Task<TDto> PutEntity(int id, string values)
         {
-            //T entity = mapper.Map<T>(entityDto);
-            return mapper.Map<TDto>(await _Repository.PutEntity(id, values));
+            var puttedEntity = await _Repository.PutEntity(id, values);
+            await _Repository.SaveChangesAsync();
+            return mapper.Map<TDto>(puttedEntity);
         }
 
         public async Task<TDto> FindEntity(int Id)
