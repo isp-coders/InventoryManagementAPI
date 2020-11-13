@@ -9,8 +9,8 @@
 *.user
 *.userosscache
 *.sln.docstates
-/InventoryManagement.Reporting/appsettings.Development.json
-/ShoeShop/appsettings.Development.json
+/InventoryManagement.Reporting/appsettings.json
+/ShoeShop/appsettings.json
 
 
 # User-specific files (MonoDevelop/Xamarin Studio)
