@@ -41,6 +41,12 @@
     <Compile Remove="Migrations\20200928043608_Add Product Properties Table.Designer.cs" />
     <Compile Remove="Migrations\20200928044052_Changing Name from ProductProperties to ProductProperty.cs" />
     <Compile Remove="Migrations\20200928044052_Changing Name from ProductProperties to ProductProperty.Designer.cs" />
+    <Compile Remove="Migrations\20201120055855_string lerin uzunlugu belirlendi.cs" />
+    <Compile Remove="Migrations\20201120055855_string lerin uzunlugu belirlendi.Designer.cs" />
+    <Compile Remove="Migrations\20201120060131_string lerin uzunlugu belirlendi.cs" />
+    <Compile Remove="Migrations\20201120060131_string lerin uzunlugu belirlendi.Designer.cs" />
+    <Compile Remove="Migrations\20201120060229_string lerin uzunlugu belirlendi.cs" />
+    <Compile Remove="Migrations\20201120060229_string lerin uzunlugu belirlendi.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
