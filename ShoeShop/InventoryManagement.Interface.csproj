@@ -5,6 +5,12 @@
     <UserSecretsId>541dcb0e-9164-4aed-bae8-72431e609f4f</UserSecretsId>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Optimize>false</Optimize>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="Repositories\**" />
     <Content Remove="Repositories\**" />
