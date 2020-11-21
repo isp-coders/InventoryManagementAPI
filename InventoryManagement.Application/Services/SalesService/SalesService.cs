@@ -88,15 +88,13 @@ namespace InventoryManagement.Application.Services.SalesService
                 await _SalesRepository.PostEntity(sale);
 
                 await _SalesRepository.SaveChangesAsync();
+
+                unitOfWork.CommitTransaction();
             }
             catch (Exception e)
             {
                 unitOfWork.RollBackTransaction();
                 throw e;
-            }
-            finally
-            {
-                unitOfWork.CommitTransaction();
             }
 
 
@@ -120,8 +118,10 @@ namespace InventoryManagement.Application.Services.SalesService
                     SaleDetailsAndProduct.Product.Count += 1;
 
                     _SaleDetailsAndProduct.PutEntity(SaleDetailsAndProduct);
-                    await _SaleDetailsAndProduct.SaveChangesAsync();
+                    
                 }
+                await _SaleDetailsAndProduct.SaveChangesAsync();
+                unitOfWork.CommitTransaction();
 
                 return new UIResponse { };
             }
@@ -129,10 +129,6 @@ namespace InventoryManagement.Application.Services.SalesService
             {
                 unitOfWork.RollBackTransaction();
                 throw e;
-            }
-            finally
-            {
-                unitOfWork.CommitTransaction();
             }
         }
 
@@ -181,17 +177,13 @@ namespace InventoryManagement.Application.Services.SalesService
                 }
 
                 await _SaleDetailsAndProduct.SaveChangesAsync();
-
+                unitOfWork.CommitTransaction();
                 return new UIResponse { };
             }
             catch (Exception e)
             {
                 unitOfWork.RollBackTransaction();
                 throw e;
-            }
-            finally
-            {
-                unitOfWork.CommitTransaction();
             }
         }
 

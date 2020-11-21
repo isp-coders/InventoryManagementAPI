@@ -41,21 +41,20 @@ namespace InventoryManagement.Application.Services.ProductTypeService
 
                     await _ProductTypeAndPropertyRepository.PostEntities(productTypeAndProperties);
                     await _ProductTypeAndPropertyRepository.SaveChangesAsync();
+                    unitOfWork.CommitTransaction();
                     return new UIResponse();
                 }
                 else
                 {
                     return new UIResponse() { IsError = true };
                 }
+
+                
             }
             catch (Exception e)
             {
                 unitOfWork.RollBackTransaction();
                 throw e;
-            }
-            finally
-            {
-                unitOfWork.CommitTransaction();
             }
 
         }
