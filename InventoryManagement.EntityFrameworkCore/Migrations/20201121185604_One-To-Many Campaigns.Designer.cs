@@ -4,14 +4,16 @@ using InventoryManagement.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace InventoryManagement.Migrations
 {
     [DbContext(typeof(InventoryManagementDbContext))]
-    partial class InventoryManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20201121185604_One-To-Many Campaigns")]
+    partial class OneToManyCampaigns
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -356,9 +358,6 @@ namespace InventoryManagement.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CampaignId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Operations")
                         .HasColumnType("int");
 
@@ -369,8 +368,6 @@ namespace InventoryManagement.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("SaleId", "ProductId");
-
-                    b.HasIndex("CampaignId");
 
                     b.HasIndex("ProductId");
 
@@ -529,7 +526,7 @@ namespace InventoryManagement.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("InventoryManagement.Core.Models.Campaign", "Campaign")
-                        .WithMany("Products")
+                        .WithMany()
                         .HasForeignKey("CampaignId")
                         .OnDelete(DeleteBehavior.Restrict);
 
@@ -574,11 +571,6 @@ namespace InventoryManagement.Migrations
 
             modelBuilder.Entity("InventoryManagement.Models.SaleDetailsAndProduct", b =>
                 {
-                    b.HasOne("InventoryManagement.Core.Models.Campaign", "Campaign")
-                        .WithMany("saleDetailsAndProducts")
-                        .HasForeignKey("CampaignId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("InventoryManagement.Models.Product", "Product")
                         .WithMany("SaleDetailsAndProducts")
                         .HasForeignKey("ProductId")
@@ -590,8 +582,6 @@ namespace InventoryManagement.Migrations
                         .HasForeignKey("SaleId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Campaign");
 
                     b.Navigation("Product");
 
@@ -660,13 +650,6 @@ namespace InventoryManagement.Migrations
                     b.Navigation("Branch");
 
                     b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("InventoryManagement.Core.Models.Campaign", b =>
-                {
-                    b.Navigation("Products");
-
-                    b.Navigation("saleDetailsAndProducts");
                 });
 
             modelBuilder.Entity("InventoryManagement.Core.Models.ProductProperty", b =>

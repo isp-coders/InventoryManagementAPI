@@ -40,8 +40,12 @@ namespace InventoryManagement.Application.Services.SalesService
 
         public ProductViewDto GetProductDetails(string ProductBarcode)
         {
-            //Expression<Func<TEntity, TProperty>> navigationPropertyPath 
-            return _mapper.Map<ProductViewDto>(_ProductRepository.GetEntities(inc => inc.Branch, inc => inc.Color).FirstOrDefault(si => si.ProductBarcode == ProductBarcode));
+            var result = _ProductRepository.GetQuery(null, null, "Branch,Color,Campaign").FirstOrDefault(si => si.ProductBarcode == ProductBarcode);
+            if (result.CampaignId.GetValueOrDefault(0) != 0)
+            {
+                result.SellingPrice = result.SellingPrice - (result.SellingPrice * (result.Campaign.Percent / 100m));
+            }
+            return _mapper.Map<ProductViewDto>(result);
         }
 
         public UIResponse GetSelledProductsByUserId(int UserId, DataSourceLoadOptions loadOptions)
@@ -58,7 +62,7 @@ namespace InventoryManagement.Application.Services.SalesService
 
         public UIResponse GetCustomerPurchasedProducts(int CustomerInfoId, DataSourceLoadOptions loadOptions)
         {
-            var loadResult = DataSourceLoader.Load(_SalePaymentMethod.GetEntities(inc => inc.Sale, inc => inc.Sale.SaleDetailsAndProducts.Select(se => se.Product).Select(se => se.Branch), inc => inc.Sale.SaleDetailsAndProducts.Select(se => se.Product).Select(se => se.Color), inc => inc.CustomerInfo, inc => inc.PaymentMethod).Where(wh => wh.CustomerInfoId == CustomerInfoId), loadOptions);
+            var loadResult = DataSourceLoader.Load(_SalePaymentMethod.GetQuery(null, null, "Sale.SaleDetailsAndProducts.Product.Branch,Sale.SaleDetailsAndProducts.Product.Color,CustomerInfo,PaymentMethod").Where(wh => wh.CustomerInfoId == CustomerInfoId), loadOptions);
             if (loadResult.data.OfType<SalePaymentMethod>().Any())
             {
                 loadResult.data = _mapper.Map<List<SalePaymentMethodDto>>(loadResult.data.Cast<SalePaymentMethod>().ToList());
@@ -113,12 +117,12 @@ namespace InventoryManagement.Application.Services.SalesService
                     SaleDetails.RefundAmount += saleDetailsAndProduct.Price;
                     _SalesRepository.PutEntity(SaleDetails);
 
-                    var SaleDetailsAndProduct = _SaleDetailsAndProduct.GetEntities(ge => ge.Product).First(gq => gq.SaleId == saleDetailsAndProduct.SaleId && gq.ProductId == ProductId);
+                    var SaleDetailsAndProduct = _SaleDetailsAndProduct.GetQuery(null, null, "Product").First(gq => gq.SaleId == saleDetailsAndProduct.SaleId && gq.ProductId == ProductId);
                     SaleDetailsAndProduct.Operations = SaleOperation.RETURNED;
                     SaleDetailsAndProduct.Product.Count += 1;
 
                     _SaleDetailsAndProduct.PutEntity(SaleDetailsAndProduct);
-                    
+
                 }
                 await _SaleDetailsAndProduct.SaveChangesAsync();
                 unitOfWork.CommitTransaction();
@@ -170,7 +174,7 @@ namespace InventoryManagement.Application.Services.SalesService
 
 
 
-                    var SaleDetailsAndProduct = _SaleDetailsAndProduct.GetEntities(ge => ge.Product).First(gq => gq.SaleId == saleDetailsAndProduct.SaleId && gq.ProductId == ProductId);
+                    var SaleDetailsAndProduct = _SaleDetailsAndProduct.GetQuery(null, null, "Product").First(gq => gq.SaleId == saleDetailsAndProduct.SaleId && gq.ProductId == ProductId);
                     SaleDetailsAndProduct.Operations = SaleOperation.CHANGED;
                     SaleDetailsAndProduct.Product.Count += 1;
                     _SaleDetailsAndProduct.PutEntity(SaleDetailsAndProduct);
@@ -189,10 +193,10 @@ namespace InventoryManagement.Application.Services.SalesService
 
         private void AddSaleDetails(ProductSellingDto productSellingDto, SalesDetails sale)
         {
-            ProductIdsAndPrices productsPriceAndIds = productSellingDto.ProductIdsAndPrices;
+            ProductIdsAndPrices productsPricesAndIdsAndCampaingId = productSellingDto.ProductIdsAndPricesAndCampaignIds;
             List<SaleDetailsAndProduct> saleProducts = new List<SaleDetailsAndProduct>();
 
-            foreach (var (Id, index) in productsPriceAndIds.ProductIds.Select((v, i) => (v, i)))
+            foreach (var (Id, index) in productsPricesAndIdsAndCampaingId.ProductIds.Select((v, i) => (v, i)))
             {
                 // Substract the soled products' count from the product table
                 Product entity = _ProductRepository.FindEntity(Id).Result;
@@ -200,7 +204,7 @@ namespace InventoryManagement.Application.Services.SalesService
                 {
 
                     entity.Count -= 1;
-                    saleProducts.Add(new SaleDetailsAndProduct { Sale = sale, ProductId = Id, ProductCount = 1, Price = productsPriceAndIds.SellingPrices[index] });
+                    saleProducts.Add(new SaleDetailsAndProduct { Sale = sale, ProductId = Id, ProductCount = 1, Price = productsPricesAndIdsAndCampaingId.SellingPrices[index], CampaignId = productsPricesAndIdsAndCampaingId.CampaignIds[index] });
                 }
                 else
                 {

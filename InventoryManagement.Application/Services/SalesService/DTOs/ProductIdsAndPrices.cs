@@ -8,5 +8,6 @@ namespace InventoryManagement.Application.Services.SalesService.DTOs
     {
         public List<int> ProductIds { get; set; }
         public List<decimal> SellingPrices { get; set; }
+        public List<int> CampaignIds { get; set; }
     }
 }

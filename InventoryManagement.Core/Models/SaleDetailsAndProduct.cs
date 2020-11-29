@@ -1,4 +1,5 @@
 ﻿using InventoryManagement.Core.Enums;
+using InventoryManagement.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -16,6 +17,8 @@ namespace InventoryManagement.Models
         public int ProductCount { get; set; }
         [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
+        public int? CampaignId { get; set; }
+        public Campaign Campaign { get; set; }
         public SaleOperation Operations { get; set; }
     }
 }

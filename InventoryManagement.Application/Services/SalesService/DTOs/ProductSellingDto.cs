@@ -18,7 +18,7 @@ namespace InventoryManagement.DTOs
         public string CustomerPhone { get; set; }
         public List<SalePaymentMethod> SalePaymentMethods { get; set; }
         public List<int> PaymentMethodIds { get; set; }
-        public ProductIdsAndPrices ProductIdsAndPrices { get; set; }
+        public ProductIdsAndPrices ProductIdsAndPricesAndCampaignIds { get; set; }
 
     }
 }

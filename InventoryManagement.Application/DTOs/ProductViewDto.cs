@@ -1,4 +1,5 @@
 ﻿using InventoryManagement.Application.Services.BranchesService.DTOs;
+using InventoryManagement.Application.Services.CampaignService.DTOs;
 using InventoryManagement.Application.Services.ColorService.DTOs;
 using InventoryManagement.Models;
 using System;
@@ -29,5 +30,7 @@ namespace InventoryManagement.DTOs
         public int BranchId { get; set; }
         public BranchDto Branch { get; set; }
         public string Date { get; set; }
+        public int CampaingId { get; set; }
+        public CampaignDto CampaignDto { get; set; }
     }
 }
