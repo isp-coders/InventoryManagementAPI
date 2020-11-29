@@ -215,7 +215,8 @@ namespace InventoryManagement.Application.Services.SalesService
                 {
 
                     entity.Count -= 1;
-                    saleProducts.Add(new SaleDetailsAndProduct { Sale = sale, ProductId = Id, ProductCount = 1, Price = productsPricesAndIdsAndCampaingId.SellingPrices[index], CampaignId = productsPricesAndIdsAndCampaingId.CampaignIds[index] });
+                    int campaignId = productsPricesAndIdsAndCampaingId.CampaignIds[index];
+                    saleProducts.Add(new SaleDetailsAndProduct { Sale = sale, ProductId = Id, ProductCount = 1, Price = productsPricesAndIdsAndCampaingId.SellingPrices[index], CampaignId = campaignId != 0 ? campaignId : null });
                 }
                 else
                 {
