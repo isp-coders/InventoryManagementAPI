@@ -31,7 +31,7 @@ namespace InventoryManagement.Application.Services.RoleService
 
         public UIResponse GetRoleAuthorities(int RoleId, DataSourceLoadOptions loadOptions)
         {
-            LoadResult loadResult = DataSourceLoader.Load(RoleRepository.GetEntities().Where(wh => wh.Id == RoleId), loadOptions);
+            LoadResult loadResult = DataSourceLoader.Load(RoleRepository.GetQuery().Where(wh => wh.Id == RoleId), loadOptions);
             if (loadResult.data.OfType<Role>().Any())
             {
                 loadResult.data = _mapper.Map<List<RoleDto>>(loadResult.data.Cast<Role>().ToList());

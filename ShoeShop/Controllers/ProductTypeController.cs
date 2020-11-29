@@ -25,12 +25,12 @@ namespace InventoryManagement.Interface.Controllers
         [HttpGet("Get")]
         public ActionResult GetProductTypes(DataSourceLoadOptions loadOptions)
         {
-            var result = _productTypeService.GetEntities(loadOptions, inc => inc.ProductTypeAndProperties, inc => inc.ProductTypeAndProperties.Select(se => se.ProductProperty));
+            var result = _productTypeService.GetEntities(loadOptions, "ProductTypeAndProperties.ProductProperty");
             return Ok(result);
         }
 
 
-        [HttpPost("Update/{id}")]
+        [HttpPost("Update")]
         public async Task<IActionResult> PutProductType([FromForm] int key, [FromForm] string values)
         {
             var puttedProductType = await _productTypeService.PutEntity(key, values);

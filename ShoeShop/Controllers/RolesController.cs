@@ -31,7 +31,7 @@ namespace InventoryManagement.Interface.Controllers
         [Route("GetRoles")]
         public ActionResult GetRoles(DataSourceLoadOptions loadOptions)
         {
-            var result = roleService.GetEntities(loadOptions, inc => inc.RoleAndRolePermessions, inc => inc.RoleAndRolePermessions.Select(se => se.RolePermession));
+            var result = roleService.GetEntities(loadOptions, "RoleAndRolePermessions.RolePermession");
             return Ok(result);
         }
 

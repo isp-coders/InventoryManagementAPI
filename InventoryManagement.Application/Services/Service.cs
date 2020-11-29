@@ -32,9 +32,9 @@ namespace InventoryManagement.Application.Services
             return mapper.Map<TDto>(DeleteEntity);
         }
 
-        public UIResponse GetEntities(DataSourceLoadOptions loadOptions, params Expression<Func<T, object>>[] includes)
+        public UIResponse GetEntities(DataSourceLoadOptions loadOptions, string includes)
         {
-            var loadResult = DataSourceLoader.Load(_Repository.GetEntities(includes), loadOptions);
+            var loadResult = DataSourceLoader.Load(_Repository.GetQuery(null, null, includes), loadOptions);
             if (loadResult.data.OfType<T>().Any())
             {
                 loadResult.data = mapper.Map<List<TDto>>(loadResult.data.Cast<T>().ToList());

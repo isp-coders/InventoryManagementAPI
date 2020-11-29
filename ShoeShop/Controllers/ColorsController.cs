@@ -44,7 +44,7 @@ namespace InventoryManagement.Controllers
         }
 
         // PUT: api/Colors/5
-        [HttpPost("Update/{id}")]
+        [HttpPost("Update")]
         public async Task<IActionResult> PutColor([FromForm] int key, [FromForm] string values)
         {
             var result = await _colorService.PutEntity(key, values);

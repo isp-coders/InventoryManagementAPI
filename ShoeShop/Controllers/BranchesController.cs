@@ -29,7 +29,7 @@ namespace InventoryManagement.Controllers
         }
 
         // PUT: api/Branches/5
-        [HttpPost("Update/{id}")]
+        [HttpPost("Update")]
         public async Task<IActionResult> PutColor([FromForm] int key, [FromForm] string values)
         {
             var puttedBranch = await _branchesService.PutEntity(key, values);

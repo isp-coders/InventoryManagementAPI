@@ -37,7 +37,7 @@ namespace InventoryManagement.Controllers
             UIResponse response = new UIResponse();
             if (result is null)
             {
-                throw new InventoryManagementException("EXCEPTIONS.NO_SUCH_PRODUCT", HttpStatusCode.OK);
+                throw new InventoryManagementException("EXCEPTIONS.NO_SUCH_PRODUCT", HttpStatusCode.BadRequest);
             }
             else
             {

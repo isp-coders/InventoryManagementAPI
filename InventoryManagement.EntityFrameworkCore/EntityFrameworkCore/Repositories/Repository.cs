@@ -99,6 +99,16 @@ namespace InventoryManagement.EntityFrameworkCore.EntityFrameworkCore.Repositori
             return Entity;
         }
 
+        public List<T> PutEntities(List<T> Entities)
+        {
+            Table.AttachRange(Entities);
+            foreach (var item in Entities)
+            {
+                _context.Entry<T>(item).State = EntityState.Modified;
+            }
+            return Entities;
+        }
+
         public async Task<T> PutEntity(int id, string values)
         {
             var Entity = await _context.FindAsync<T>(id);
@@ -107,23 +117,23 @@ namespace InventoryManagement.EntityFrameworkCore.EntityFrameworkCore.Repositori
             return Entity;
         }
 
-        public IQueryable<T> GetIncludableEntities<EntityToInclude>(params Expression<Func<T, EntityToInclude>>[] navigationPropertyPaths)
-        {
-            IQueryable<T> queryableEntities = Table.AsQueryable();
-            if (navigationPropertyPaths.Length > 0)
-            {
-                foreach (var propertyPath in navigationPropertyPaths)
-                {
-                    queryableEntities.Include(propertyPath);
-                }
-                return queryableEntities;
-            }
-            else
-            {
-                return Table.AsQueryable();
-            }
+        //public IQueryable<T> GetIncludableEntities<EntityToInclude>(params Expression<Func<T, EntityToInclude>>[] navigationPropertyPaths)
+        //{
+        //    IQueryable<T> queryableEntities = Table.AsQueryable();
+        //    if (navigationPropertyPaths.Length > 0)
+        //    {
+        //        foreach (var propertyPath in navigationPropertyPaths)
+        //        {
+        //            queryableEntities.Include(propertyPath);
+        //        }
+        //        return queryableEntities;
+        //    }
+        //    else
+        //    {
+        //        return Table.AsQueryable();
+        //    }
 
-        }
+        //}
 
         public async Task SaveChangesAsync()
         {
