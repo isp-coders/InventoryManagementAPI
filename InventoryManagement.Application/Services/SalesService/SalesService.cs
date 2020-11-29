@@ -13,6 +13,7 @@ using Sample;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -50,8 +51,18 @@ namespace InventoryManagement.Application.Services.SalesService
 
         public UIResponse GetSelledProductsByUserId(int UserId, DataSourceLoadOptions loadOptions)
         {
+            Expression<Func<SalesDetails, bool>> Where;
+            if (UserId != 0)
+            {
+                Where = wh => wh.UserId == UserId;
+            }
+            else
+            {
+                Where = wh => wh.UserId != UserId;
+            }
 
-            var loadResult = DataSourceLoader.Load(_SalesRepository.GetSaleDetailsWithSubProperties().Where(wh => wh.UserId == UserId), loadOptions);
+
+            var loadResult = DataSourceLoader.Load(_SalesRepository.GetSaleDetailsWithSubProperties().Where(Where), loadOptions);
             if (loadResult.data.OfType<SalesDetails>().Any())
             {
                 loadResult.data = _mapper.Map<List<SaleUserBranchProductsDTO>>(loadResult.data.Cast<SalesDetails>().ToList());
