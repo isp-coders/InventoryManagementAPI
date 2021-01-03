@@ -61,7 +61,7 @@ namespace InventoryManagement.Application.Services.SalesService
                 Where = wh => wh.UserId != UserId;
             }
 
-            // Orhan benden satis yaparken musteryi secmek istemisti onn
+            // Orhan benden satis yaparken musteryi secmek istemisti onun icin where i kaldirdim. tekrar konulmali
             var loadResult = DataSourceLoader.Load(_SalesRepository.GetSaleDetailsWithSubProperties()/*.Where(Where)*/, loadOptions);
             if (loadResult.data.OfType<SalesDetails>().Any())
             {
@@ -92,7 +92,7 @@ namespace InventoryManagement.Application.Services.SalesService
 
 
                 // Sale-Product Relationship / Many-to-Many
-                AddSaleDetails(productSellingDto, sale);
+                await AddSaleDetailsAsync(productSellingDto, sale);
 
 
                 //Create or Use existing Customer Info
@@ -159,7 +159,7 @@ namespace InventoryManagement.Application.Services.SalesService
                     total = 0;
                 SalesDetails sale = new SalesDetails { Date = DateTime.Now, Total = total, BranchId = changeProductDto.productsToChangeWith.BranchId, UserId = changeProductDto.productsToChangeWith.UserId };
 
-                AddSaleDetails(changeProductDto.productsToChangeWith, sale);
+                await AddSaleDetailsAsync(changeProductDto.productsToChangeWith, sale);
 
 
                 //Create or Use existing Customer Info
@@ -202,7 +202,7 @@ namespace InventoryManagement.Application.Services.SalesService
             }
         }
 
-        private void AddSaleDetails(ProductSellingDto productSellingDto, SalesDetails sale)
+        private async Task AddSaleDetailsAsync(ProductSellingDto productSellingDto, SalesDetails sale)
         {
             ProductIdsAndPrices productsPricesAndIdsAndCampaingId = productSellingDto.ProductIdsAndPricesAndCampaignIds;
             List<SaleDetailsAndProduct> saleProducts = new List<SaleDetailsAndProduct>();
@@ -210,7 +210,7 @@ namespace InventoryManagement.Application.Services.SalesService
             foreach (var (Id, index) in productsPricesAndIdsAndCampaingId.ProductIds.Select((v, i) => (v, i)))
             {
                 // Substract the soled products' count from the product table
-                Product entity = _ProductRepository.FindEntity(Id).Result;
+                Product entity = (await _ProductRepository.FindEntity(Id));
                 if (entity.Count > 0)
                 {
 

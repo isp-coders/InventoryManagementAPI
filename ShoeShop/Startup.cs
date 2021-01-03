@@ -129,7 +129,7 @@ namespace InventoryManagement
 
 
 
-            
+
             services.AddTransient(typeof(IService<,>), typeof(Service<,>));
             services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
         }
