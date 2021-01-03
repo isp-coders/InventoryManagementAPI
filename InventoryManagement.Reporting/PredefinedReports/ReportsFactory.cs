@@ -11,7 +11,8 @@ namespace InventoryManagement.Reporting.PredefinedReports
     {
         public static Dictionary<string, Func<XtraReport>> Reports = new Dictionary<string, Func<XtraReport>>()
         {
-            ["ProductTicket"] = () => new ProductLabel()
+            ["ProductLabel"] = () => new ProductLabel(),
+            ["BestSellingProducts"] = () => new BestSellingProducts()
         };
     }
 }
