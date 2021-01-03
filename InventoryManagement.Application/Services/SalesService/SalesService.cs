@@ -61,8 +61,8 @@ namespace InventoryManagement.Application.Services.SalesService
                 Where = wh => wh.UserId != UserId;
             }
 
-
-            var loadResult = DataSourceLoader.Load(_SalesRepository.GetSaleDetailsWithSubProperties().Where(Where), loadOptions);
+            // Orhan benden satis yaparken musteryi secmek istemisti onn
+            var loadResult = DataSourceLoader.Load(_SalesRepository.GetSaleDetailsWithSubProperties()/*.Where(Where)*/, loadOptions);
             if (loadResult.data.OfType<SalesDetails>().Any())
             {
                 loadResult.data = _mapper.Map<List<SaleUserBranchProductsDTO>>(loadResult.data.Cast<SalesDetails>().ToList());
