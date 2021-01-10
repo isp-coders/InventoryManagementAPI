@@ -10,9 +10,9 @@
 
 namespace InventoryManagement.Reporting.Reports {
     
-    public partial class BestSellingProducts : DevExpress.XtraReports.UI.XtraReport {
+    public partial class BestSellers : DevExpress.XtraReports.UI.XtraReport {
         private void InitializeComponent() {
-            DevExpress.XtraReports.ReportInitializer reportInitializer = new DevExpress.XtraReports.ReportInitializer(this, "InventoryManagement.Reporting.Reports.BestSellingProducts.repx");
+            DevExpress.XtraReports.ReportInitializer reportInitializer = new DevExpress.XtraReports.ReportInitializer(this, "InventoryManagement.Reporting.Reports.BestSellers.repx");
 
             // Controls
             this.topMarginBand1 = reportInitializer.GetControl<DevExpress.XtraReports.UI.TopMarginBand>("topMarginBand1");

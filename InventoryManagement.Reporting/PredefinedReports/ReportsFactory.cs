@@ -12,7 +12,13 @@ namespace InventoryManagement.Reporting.PredefinedReports
         public static Dictionary<string, Func<XtraReport>> Reports = new Dictionary<string, Func<XtraReport>>()
         {
             ["ProductLabel"] = () => new ProductLabel(),
-            ["BestSellingProducts"] = () => new BestSellingProducts()
+            ["BestSellingProducts"] = () => new BestSellingProducts(),
+            ["BestSellers"] = () => new BestSellers(),
+            ["BestSellingCategories"] = () => new BestSellingCategories(),
+            ["BestSellingColors"] = () => new BestSellingColors(),
+            ["BestSellingSizes"] = () => new BestSellingSizes(),
+            ["MostProfitableProducts"] = () => new MostProfitableProducts(),
+            ["LeastProfitableProducts"] = () => new LeastProfitableProducts(),
         };
     }
 }

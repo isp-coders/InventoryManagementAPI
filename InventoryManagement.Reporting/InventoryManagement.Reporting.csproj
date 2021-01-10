@@ -31,11 +31,47 @@
     <None Remove="PredefinedReports\TestReport.repx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Reports\BestSellingCategories.cs">
+      <DependentUpon>BestSellingCategories.repx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\BestSellingCategories.Designer.cs">
+      <DependentUpon>BestSellingCategories.repx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\BestSellers.cs">
+      <DependentUpon>BestSellers.repx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\BestSellers.Designer.cs">
+      <DependentUpon>BestSellers.repx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\BestSellingColors.cs">
+      <DependentUpon>BestSellingColors.repx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\BestSellingColors.Designer.cs">
+      <DependentUpon>BestSellingColors.repx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\BestSellingSizes.cs">
+      <DependentUpon>BestSellingSizes.repx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\BestSellingSizes.Designer.cs">
+      <DependentUpon>BestSellingSizes.repx</DependentUpon>
+    </Compile>
     <Compile Include="Reports\BestSellingProducts.cs">
       <DependentUpon>BestSellingProducts.repx</DependentUpon>
     </Compile>
     <Compile Include="Reports\BestSellingProducts.Designer.cs">
       <DependentUpon>BestSellingProducts.repx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\LeastProfitableProducts.cs">
+      <DependentUpon>LeastProfitableProducts.repx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\LeastProfitableProducts.Designer.cs">
+      <DependentUpon>LeastProfitableProducts.repx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\MostProfitableProducts.cs">
+      <DependentUpon>MostProfitableProducts.repx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\MostProfitableProducts.Designer.cs">
+      <DependentUpon>MostProfitableProducts.repx</DependentUpon>
     </Compile>
     <Compile Include="Reports\ProductLabel.cs">
       <DependentUpon>ProductLabel.repx</DependentUpon>
@@ -63,14 +99,32 @@
   </Target>
   <ItemGroup>
     
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.1" />
     
     
-    <PackageReference Include="System.Data.SQLite" Version="1.0.113.6" /><PackageReference Include="DevExpress.AspNetCore.Reporting" Version="20.2.3" /><PackageReference Include="BuildBundlerMinifier" Version="3.2.449" /><PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.113" /></ItemGroup>
+    <PackageReference Include="System.Data.SQLite" Version="1.0.113.7" /><PackageReference Include="DevExpress.AspNetCore.Reporting" Version="20.2.3" /><PackageReference Include="BuildBundlerMinifier" Version="3.2.449" /><PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.113" /></ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Reports\ProductLabel.repx" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Reports\BestSellingProducts.repx" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Reports\BestSellers.repx" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Reports\BestSellingSizes.repx" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Reports\BestSellingColors.repx" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Reports\BestSellingCategories.repx" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Reports\MostProfitableProducts.repx" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Reports\LeastProfitableProducts.repx" />
   </ItemGroup>
 </Project>

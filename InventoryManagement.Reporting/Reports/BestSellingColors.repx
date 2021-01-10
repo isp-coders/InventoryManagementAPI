@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<XtraReportsLayoutSerializer SerializerVersion="20.2.3.0" Ref="1" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v20.2, Version=20.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="BestSellingProducts" Margins="97, 100, 100, 50" PageWidth="850" PageHeight="1100" Version="20.2" DataMember="Query" DataSource="#Ref-0">
+<XtraReportsLayoutSerializer SerializerVersion="20.2.3.0" Ref="1" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v20.2, Version=20.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="BestSellingColor" Margins="97, 100, 100, 50" PageWidth="850" PageHeight="1100" Version="20.2" DataMember="Query" DataSource="#Ref-0">
   <Parameters>
-    <Item1 Ref="3" Description="From Report Parameter" ValueInfo="2020-12-13" Name="From" Type="#Ref-2">
+    <Item1 Ref="3" ValueInfo="2020-12-13" Name="From" Type="#Ref-2">
       <ExpressionBindings>
-        <Item1 Ref="4" PropertyName="Value" Expression="LocalDateTimeLastMonth()" />
+        <Item1 Ref="4" PropertyName="Value" Expression="GetDate(LocalDateTimeLastMonth())" />
       </ExpressionBindings>
     </Item1>
-    <Item2 Ref="5" Description="To Date" ValueInfo="2020-12-13" Name="To" Type="#Ref-2">
+    <Item2 Ref="5" ValueInfo="2020-12-13" Name="To" Type="#Ref-2">
       <ExpressionBindings>
-        <Item1 Ref="6" PropertyName="Value" Expression="LocalDateTimeNextMonth()" />
+        <Item1 Ref="6" PropertyName="Value" Expression="GetDate(LocalDateTimeNextMonth())" />
       </ExpressionBindings>
     </Item2>
   </Parameters>
@@ -27,7 +27,7 @@
           </ExpressionBindings>
           <StylePriority Ref="13" UseFont="false" UseTextAlignment="false" />
         </Item2>
-        <Item3 Ref="14" ControlType="XRLabel" Name="label1" Multiline="true" Text="En Çok Satan Ürünler&#xD;&#xA;" TextAlignment="MiddleCenter" SizeF="619.9792,42.16667" LocationFloat="23.0208378,9.999998" Font="Segoe UI, 25pt" Padding="2,2,0,0,100">
+        <Item3 Ref="14" ControlType="XRLabel" Name="label1" Multiline="true" Text="En Çok Satan Renkler" TextAlignment="MiddleCenter" SizeF="619.9792,42.16667" LocationFloat="23.0208378,9.999998" Font="Segoe UI, 25pt" Padding="2,2,0,0,100">
           <StylePriority Ref="15" UseFont="false" UseTextAlignment="false" />
         </Item3>
       </Controls>
@@ -40,13 +40,13 @@
               <Cells>
                 <Item1 Ref="19" ControlType="XRTableCell" Name="tableCell2" Weight="0.80000007512019233" Text="tableCell2" TextAlignment="MiddleCenter" Font="Times New Roman, 9.75pt, style=Bold" Padding="0,0,5,0,100">
                   <ExpressionBindings>
-                    <Item1 Ref="20" EventName="BeforePrint" PropertyName="Text" Expression="[ProductCode]" />
+                    <Item1 Ref="20" EventName="BeforePrint" PropertyName="Text" Expression="[ColorName]" />
                   </ExpressionBindings>
                   <StylePriority Ref="21" UseFont="false" UsePadding="false" UseTextAlignment="false" />
                 </Item1>
                 <Item2 Ref="22" ControlType="XRTableCell" Name="tableCell3" Weight="0.80738454026442308" Text="tableCell3" TextAlignment="MiddleCenter" Padding="0,0,5,0,100">
                   <ExpressionBindings>
-                    <Item1 Ref="23" EventName="BeforePrint" PropertyName="Text" Expression="[ProductCount]" />
+                    <Item1 Ref="23" EventName="BeforePrint" PropertyName="Text" Expression="[SellingCount]" />
                   </ExpressionBindings>
                   <StylePriority Ref="24" UsePadding="false" UseTextAlignment="false" />
                 </Item2>
@@ -64,10 +64,10 @@
           <Rows>
             <Item1 Ref="29" ControlType="XRTableRow" Name="TableHeaderRow" Weight="11.5">
               <Cells>
-                <Item1 Ref="30" ControlType="XRTableCell" Name="tableCell5" Weight="0.38529826077547946" Multiline="true" Text="Ürün Kodu" Padding="5,5,5,5,100">
+                <Item1 Ref="30" ControlType="XRTableCell" Name="tableCell5" Weight="0.38529826077547946" Multiline="true" Text="Renk" Padding="5,5,5,5,100">
                   <StylePriority Ref="31" UsePadding="false" />
                 </Item1>
-                <Item2 Ref="32" ControlType="XRTableCell" Name="tableCell6" Weight="0.35674712064774039" Multiline="true" Text="Satılan Ürün Sayısı" TextAlignment="TopCenter" Padding="5,5,5,5,100">
+                <Item2 Ref="32" ControlType="XRTableCell" Name="tableCell6" Weight="0.35674712064774039" Multiline="true" Text="Adet" TextAlignment="TopCenter" Padding="5,5,5,5,100">
                   <StylePriority Ref="33" UsePadding="false" UseTextAlignment="false" />
                 </Item2>
               </Cells>
@@ -84,7 +84,7 @@
     <Item3 Ref="37" Name="EvenStyle" BorderStyle="Inset" Padding="5,5,0,0,100" Font="Segoe UI, 12pt, charSet=162" ForeColor="Black" BackColor="White" BorderColor="Transparent" StringFormat="Near;Near;0;None;Character;Default" BorderWidthSerializable="1" />
   </StyleSheet>
   <ComponentStorage>
-    <Item1 Ref="0" ObjectType="DevExpress.DataAccess.Sql.SqlDataSource,DevExpress.DataAccess.v20.2" Name="sqlDataSource1" Base64="PFNxbERhdGFTb3VyY2UgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxDb25uZWN0aW9uIE5hbWU9ImxvY2FsaG9zdF9JbnZlbnRvcnlNYW5hZ2VtZW50MV9Db25uZWN0aW9uIiBGcm9tQXBwQ29uZmlnPSJ0cnVlIiAvPjxRdWVyeSBUeXBlPSJDdXN0b21TcWxRdWVyeSIgTmFtZT0iUXVlcnkiPjxQYXJhbWV0ZXIgTmFtZT0iRnJvbURhdGUiIFR5cGU9IkRldkV4cHJlc3MuRGF0YUFjY2Vzcy5FeHByZXNzaW9uIj4oU3lzdGVtLkRhdGVUaW1lKSg/RnJvbSk8L1BhcmFtZXRlcj48UGFyYW1ldGVyIE5hbWU9IlRvRGF0ZSIgVHlwZT0iRGV2RXhwcmVzcy5EYXRhQWNjZXNzLkV4cHJlc3Npb24iPihTeXN0ZW0uRGF0ZVRpbWUpKD9Ubyk8L1BhcmFtZXRlcj48U3FsPlNFTEVDVCB0b3AgMTAgIGNvdW50KGRiby5TYWxlRGV0YWlsc0FuZFByb2R1Y3QuUHJvZHVjdENvdW50KSBhcyBQcm9kdWN0Q291bnQsIGRiby5Qcm9kdWN0cy5Qcm9kdWN0Q29kZQ0KRlJPTSAgICAgZGJvLlNhbGVEZXRhaWxzQW5kUHJvZHVjdCBJTk5FUiBKT0lODQogICAgICAgICAgICAgICAgICBkYm8uUHJvZHVjdHMgT04gZGJvLlNhbGVEZXRhaWxzQW5kUHJvZHVjdC5Qcm9kdWN0SWQgPSBkYm8uUHJvZHVjdHMuSWQgSU5ORVIgSk9JTg0KICAgICAgICAgICAgICAgICAgZGJvLlNhbGVzIE9OIGRiby5TYWxlRGV0YWlsc0FuZFByb2R1Y3QuU2FsZUlkID0gZGJvLlNhbGVzLklkDQoJCQkJICBXaGVyZSBDQVNUKGRiby5TYWxlcy5EYXRlIEFTIERBVEUpICZndDs9IENBU1QoQEZyb21EYXRlIEFTIERBVEUpIGFuZCBDQVNUKGRiby5TYWxlcy5EYXRlIEFTIERBVEUpICZsdDs9IENBU1QoQFRvRGF0ZSBBUyBEQVRFKQ0KCQkJCSAgZ3JvdXAgYnkgZGJvLlByb2R1Y3RzLlByb2R1Y3RDb2RlDQoJCQkJICBvcmRlciBieSBQcm9kdWN0Q291bnQgREVTQzwvU3FsPjwvUXVlcnk+PFJlc3VsdFNjaGVtYT48RGF0YVNldCBOYW1lPSJzcWxEYXRhU291cmNlMSI+PFZpZXcgTmFtZT0iUXVlcnkiPjxGaWVsZCBOYW1lPSJQcm9kdWN0Q291bnQiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJQcm9kdWN0Q29kZSIgVHlwZT0iU3RyaW5nIiAvPjwvVmlldz48L0RhdGFTZXQ+PC9SZXN1bHRTY2hlbWE+PENvbm5lY3Rpb25PcHRpb25zIENsb3NlQ29ubmVjdGlvbj0idHJ1ZSIgLz48L1NxbERhdGFTb3VyY2U+" />
+    <Item1 Ref="0" ObjectType="DevExpress.DataAccess.Sql.SqlDataSource,DevExpress.DataAccess.v20.2" Name="sqlDataSource1" Base64="PFNxbERhdGFTb3VyY2UgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxDb25uZWN0aW9uIE5hbWU9ImxvY2FsaG9zdF9JbnZlbnRvcnlNYW5hZ2VtZW50MV9Db25uZWN0aW9uIiBGcm9tQXBwQ29uZmlnPSJ0cnVlIiAvPjxRdWVyeSBUeXBlPSJDdXN0b21TcWxRdWVyeSIgTmFtZT0iUXVlcnkiPjxQYXJhbWV0ZXIgTmFtZT0iRnJvbURhdGUiIFR5cGU9IkRldkV4cHJlc3MuRGF0YUFjY2Vzcy5FeHByZXNzaW9uIj4oU3lzdGVtLkRhdGVUaW1lKSg/RnJvbSk8L1BhcmFtZXRlcj48UGFyYW1ldGVyIE5hbWU9IlRvRGF0ZSIgVHlwZT0iRGV2RXhwcmVzcy5EYXRhQWNjZXNzLkV4cHJlc3Npb24iPihTeXN0ZW0uRGF0ZVRpbWUpKD9Ubyk8L1BhcmFtZXRlcj48U3FsPgkJCQkgIFNlbGVjdCBkYm8uQ29sb3JzLkNvbG9yTmFtZSwgQ29sb3JDb3VudEFuZENvbG9ycy5TZWxsaW5nQ291bnQgRnJvbQ0KKCBTRUxFQ1QgIGRiby5Qcm9kdWN0cy5Db2xvcklkLCBjb3VudChkYm8uUHJvZHVjdHMuQ29sb3JJZCkgYXMgU2VsbGluZ0NvdW50DQpGUk9NICAgICBkYm8uU2FsZURldGFpbHNBbmRQcm9kdWN0IElOTkVSIEpPSU4NCiAgICAgICAgICAgICAgICAgIGRiby5Qcm9kdWN0cyBPTiBkYm8uU2FsZURldGFpbHNBbmRQcm9kdWN0LlByb2R1Y3RJZCA9IGRiby5Qcm9kdWN0cy5JZCBJTk5FUiBKT0lODQogICAgICAgICAgICAgICAgICBkYm8uU2FsZXMgT04gZGJvLlNhbGVEZXRhaWxzQW5kUHJvZHVjdC5TYWxlSWQgPSBkYm8uU2FsZXMuSWQgDQoJCQkJICB3aGVyZSBkYm8uUHJvZHVjdHMuU2l6ZSAhPSAwIGFuZCAoQ0FTVChkYm8uU2FsZXMuRGF0ZSBBUyBEQVRFKSAmZ3Q7PSBDQVNUKEBGcm9tRGF0ZSBBUyBEQVRFKSBhbmQgQ0FTVChkYm8uU2FsZXMuRGF0ZSBBUyBEQVRFKSAmbHQ7PSBDQVNUKEBUb0RhdGUgQVMgREFURSkpDQoJCQkJICBncm91cCBieSBkYm8uUHJvZHVjdHMuQ29sb3JJZA0KCQkJCSAgKSBDb2xvckNvdW50QW5kQ29sb3JzDQoJCQkJICBJTk5FUiBKT0lOIA0KCQkJCSAgZGJvLkNvbG9ycyBPTiBDb2xvckNvdW50QW5kQ29sb3JzLkNvbG9ySWQgPSBkYm8uQ29sb3JzLklkDQoJCQkJICBvcmRlciBieSBTZWxsaW5nQ291bnQgREVTQzwvU3FsPjwvUXVlcnk+PFJlc3VsdFNjaGVtYT48RGF0YVNldCBOYW1lPSJzcWxEYXRhU291cmNlMSI+PFZpZXcgTmFtZT0iUXVlcnkiPjxGaWVsZCBOYW1lPSJDb2xvck5hbWUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iU2VsbGluZ0NvdW50IiBUeXBlPSJJbnQzMiIgLz48L1ZpZXc+PC9EYXRhU2V0PjwvUmVzdWx0U2NoZW1hPjxDb25uZWN0aW9uT3B0aW9ucyBDbG9zZUNvbm5lY3Rpb249InRydWUiIC8+PC9TcWxEYXRhU291cmNlPg==" />
   </ComponentStorage>
   <ObjectStorage>
     <Item1 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v20.2" Ref="2" Content="System.DateTime" Type="System.Type" />
