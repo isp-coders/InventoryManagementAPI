@@ -6,7 +6,9 @@ namespace InventoryManagement.Application.Services.SalesService.DTOs
 {
     public class RefundProductsDto
     {
-        public List<int> SaleId { get; set; }
-        public List<int> ProductId { get; set; }
+        public int SaleIdOfOldProdcuts { get; set; }
+        public List<int> ProductIdListOfPreviouslyTakenProducts { get; set; }
+        public decimal Total { get; set; }
+        public int CustomerInfoId { get; set; }
     }
 }

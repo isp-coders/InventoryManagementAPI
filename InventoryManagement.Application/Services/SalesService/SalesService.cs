@@ -92,13 +92,13 @@ namespace InventoryManagement.Application.Services.SalesService
 
 
                 // Sale-Product Relationship / Many-to-Many
-                await AddSaleDetailsAsync(productSellingDto, sale);
+                await AddProductsToSaleDetails(productSellingDto, sale);
 
 
                 //Create or Use existing Customer Info
-                CustomerInfo customerInfo = await CreateOrUsingExistingCustomerInfo(productSellingDto);
+                CustomerInfo customerInfo = await CreateOrUsingExistingCustomerInfo(productSellingDto.CustomerInfoId, productSellingDto.CustomerName, productSellingDto.CustomerPhone);
 
-                SavePaymentMethods(productSellingDto, sale, customerInfo);
+                AddPaymentMethodsToSaleDetails(productSellingDto, sale, customerInfo);
 
                 await _SalesRepository.PostEntity(sale);
 
@@ -115,94 +115,23 @@ namespace InventoryManagement.Application.Services.SalesService
 
         }
 
-        public async Task<UIResponse> RefundProducts(List<SaleDetailsAndProductDto> saleDetailsAndProductDtos)
+        private static void AddPaymentMethodsToSaleDetails(ProductSellingDto productSellingDto, SalesDetails sale, CustomerInfo customerInfo)
         {
-            try
+            // Sale-PaymentMethod Relationship / Many-to-Many
+            List<int> paymentMethodIds = productSellingDto.PaymentMethodIds;
+            List<SalePaymentMethod> salePaymentMethods = new List<SalePaymentMethod>();
+            paymentMethodIds.ForEach(Id =>
             {
-                unitOfWork.BeginTransaction();
-                foreach (var saleDetailsAndProduct in saleDetailsAndProductDtos)
-                {
-                    int ProductId = saleDetailsAndProduct.ProductId;
+                SalePaymentMethod salePaymentMethodProperties = productSellingDto.SalePaymentMethods.Find(fi => fi.PaymentMethodId == Id);
+                salePaymentMethods.Add(new SalePaymentMethod { Sale = sale, Receipt = productSellingDto.Receipt, PaymentMethodId = Id, CustomerInfo = customerInfo, Amount = salePaymentMethodProperties.Amount, DefferedPaymentCount = salePaymentMethodProperties.DefferedPaymentCount });
+            });
 
-                    var SaleDetails = _SalesRepository.GetQuery(gq => gq.Id == saleDetailsAndProduct.SaleId).First();
-                    SaleDetails.RefundAmount += saleDetailsAndProduct.Price;
-                    _SalesRepository.PutEntity(SaleDetails);
 
-                    var SaleDetailsAndProduct = _SaleDetailsAndProduct.GetQuery(null, null, "Product").First(gq => gq.SaleId == saleDetailsAndProduct.SaleId && gq.ProductId == ProductId);
-                    SaleDetailsAndProduct.Operations = SaleOperation.RETURNED;
-                    SaleDetailsAndProduct.Product.Count += 1;
-
-                    _SaleDetailsAndProduct.PutEntity(SaleDetailsAndProduct);
-
-                }
-                await _SaleDetailsAndProduct.SaveChangesAsync();
-                unitOfWork.CommitTransaction();
-
-                return new UIResponse { };
-            }
-            catch (Exception e)
-            {
-                unitOfWork.RollBackTransaction();
-                throw e;
-            }
+            sale.SalePaymentMethods.AddRange(salePaymentMethods);
         }
 
-        public async Task<UIResponse> ChangeProducts(ChangeProductDto changeProductDto)
-        {
-            try
-            {
-                unitOfWork.BeginTransaction();
-                decimal total = 0;
-                if (changeProductDto.productsToChangeWith.Total > 0)
-                    total = changeProductDto.productsToChangeWith.Total;
-                else
-                    total = 0;
-                SalesDetails sale = new SalesDetails { Date = DateTime.Now, Total = total, BranchId = changeProductDto.productsToChangeWith.BranchId, UserId = changeProductDto.productsToChangeWith.UserId };
 
-                await AddSaleDetailsAsync(changeProductDto.productsToChangeWith, sale);
-
-
-                //Create or Use existing Customer Info
-                CustomerInfo customerInfo = await CreateOrUsingExistingCustomerInfo(changeProductDto.productsToChangeWith);
-
-                SavePaymentMethods(changeProductDto.productsToChangeWith, sale, customerInfo);
-
-                await _SalesRepository.PostEntity(sale);
-
-
-
-                if (changeProductDto.productsToChangeWith.Total < 0)
-                {
-                    var SaleDetails = _SalesRepository.GetQuery(gq => gq.Id == changeProductDto.purchasedProductsToChange[0].SaleId).First();
-                    SaleDetails.RefundAmount += Math.Abs(changeProductDto.productsToChangeWith.Total);
-                    _SalesRepository.PutEntity(SaleDetails);
-                }
-
-
-                foreach (var saleDetailsAndProduct in changeProductDto.purchasedProductsToChange)
-                {
-                    int ProductId = saleDetailsAndProduct.ProductId;
-
-
-
-                    var SaleDetailsAndProduct = _SaleDetailsAndProduct.GetQuery(null, null, "Product").First(gq => gq.SaleId == saleDetailsAndProduct.SaleId && gq.ProductId == ProductId);
-                    SaleDetailsAndProduct.Operations = SaleOperation.CHANGED;
-                    SaleDetailsAndProduct.Product.Count += 1;
-                    _SaleDetailsAndProduct.PutEntity(SaleDetailsAndProduct);
-                }
-
-                await _SaleDetailsAndProduct.SaveChangesAsync();
-                unitOfWork.CommitTransaction();
-                return new UIResponse { };
-            }
-            catch (Exception e)
-            {
-                unitOfWork.RollBackTransaction();
-                throw e;
-            }
-        }
-
-        private async Task AddSaleDetailsAsync(ProductSellingDto productSellingDto, SalesDetails sale)
+        private async Task AddProductsToSaleDetails(ProductSellingDto productSellingDto, SalesDetails sale)
         {
             ProductIdsAndPrices productsPricesAndIdsAndCampaingId = productSellingDto.ProductIdsAndPricesAndCampaignIds;
             List<SaleDetailsAndProduct> saleProducts = new List<SaleDetailsAndProduct>();
@@ -227,39 +156,146 @@ namespace InventoryManagement.Application.Services.SalesService
                 sale.SaleDetailsAndProducts.AddRange(saleProducts);
         }
 
-        private async Task<CustomerInfo> CreateOrUsingExistingCustomerInfo(ProductSellingDto productSellingDto)
+        public async Task<UIResponse> RefundProducts(RefundProductsDto refundProductsDto)
+        {
+            try
+            {
+                unitOfWork.BeginTransaction();
+
+                var SaleDetailsOfOldProdcuts = _SalesRepository.GetQuery(gq => gq.Id == refundProductsDto.SaleIdOfOldProdcuts, null).First();
+                SaleDetailsOfOldProdcuts.RefundAmount += refundProductsDto.Total;
+
+                SalesDetails newSalesDetails = new SalesDetails { BranchId = SaleDetailsOfOldProdcuts.BranchId, Date = DateTime.Now, Total = (refundProductsDto.Total), UserId = SaleDetailsOfOldProdcuts.UserId };
+
+
+                foreach (var productId in refundProductsDto.ProductIdListOfPreviouslyTakenProducts)
+                {
+                    SaleDetailsAndProduct saleDetailsAndProduct = _SaleDetailsAndProduct.GetQuery(gq => gq.SaleId == refundProductsDto.SaleIdOfOldProdcuts && gq.ProductId == productId, null, "Product").First();
+                    saleDetailsAndProduct.Operations = SaleOperation.RETURNED;
+                    saleDetailsAndProduct.Product.Count += 1;
+                    _SaleDetailsAndProduct.PutEntity(saleDetailsAndProduct);
+                    _ProductRepository.PutEntity(saleDetailsAndProduct.Product);
+                    newSalesDetails.SaleDetailsAndProducts.Add(new SaleDetailsAndProduct { ProductId = productId, CampaignId = saleDetailsAndProduct.CampaignId, Operations = SaleOperation.TakenInsteadOfOldProducts, Price = saleDetailsAndProduct.Price, ProductCount = 1 });
+                }
+
+                _SalesRepository.PutEntity(SaleDetailsOfOldProdcuts);
+                await _SalesRepository.PostEntity(newSalesDetails);
+
+                await _SaleDetailsAndProduct.SaveChangesAsync();
+                unitOfWork.CommitTransaction();
+
+                return new UIResponse { };
+            }
+            catch (Exception e)
+            {
+                unitOfWork.RollBackTransaction();
+                throw;
+            }
+        }
+
+        public async Task<UIResponse> ChangeProducts(ChangeProductDto changeProductRequestDto)
+        {
+            try
+            {
+                unitOfWork.BeginTransaction();
+
+                var SaleDetailsOfOldProdcuts = _SalesRepository.GetQuery(gq => gq.Id == changeProductRequestDto.SaleIdOfOldProdcuts).First();
+
+                SalesDetails newSaleDetailsForNewTakenProducts = new SalesDetails { Date = DateTime.Now, Total = changeProductRequestDto.Total, BranchId = SaleDetailsOfOldProdcuts.BranchId, UserId = SaleDetailsOfOldProdcuts.UserId };
+
+                AddProductsToSaleDetails(changeProductRequestDto.newProductListToTake, newSaleDetailsForNewTakenProducts);
+
+                //Create or Use existing Customer Info
+                CustomerInfo customerInfo = await CreateOrUsingExistingCustomerInfo(changeProductRequestDto.customerInfoDto.Id, changeProductRequestDto.customerInfoDto.CustomerName, changeProductRequestDto.customerInfoDto.CustomerPhone);
+
+                AddPaymentDetailsToSaleDetails(changeProductRequestDto.paymentDetails, newSaleDetailsForNewTakenProducts, customerInfo);
+
+                await _SalesRepository.PostEntity(newSaleDetailsForNewTakenProducts);
+
+
+                if (changeProductRequestDto.Total < 0)
+                {
+                    SaleDetailsOfOldProdcuts.RefundAmount += Math.Abs(changeProductRequestDto.Total);
+                    _SalesRepository.PutEntity(SaleDetailsOfOldProdcuts);
+                }
+
+
+                foreach (var productId in changeProductRequestDto.ProductIdListOfPreviouslyTakenProducts)
+                {
+
+                    var SaleDetailsAndProduct = _SaleDetailsAndProduct.GetQuery(null, null, "Product").First(gq => gq.SaleId == changeProductRequestDto.SaleIdOfOldProdcuts && gq.ProductId == productId);
+                    SaleDetailsAndProduct.Operations = SaleOperation.CHANGED;
+                    SaleDetailsAndProduct.Product.Count += 1;
+                    _SaleDetailsAndProduct.PutEntity(SaleDetailsAndProduct);
+                    _ProductRepository.PutEntity(SaleDetailsAndProduct.Product);
+                }
+
+                await _SaleDetailsAndProduct.SaveChangesAsync();
+                unitOfWork.CommitTransaction();
+                return new UIResponse { };
+            }
+            catch (Exception e)
+            {
+                unitOfWork.RollBackTransaction();
+                throw;
+            }
+        }
+
+        private void AddProductsToSaleDetails(NewProductListToTakeDto newProductListToTake, SalesDetails newSaleDetailsForNewTakenProducts)
+        {
+            List<SaleDetailsAndProduct> saleDetailsAndProducts = new List<SaleDetailsAndProduct>();
+
+            foreach (var (productId, index) in newProductListToTake.ProductIdList.Select((v, i) => (v, i)))
+            {
+                // Substract the soled products' count from the product table
+
+                Product product = _ProductRepository.GetQuery(gq => gq.Id == productId).First();
+                if (product.Count > 0)
+                {
+
+                    product.Count -= 1;
+                    _ProductRepository.PutEntity(product);
+
+
+                    saleDetailsAndProducts.Add(new SaleDetailsAndProduct { Operations = SaleOperation.TakenInsteadOfOldProducts, ProductId = productId, ProductCount = 1, Price = newProductListToTake.ProductPrices[index], CampaignId = product.CampaignId });
+                }
+                else
+                {
+                    throw new InventoryManagementException("EXCEPTIONS.NO_ENOUGHT_COUNT", HttpStatusCode.BadRequest);
+                }
+            }
+            if (saleDetailsAndProducts.Count > 0)
+                newSaleDetailsForNewTakenProducts.SaleDetailsAndProducts.AddRange(saleDetailsAndProducts);
+        }
+
+
+
+        private async Task<CustomerInfo> CreateOrUsingExistingCustomerInfo(int CustomerInfoId, string CustomerName, string CustomerPhone)
         {
             CustomerInfo customerInfo = new CustomerInfo();
-            if (productSellingDto.CustomerInfoId == 0)
+            if (CustomerInfoId == 0)
             {
-                if (!(String.IsNullOrEmpty(productSellingDto.CustomerName) && String.IsNullOrEmpty(productSellingDto.CustomerPhone)))
+                if (!(String.IsNullOrEmpty(CustomerName) && String.IsNullOrEmpty(CustomerPhone)))
                 {
-                    customerInfo.CustomerName = productSellingDto.CustomerName;
-                    customerInfo.CustomerPhone = productSellingDto.CustomerPhone;
+                    customerInfo.CustomerName = CustomerName;
+                    customerInfo.CustomerPhone = CustomerPhone;
                 }
 
             }
             else
             {
-                customerInfo = await _CustomerRepository.FindEntity(productSellingDto.CustomerInfoId);
+                customerInfo = await _CustomerRepository.FindEntity(CustomerInfoId);
             }
 
             return customerInfo;
         }
 
-        private static void SavePaymentMethods(ProductSellingDto productSellingDto, SalesDetails sale, CustomerInfo customerInfo)
+        private void AddPaymentDetailsToSaleDetails(List<PaymentDetailsDto> paymentDetailsDto, SalesDetails newSaleDetailsForNewTakenProducts, CustomerInfo customerInfo)
         {
-            // Sale-PaymentMethod Relationship / Many-to-Many
-            List<int> paymentMethodIds = productSellingDto.PaymentMethodIds;
-            List<SalePaymentMethod> salePaymentMethods = new List<SalePaymentMethod>();
-            paymentMethodIds.ForEach(Id =>
+            paymentDetailsDto.ForEach(paymentDetails =>
             {
-                SalePaymentMethod salePaymentMethodProperties = productSellingDto.SalePaymentMethods.Find(fi => fi.PaymentMethodId == Id);
-                salePaymentMethods.Add(new SalePaymentMethod { Sale = sale, Receipt = productSellingDto.Receipt, PaymentMethodId = Id, CustomerInfo = customerInfo, Amount = salePaymentMethodProperties.Amount, DefferedPaymentCount = salePaymentMethodProperties.DefferedPaymentCount });
+                newSaleDetailsForNewTakenProducts.SalePaymentMethods.Add(new SalePaymentMethod { Sale = newSaleDetailsForNewTakenProducts, Receipt = paymentDetails.Receipt, PaymentMethodId = paymentDetails.PaymentId, CustomerInfo = customerInfo, Amount = paymentDetails.Amount, DefferedPaymentCount = paymentDetails.DefferedPaymentCount });
             });
-
-
-            sale.SalePaymentMethods.AddRange(salePaymentMethods);
         }
     }
 }

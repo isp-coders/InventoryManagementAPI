@@ -79,9 +79,9 @@ namespace InventoryManagement.Controllers
         [HttpPost]
         public async Task<UIResponse> RefundProducts([FromForm] string values)
         {
-            List<SaleDetailsAndProductDto> saleDetailsAndProductDtos = new List<SaleDetailsAndProductDto>();
-            JsonConvert.PopulateObject(values, saleDetailsAndProductDtos);
-            var result = await _SalesService.RefundProducts(saleDetailsAndProductDtos);
+            RefundProductsDto refundProductsRequestDto = new RefundProductsDto();
+            JsonConvert.PopulateObject(values, refundProductsRequestDto);
+            var result = await _SalesService.RefundProducts(refundProductsRequestDto);
             return result;
         }
 

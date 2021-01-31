@@ -8,6 +8,7 @@ namespace InventoryManagement.Core.Enums
     {
         SOLED = 0,
         RETURNED = 1,
-        CHANGED = 2
+        CHANGED = 2,
+        TakenInsteadOfOldProducts = 3
     }
 }

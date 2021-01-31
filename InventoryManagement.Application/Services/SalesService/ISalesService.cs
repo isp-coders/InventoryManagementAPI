@@ -17,7 +17,7 @@ namespace InventoryManagement.Application.Services.SalesService
         Task SellProducts(ProductSellingDto productSellingDto);
         UIResponse GetSelledProductsByUserId(int UserId, DataSourceLoadOptions loadOptions);
         UIResponse GetCustomerPurchasedProducts(int CustomerInfoId, DataSourceLoadOptions loadOptions);
-        Task<UIResponse> RefundProducts(List<SaleDetailsAndProductDto> saleDetailsAndProductDtos);
+        Task<UIResponse> RefundProducts(RefundProductsDto changeProductRequestDto);
         Task<UIResponse> ChangeProducts(ChangeProductDto changeProductDto);
     }
 }
