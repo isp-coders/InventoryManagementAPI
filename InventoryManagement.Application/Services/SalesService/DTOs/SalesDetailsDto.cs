@@ -17,6 +17,8 @@ namespace InventoryManagement.Application.Services.SalesService.DTOs
 
         public int BranchId { get; set; }
         public BranchDto Branch { get; set; }
+        public int? CustomerInfoId { get; set; }
+        public CustomerInfoDto CustomerInfo { get; set; }
         public List<SaleDetailsAndProductDto> SaleDetailsAndProducts { get; set; }
         //[JsonIgnore]
         public List<SalePaymentMethodDto> SalePaymentMethods { get; set; }

@@ -12,6 +12,7 @@ namespace InventoryManagement.Models
         public string CustomerName { get; set; }
         [StringLength(20)]
         public string CustomerPhone { get; set; }
-        public List<SalePaymentMethod> SalePaymentMethods { get; set; }
+        public List<SalesDetails> SalesDetails { get; set; }
+        //public List<SalePaymentMethod> SalePaymentMethods { get; set; }
     }
 }

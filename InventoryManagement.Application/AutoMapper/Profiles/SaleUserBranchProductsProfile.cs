@@ -11,7 +11,7 @@ namespace InventoryManagement.Application.AutoMapper.Profiles
     {
         public SaleUserBranchProductsProfile()
         {
-            CreateMap<SalesDetails, SaleUserBranchProductsDTO>()
+            CreateMap<SalesDetails, SaleUserBranchProductsCustomerInfoDTO>()
                 .ForMember(q => q.Id, opt => opt.MapFrom(s => s.Id))
                 .ForMember(q => q.Date, opt => opt.MapFrom(s => s.Date))
                 .ForMember(q => q.Branch, opt => opt.MapFrom(s => s.Branch))
@@ -20,6 +20,7 @@ namespace InventoryManagement.Application.AutoMapper.Profiles
                 .ForMember(q => q.SoledProductDetails, opt => opt.MapFrom(s => s.SaleDetailsAndProducts))
                 .ForMember(q => q.PaymentDetails, opt => opt.MapFrom(s => s.SalePaymentMethods))
                 .ForMember(q => q.RefundAmount, opt => opt.MapFrom(s => s.RefundAmount))
+                .ForMember(q => q.CustomerInfo, opt => opt.MapFrom(s => s.CustomerInfo))
                 ;
         }
     }

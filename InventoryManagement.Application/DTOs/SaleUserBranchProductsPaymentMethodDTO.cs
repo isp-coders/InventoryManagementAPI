@@ -8,7 +8,7 @@ namespace InventoryManagement.DTOs
 {
     public class SaleUserBranchProductsPaymentMethodDTO
     {
-        public SaleUserBranchProductsDTO SaleUserBranchProductsDTO { get; set; }
+        public SaleUserBranchProductsCustomerInfoDTO SaleUserBranchProductsDTO { get; set; }
         public List<PaymentMethod> PaymentMethods { get; set; }
     }
 }

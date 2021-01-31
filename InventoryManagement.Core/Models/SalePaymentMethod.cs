@@ -16,7 +16,7 @@ namespace InventoryManagement.Models
         public SalesDetails Sale { get; set; }
         public int PaymentMethodId { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
-        public int CustomerInfoId { get; set; }
-        public CustomerInfo CustomerInfo { get; set; }
+        //public int CustomerInfoId { get; set; }
+        //public CustomerInfo CustomerInfo { get; set; }
     }
 }

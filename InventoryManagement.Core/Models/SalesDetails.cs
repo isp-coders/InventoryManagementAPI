@@ -18,6 +18,8 @@ namespace InventoryManagement.Models
 
         public int BranchId { get; set; }
         public Branch Branch { get; set; }
+        public int? CustomerInfoId { get; set; }
+        public CustomerInfo CustomerInfo { get; set; }
         public List<SaleDetailsAndProduct> SaleDetailsAndProducts { get; set; }
         public List<SalePaymentMethod> SalePaymentMethods { get; set; }
 

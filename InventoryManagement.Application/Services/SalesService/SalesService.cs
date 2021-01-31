@@ -62,10 +62,10 @@ namespace InventoryManagement.Application.Services.SalesService
             }
 
             // Orhan benden satis yaparken musteryi secmek istemisti onun icin where i kaldirdim. tekrar konulmali
-            var loadResult = DataSourceLoader.Load(_SalesRepository.GetSaleDetailsWithSubProperties()/*.Where(Where)*/, loadOptions);
+            var loadResult = DataSourceLoader.Load(_SalesRepository.GetQuery(null, null, "Branch,User,SaleDetailsAndProducts.Product.Color,SalePaymentMethods.PaymentMethod,CustomerInfo")/*.Where(Where)*/, loadOptions);
             if (loadResult.data.OfType<SalesDetails>().Any())
             {
-                loadResult.data = _mapper.Map<List<SaleUserBranchProductsDTO>>(loadResult.data.Cast<SalesDetails>().ToList());
+                loadResult.data = _mapper.Map<List<SaleUserBranchProductsCustomerInfoDTO>>(loadResult.data.Cast<SalesDetails>().ToList());
             }
             UIResponse response = _mapper.Map<UIResponse>(loadResult);
             return response;
@@ -73,10 +73,10 @@ namespace InventoryManagement.Application.Services.SalesService
 
         public UIResponse GetCustomerPurchasedProducts(int CustomerInfoId, DataSourceLoadOptions loadOptions)
         {
-            var loadResult = DataSourceLoader.Load(_SalePaymentMethod.GetQuery(null, null, "Sale.SaleDetailsAndProducts.Product.Branch,Sale.SaleDetailsAndProducts.Product.Color,CustomerInfo,PaymentMethod").Where(wh => wh.CustomerInfoId == CustomerInfoId), loadOptions);
-            if (loadResult.data.OfType<SalePaymentMethod>().Any())
+            var loadResult = DataSourceLoader.Load(_SalesRepository.GetQuery(null, null, "SaleDetailsAndProducts.Product.Branch,SaleDetailsAndProducts.Product.Color,CustomerInfo,SalePaymentMethods.PaymentMethod").Where(wh => wh.CustomerInfoId == CustomerInfoId), loadOptions);
+            if (loadResult.data.OfType<SalesDetails>().Any())
             {
-                loadResult.data = _mapper.Map<List<SalePaymentMethodDto>>(loadResult.data.Cast<SalePaymentMethod>().ToList());
+                loadResult.data = _mapper.Map<List<SalesDetailsDto>>(loadResult.data.Cast<SalesDetails>().ToList());
             }
             UIResponse response = _mapper.Map<UIResponse>(loadResult);
             return response;
@@ -87,18 +87,17 @@ namespace InventoryManagement.Application.Services.SalesService
             try
             {
                 unitOfWork.BeginTransaction();
+                //Create or Use existing Customer Info
+                CustomerInfo customerInfo = await CreateOrUsingExistingCustomerInfo(productSellingDto.CustomerInfoId, productSellingDto.CustomerName, productSellingDto.CustomerPhone);
                 // Sale is the main object that connects all other classes
-                SalesDetails sale = new SalesDetails { Date = DateTime.Now, Total = productSellingDto.Total, BranchId = productSellingDto.BranchId, UserId = productSellingDto.UserId };
+                SalesDetails sale = new SalesDetails { CustomerInfo = customerInfo, Date = DateTime.Now, Total = productSellingDto.Total, BranchId = productSellingDto.BranchId, UserId = productSellingDto.UserId };
 
 
                 // Sale-Product Relationship / Many-to-Many
                 await AddProductsToSaleDetails(productSellingDto, sale);
 
 
-                //Create or Use existing Customer Info
-                CustomerInfo customerInfo = await CreateOrUsingExistingCustomerInfo(productSellingDto.CustomerInfoId, productSellingDto.CustomerName, productSellingDto.CustomerPhone);
-
-                AddPaymentMethodsToSaleDetails(productSellingDto, sale, customerInfo);
+                AddPaymentMethodsToSaleDetails(productSellingDto, sale);
 
                 await _SalesRepository.PostEntity(sale);
 
@@ -115,7 +114,7 @@ namespace InventoryManagement.Application.Services.SalesService
 
         }
 
-        private static void AddPaymentMethodsToSaleDetails(ProductSellingDto productSellingDto, SalesDetails sale, CustomerInfo customerInfo)
+        private static void AddPaymentMethodsToSaleDetails(ProductSellingDto productSellingDto, SalesDetails sale)
         {
             // Sale-PaymentMethod Relationship / Many-to-Many
             List<int> paymentMethodIds = productSellingDto.PaymentMethodIds;
@@ -123,7 +122,7 @@ namespace InventoryManagement.Application.Services.SalesService
             paymentMethodIds.ForEach(Id =>
             {
                 SalePaymentMethod salePaymentMethodProperties = productSellingDto.SalePaymentMethods.Find(fi => fi.PaymentMethodId == Id);
-                salePaymentMethods.Add(new SalePaymentMethod { Sale = sale, Receipt = productSellingDto.Receipt, PaymentMethodId = Id, CustomerInfo = customerInfo, Amount = salePaymentMethodProperties.Amount, DefferedPaymentCount = salePaymentMethodProperties.DefferedPaymentCount });
+                salePaymentMethods.Add(new SalePaymentMethod { Sale = sale, Receipt = productSellingDto.Receipt, PaymentMethodId = Id, /*CustomerInfo = customerInfo, */Amount = salePaymentMethodProperties.Amount, DefferedPaymentCount = salePaymentMethodProperties.DefferedPaymentCount });
             });
 
 
@@ -175,7 +174,7 @@ namespace InventoryManagement.Application.Services.SalesService
                     saleDetailsAndProduct.Product.Count += 1;
                     _SaleDetailsAndProduct.PutEntity(saleDetailsAndProduct);
                     _ProductRepository.PutEntity(saleDetailsAndProduct.Product);
-                    newSalesDetails.SaleDetailsAndProducts.Add(new SaleDetailsAndProduct { ProductId = productId, CampaignId = saleDetailsAndProduct.CampaignId, Operations = SaleOperation.TakenInsteadOfOldProducts, Price = saleDetailsAndProduct.Price, ProductCount = 1 });
+                    newSalesDetails.SaleDetailsAndProducts.Add(new SaleDetailsAndProduct { ProductId = productId, CampaignId = saleDetailsAndProduct.CampaignId, Operations = SaleOperation.RETURNED, Price = saleDetailsAndProduct.Price, ProductCount = 1 });
                 }
 
                 _SalesRepository.PutEntity(SaleDetailsOfOldProdcuts);
@@ -201,14 +200,16 @@ namespace InventoryManagement.Application.Services.SalesService
 
                 var SaleDetailsOfOldProdcuts = _SalesRepository.GetQuery(gq => gq.Id == changeProductRequestDto.SaleIdOfOldProdcuts).First();
 
-                SalesDetails newSaleDetailsForNewTakenProducts = new SalesDetails { Date = DateTime.Now, Total = changeProductRequestDto.Total, BranchId = SaleDetailsOfOldProdcuts.BranchId, UserId = SaleDetailsOfOldProdcuts.UserId };
-
-                AddProductsToSaleDetails(changeProductRequestDto.newProductListToTake, newSaleDetailsForNewTakenProducts);
-
                 //Create or Use existing Customer Info
                 CustomerInfo customerInfo = await CreateOrUsingExistingCustomerInfo(changeProductRequestDto.customerInfoDto.Id, changeProductRequestDto.customerInfoDto.CustomerName, changeProductRequestDto.customerInfoDto.CustomerPhone);
 
-                AddPaymentDetailsToSaleDetails(changeProductRequestDto.paymentDetails, newSaleDetailsForNewTakenProducts, customerInfo);
+                SalesDetails newSaleDetailsForNewTakenProducts = new SalesDetails { CustomerInfo = customerInfo, Date = DateTime.Now, Total = changeProductRequestDto.Total, BranchId = SaleDetailsOfOldProdcuts.BranchId, UserId = SaleDetailsOfOldProdcuts.UserId };
+
+                AddProductsToSaleDetails(changeProductRequestDto.newProductListToTake, newSaleDetailsForNewTakenProducts);
+
+
+
+                AddPaymentDetailsToSaleDetails(changeProductRequestDto.paymentDetails, newSaleDetailsForNewTakenProducts);
 
                 await _SalesRepository.PostEntity(newSaleDetailsForNewTakenProducts);
 
@@ -290,11 +291,11 @@ namespace InventoryManagement.Application.Services.SalesService
             return customerInfo;
         }
 
-        private void AddPaymentDetailsToSaleDetails(List<PaymentDetailsDto> paymentDetailsDto, SalesDetails newSaleDetailsForNewTakenProducts, CustomerInfo customerInfo)
+        private void AddPaymentDetailsToSaleDetails(List<PaymentDetailsDto> paymentDetailsDto, SalesDetails newSaleDetailsForNewTakenProducts)
         {
             paymentDetailsDto.ForEach(paymentDetails =>
             {
-                newSaleDetailsForNewTakenProducts.SalePaymentMethods.Add(new SalePaymentMethod { Sale = newSaleDetailsForNewTakenProducts, Receipt = paymentDetails.Receipt, PaymentMethodId = paymentDetails.PaymentId, CustomerInfo = customerInfo, Amount = paymentDetails.Amount, DefferedPaymentCount = paymentDetails.DefferedPaymentCount });
+                newSaleDetailsForNewTakenProducts.SalePaymentMethods.Add(new SalePaymentMethod { Sale = newSaleDetailsForNewTakenProducts, Receipt = paymentDetails.Receipt, PaymentMethodId = paymentDetails.PaymentId, /*CustomerInfo = customerInfo,*/ Amount = paymentDetails.Amount, DefferedPaymentCount = paymentDetails.DefferedPaymentCount });
             });
         }
     }

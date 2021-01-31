@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace InventoryManagement.DTOs
 {
-    public class SaleUserBranchProductsDTO
+    public class SaleUserBranchProductsCustomerInfoDTO
     {
         public int Id { get; set; }
         //[JsonIgnore]
@@ -18,6 +18,7 @@ namespace InventoryManagement.DTOs
         public Branch Branch { get; set; }
         public decimal Total { get; set; }
         public decimal RefundAmount { get; set; }
+        public CustomerInfo CustomerInfo { get; set; }
         public List<SoledProductDetailsDto> SoledProductDetails { get; set; }
         public List<PaymentDetailsDto> PaymentDetails { get; set; }
     }
