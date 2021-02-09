@@ -29,6 +29,8 @@ namespace InventoryManagement.Application.AutoMapper.Profiles
                  .ForMember(q => q.Description, opt => opt.MapFrom(s => s.Description))
                  .ForMember(q => q.SellingPrice, opt => opt.MapFrom(s => s.SellingPrice))
                  .ForMember(q => q.Branch, opt => opt.MapFrom(s => s.Branch))
+                 .ForMember(q => q.CampaignDto, opt => opt.MapFrom(s => s.Campaign))
+                 .ForMember(q => q.CampaingId, opt => opt.MapFrom(s => s.CampaignId))
                  .ForMember(q => q.Date, opt => opt.MapFrom(s => s.SaleDetailsAndProducts.Select(se => se.Sale.Date).ToString()));
 
 

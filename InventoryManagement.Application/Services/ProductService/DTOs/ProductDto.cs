@@ -1,4 +1,5 @@
 ﻿using InventoryManagement.Application.Services.BranchesService.DTOs;
+using InventoryManagement.Application.Services.CampaignService.DTOs;
 using InventoryManagement.Application.Services.ColorService.DTOs;
 using InventoryManagement.Application.Services.SalesService.DTOs;
 using System;
@@ -24,10 +25,12 @@ namespace InventoryManagement.Application.Services.ProductService.DTOs
         public int Count { get; set; }
         public DateTime ExpirationDate { get; set; }
         public string Description { get; set; }
+        public int CampaignId { get; set; }
+        public CampaignDto Campaign { get; set; }
 
         public int? BranchId { get; set; }
         public BranchDto Branch { get; set; }
-
+        [Newtonsoft.Json.JsonIgnore]
         public List<SaleDetailsAndProductDto> SaleDetailsAndProducts { get; set; }
     }
 }

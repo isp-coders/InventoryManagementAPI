@@ -82,7 +82,7 @@ namespace InventoryManagement.Interface.Controllers
         [Route("GetUsers")]
         public ActionResult GetUsers(DataSourceLoadOptions loadOptions)
         {
-            var result = userService.GetEntities(loadOptions, inc => inc.Role);
+            var result = userService.GetEntities(loadOptions, "Role");
             return Ok(result);
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace InventoryManagement.Models
@@ -7,10 +8,14 @@ namespace InventoryManagement.Models
     public class RolePermession
     {
         public int Id { get; set; }
+        [StringLength(50)]
         public string RoleKey { get; set; }
         public string Icon { get; set; }
+        [StringLength(50)]
         public string Title { get; set; }
+        [StringLength(50)]
         public string Translate { get; set; }
+        [StringLength(50)]
         public string URL { get; set; }
         public int ParentId { get; set; }
         public bool IsParent { get; set; }

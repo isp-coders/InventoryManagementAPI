@@ -10,6 +10,8 @@ using System.Net;
 using AutoMapper;
 using InventoryManagement.Utils.Exceptions;
 using Sample;
+using InventoryManagement.Application.Services.SalesService.DTOs;
+using System.Collections.Generic;
 
 namespace InventoryManagement.Controllers
 {
@@ -35,7 +37,7 @@ namespace InventoryManagement.Controllers
             UIResponse response = new UIResponse();
             if (result is null)
             {
-                throw new InventoryManagementException("EXCEPTIONS.NO_SUCH_PRODUCT", HttpStatusCode.OK);
+                throw new InventoryManagementException("EXCEPTIONS.NO_SUCH_PRODUCT", HttpStatusCode.BadRequest);
             }
             else
             {
@@ -64,5 +66,34 @@ namespace InventoryManagement.Controllers
             var result = _SalesService.GetSelledProductsByUserId(Id, loadOptions);
             return result;
         }
+
+        [Route("GetCustomerPurchasedProducts")]
+        [HttpGet]
+        public UIResponse GetCustomerPurchasedProducts(int CustomerInfoId, DataSourceLoadOptions loadOptions)
+        {
+            var result = _SalesService.GetCustomerPurchasedProducts(CustomerInfoId, loadOptions);
+            return result;
+        }
+
+        [Route("RefundProducts")]
+        [HttpPost]
+        public async Task<UIResponse> RefundProducts([FromForm] string values)
+        {
+            RefundProductsDto refundProductsRequestDto = new RefundProductsDto();
+            JsonConvert.PopulateObject(values, refundProductsRequestDto);
+            var result = await _SalesService.RefundProducts(refundProductsRequestDto);
+            return result;
+        }
+
+        [Route("ChangeProducts")]
+        [HttpPost]
+        public async Task<UIResponse> ChangeProducts([FromForm] string values)
+        {
+            ChangeProductDto ChangeProductDto = new ChangeProductDto();
+            JsonConvert.PopulateObject(values, ChangeProductDto);
+            var result = await _SalesService.ChangeProducts(ChangeProductDto);
+            return result;
+        }
+
     }
 }

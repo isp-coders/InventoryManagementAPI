@@ -2,6 +2,7 @@
 using InventoryManagement.Application.Services.SalesService.DTOs;
 using InventoryManagement.Core.Enums;
 using InventoryManagement.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,6 +27,7 @@ namespace InventoryManagement.Application.DTOs
         public int? BranchId { get; set; }
         public int RoleId { get; set; }
         public Role Role { get; set; }
+        [JsonIgnore]
         public List<SalesDetails> Sales { get; set; }
     }
 }

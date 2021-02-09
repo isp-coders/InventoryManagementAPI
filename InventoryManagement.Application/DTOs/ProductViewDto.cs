@@ -1,4 +1,7 @@
-﻿using InventoryManagement.Models;
+﻿using InventoryManagement.Application.Services.BranchesService.DTOs;
+using InventoryManagement.Application.Services.CampaignService.DTOs;
+using InventoryManagement.Application.Services.ColorService.DTOs;
+using InventoryManagement.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +16,7 @@ namespace InventoryManagement.DTOs
         public string ProductBarcode { get; set; }
         public string ProductCode { get; set; }
         public int ColorId { get; set; }
-        public Color Color { get; set; }
+        public ColorDto Color { get; set; }
         public int Gender { get; set; }
         public string Price { get; set; }
         public string ProductYear { get; set; }
@@ -25,7 +28,9 @@ namespace InventoryManagement.DTOs
         public decimal SellingPrice { get; set; }
         public int TempId { get; set; }
         public int BranchId { get; set; }
-        public Branch Branch { get; set; }
+        public BranchDto Branch { get; set; }
         public string Date { get; set; }
+        public int CampaingId { get; set; }
+        public CampaignDto CampaignDto { get; set; }
     }
 }

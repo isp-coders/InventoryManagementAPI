@@ -15,31 +15,46 @@ namespace InventoryManagement.Application.Services.ProductTypeService
         private readonly IRepository<ProductType> _ProductTypeRepository;
         private readonly IRepository<ProductTypeAndProperty> _ProductTypeAndPropertyRepository;
         private readonly IMapper _mapper;
-        public ProductTypeService(IRepository<ProductType> ProductTypeRepository, IRepository<ProductTypeAndProperty> _ProductTypeAndPropertyRepository, IMapper _mapper) : base(ProductTypeRepository, _mapper)
+        private readonly IUnitOfWork unitOfWork;
+        public ProductTypeService(IRepository<ProductType> ProductTypeRepository, IRepository<ProductTypeAndProperty> _ProductTypeAndPropertyRepository, IMapper _mapper, IUnitOfWork unitOfWork) : base(ProductTypeRepository, _mapper)
         {
             this._mapper = _mapper;
             this._ProductTypeRepository = ProductTypeRepository;
             this._ProductTypeAndPropertyRepository = _ProductTypeAndPropertyRepository;
+            this.unitOfWork = unitOfWork;
         }
 
 
         public async Task<UIResponse> AddPropertiesToProductType(AddPropertiesToProductTypeDto addPropertiesToProductTypeDto)
         {
-            if (addPropertiesToProductTypeDto.ProductTypeId != 0 && addPropertiesToProductTypeDto.ProductProperties.Count > 0)
+            try
             {
-                await _ProductTypeAndPropertyRepository.DeleteWhere(gq => gq.ProductTypeId == addPropertiesToProductTypeDto.ProductTypeId);
-                List<ProductTypeAndProperty> productTypeAndProperties = new List<ProductTypeAndProperty>();
-                addPropertiesToProductTypeDto.ProductProperties.ForEach(_productProperty =>
+                unitOfWork.BeginTransaction();
+                if (addPropertiesToProductTypeDto.ProductTypeId != 0 && addPropertiesToProductTypeDto.ProductProperties.Count > 0)
                 {
-                    productTypeAndProperties.Add(new ProductTypeAndProperty { ProductTypeId = addPropertiesToProductTypeDto.ProductTypeId, ProductPropertyId = _productProperty });
-                });
+                    _ProductTypeAndPropertyRepository.DeleteWhere(gq => gq.ProductTypeId == addPropertiesToProductTypeDto.ProductTypeId);
+                    List<ProductTypeAndProperty> productTypeAndProperties = new List<ProductTypeAndProperty>();
+                    addPropertiesToProductTypeDto.ProductProperties.ForEach(_productProperty =>
+                    {
+                        productTypeAndProperties.Add(new ProductTypeAndProperty { ProductTypeId = addPropertiesToProductTypeDto.ProductTypeId, ProductPropertyId = _productProperty });
+                    });
 
-                await _ProductTypeAndPropertyRepository.PostEntities(productTypeAndProperties);
-                return new UIResponse();
+                    await _ProductTypeAndPropertyRepository.PostEntities(productTypeAndProperties);
+                    await _ProductTypeAndPropertyRepository.SaveChangesAsync();
+                    unitOfWork.CommitTransaction();
+                    return new UIResponse();
+                }
+                else
+                {
+                    return new UIResponse() { IsError = true };
+                }
+
+                
             }
-            else
+            catch (Exception e)
             {
-                return new UIResponse() { IsError = true };
+                unitOfWork.RollBackTransaction();
+                throw e;
             }
 
         }

@@ -105,5 +105,7 @@ namespace InventoryManagement.Data
         public DbSet<ProductType> ProductTypes { get; set; }
         public DbSet<ProductProperty> ProductProperties { get; set; }
         public DbSet<ProductTypeAndProperty> ProductTypeAndProperties { get; set; }
+        public DbSet<Campaign> Campaigns { get; set; }
+
     }
 }

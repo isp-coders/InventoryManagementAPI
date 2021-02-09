@@ -1,7 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Optimize>false</Optimize>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
   <ItemGroup>
@@ -41,16 +47,22 @@
     <Compile Remove="Migrations\20200928043608_Add Product Properties Table.Designer.cs" />
     <Compile Remove="Migrations\20200928044052_Changing Name from ProductProperties to ProductProperty.cs" />
     <Compile Remove="Migrations\20200928044052_Changing Name from ProductProperties to ProductProperty.Designer.cs" />
+    <Compile Remove="Migrations\20201120055855_string lerin uzunlugu belirlendi.cs" />
+    <Compile Remove="Migrations\20201120055855_string lerin uzunlugu belirlendi.Designer.cs" />
+    <Compile Remove="Migrations\20201120060131_string lerin uzunlugu belirlendi.cs" />
+    <Compile Remove="Migrations\20201120060131_string lerin uzunlugu belirlendi.Designer.cs" />
+    <Compile Remove="Migrations\20201120060229_string lerin uzunlugu belirlendi.cs" />
+    <Compile Remove="Migrations\20201120060229_string lerin uzunlugu belirlendi.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.8">
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.8">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

@@ -4,7 +4,9 @@ using DevExtreme.AspNet.Data.ResponseModel;
 using InventoryManagement.Application.DTOs;
 using InventoryManagement.Application.Services.ProductService.DTOs;
 using InventoryManagement.Core.IRepositories;
+using InventoryManagement.Core.Models;
 using InventoryManagement.Models;
+using InventoryManagement.Utils.Exceptions;
 using InventoryManagement.Utils.Response;
 using Newtonsoft.Json;
 using Sample;
@@ -21,10 +23,12 @@ namespace InventoryManagement.Application.Services.ProductService
     {
 
         private readonly IRepository<Product> _ProductRepository;
+        private readonly IRepository<Campaign> _CampaignRepository;
         private readonly IMapper _mapper;
-        public ProductService(IRepository<Product> ProductRepository, IMapper _mapper) : base(ProductRepository, _mapper)
+        public ProductService(IRepository<Product> ProductRepository, IRepository<Campaign> CampaignRepository, IMapper _mapper) : base(ProductRepository, _mapper)
         {
             _ProductRepository = ProductRepository;
+            _CampaignRepository = CampaignRepository;
             this._mapper = _mapper;
         }
 
@@ -35,13 +39,14 @@ namespace InventoryManagement.Application.Services.ProductService
 
             CheckBarcodeAndAddIt(Products);
 
-            AddProductsDto addProductsDto = new AddProductsDto();
-            List<Product> AddedNewProducts = new List<Product>();
-            CheckExistedProductCodes(Products, addProductsDto, AddedNewProducts);
+            //AddProductsDto addProductsDto = new AddProductsDto();
+            //List<Product> AddedNewProducts = new List<Product>();
+            //CheckExistedProductCodes(Products, addProductsDto, AddedNewProducts);
 
-            if (AddedNewProducts.Count > 0)
-                await _ProductRepository.PostEntities(AddedNewProducts);
-            return new UIResponse { Entity = addProductsDto, StatusCode = HttpStatusCode.OK, IsError = addProductsDto.ExistedProducts.Count > 0, Message = "EXCEPTIONS.EXISTING_PRODUCTS" };
+            //if (AddedNewProducts.Count > 0)
+            await _ProductRepository.PostEntities(Products);
+            await _ProductRepository.SaveChangesAsync();
+            return new UIResponse { data = Products, StatusCode = HttpStatusCode.OK };
         }
 
         private void CheckExistedProductCodes(List<Product> Products, AddProductsDto addProductsDto, List<Product> AddedNewProducts)
@@ -95,7 +100,7 @@ namespace InventoryManagement.Application.Services.ProductService
         public UIResponse GetProducts(DataSourceLoadOptions loadOptions)
         {
             loadOptions.RemoteGrouping = false;
-            var loadResult = DataSourceLoader.Load(_ProductRepository.GetEntities(), loadOptions);
+            var loadResult = DataSourceLoader.Load(_ProductRepository.GetQuery(null, null, "Campaign"), loadOptions);
             if (loadResult.data.OfType<Product>().Any())
             {
                 loadResult.data = _mapper.Map<List<ProductDto>>(loadResult.data.Cast<Product>().ToList());
@@ -115,9 +120,31 @@ namespace InventoryManagement.Application.Services.ProductService
                     product.Count = 0;
                 }
             }
-            await _ProductRepository.PutEntity(product);
+            _ProductRepository.PutEntity(product);
+            await _ProductRepository.SaveChangesAsync();
 
             return new UIResponse { Entity = _mapper.Map<ProductDto>(product), StatusCode = HttpStatusCode.OK, IsError = false };
+
+        }
+
+        public async Task<UIResponse> ApplyCampaign(ApplyCampaignRequestDto applyCampaignDto)
+        {
+            if (applyCampaignDto.ProductsId.Count > 0 && applyCampaignDto.CampaignId != 0)
+            {
+                var list = _ProductRepository.GetQuery().Where(gq => applyCampaignDto.ProductsId.Any(productId => productId == gq.Id)).ToList();
+                list.ForEach(fe =>
+                {
+                    fe.CampaignId = applyCampaignDto.CampaignId;
+                });
+                _ProductRepository.PutEntities(list);
+                await _ProductRepository.SaveChangesAsync();
+                return new UIResponse { Entity = applyCampaignDto };
+
+            }
+            else
+            {
+                throw new InventoryManagementException("EXCEPTIONS.ERROR", HttpStatusCode.BadRequest);
+            }
 
         }
     }

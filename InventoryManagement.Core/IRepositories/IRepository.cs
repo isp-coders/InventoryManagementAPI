@@ -11,15 +11,16 @@ namespace InventoryManagement.Core.IRepositories
     {
         IQueryable<T> GetQuery(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = "");
         Task<T> PutEntity(int id, string values);
-        Task<T> PutEntity(T Entity);
-        Task<T> ModifyEntity(T Entity);
+        T PutEntity(T Entity);
+        List<T> PutEntities(List<T> Entities);
         Task<T> PostEntity(T Entity);
         Task<List<T>> PostEntities(List<T> Entities);
         Task<T> DeleteEntity(int id);
-        Task DeleteWhere(Expression<Func<T, bool>> predicate);
+        void DeleteWhere(Expression<Func<T, bool>> predicate);
         ValueTask<T> FindEntity(int id);
         IQueryable<T> GetEntities(params Expression<Func<T, object>>[] includes);
-        IQueryable<T> GetIncludableEntities<EntityToInclude>(params Expression<Func<T, EntityToInclude>>[] navigationPropertyPaths);
+        Task SaveChangesAsync();
+        void SaveChanges();
 
     }
 }

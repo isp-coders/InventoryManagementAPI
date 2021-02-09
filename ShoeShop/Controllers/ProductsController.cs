@@ -7,6 +7,9 @@ using AutoMapper;
 using InventoryManagement.Utils.Response;
 using System.Net;
 using InventoryManagement.Utils.Exceptions;
+using InventoryManagement.Application.Services.ProductService.DTOs;
+using InventoryManagement.Application.Services.SalesService.DTOs;
+using Newtonsoft.Json;
 
 namespace InventoryManagement.Controllers
 {
@@ -81,5 +84,15 @@ namespace InventoryManagement.Controllers
             }
             return response;
         }
+
+        [HttpPost("ApplyCampaign")]
+        public async Task<UIResponse> ApplyCampaign([FromForm] string values)
+        {
+            ApplyCampaignRequestDto applyCampaignRequestDto = new ApplyCampaignRequestDto();
+            JsonConvert.PopulateObject(values, applyCampaignRequestDto);
+            var result = await _productService.ApplyCampaign(applyCampaignRequestDto);
+            return result;
+        }
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InventoryManagement.Core.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,5 +19,7 @@ namespace InventoryManagement.DTOs
         public DateTime ExpirationDate { get; set; }
         public string Description { get; set; }
         public string BranchName { get; set; }
+        public decimal Price { get; set; }
+        public SaleOperation Operations { get; set; }
     }
 }

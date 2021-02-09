@@ -1,4 +1,5 @@
-﻿using InventoryManagement.Models;
+﻿using InventoryManagement.Application.Services.SalesService.DTOs;
+using InventoryManagement.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace InventoryManagement.DTOs
         public string CustomerPhone { get; set; }
         public List<SalePaymentMethod> SalePaymentMethods { get; set; }
         public List<int> PaymentMethodIds { get; set; }
-        public List<int> ProductIds { get; set; }
+        public ProductIdsAndPrices ProductIdsAndPricesAndCampaignIds { get; set; }
+
     }
 }

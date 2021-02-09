@@ -32,7 +32,7 @@ namespace InventoryManagement.Controllers
         }
 
         // PUT: api/PaymentMethods/5
-        [HttpPost("Update/{id}")]
+        [HttpPost("Update")]
         public async Task<IActionResult> PutPaymentMethod([FromForm] int key, [FromForm] string values)
         {
 

@@ -15,22 +15,52 @@ namespace InventoryManagement.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.8")
+                .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "5.0.0");
+
+            modelBuilder.Entity("InventoryManagement.Core.Models.Campaign", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("Percent")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Campaigns");
+                });
 
             modelBuilder.Entity("InventoryManagement.Core.Models.ProductProperty", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("DataField")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("EditorType")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("FormItemEditorOptions")
                         .HasColumnType("nvarchar(max)");
@@ -42,10 +72,12 @@ namespace InventoryManagement.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Translate")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Type")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("Validation")
                         .HasColumnType("nvarchar(max)");
@@ -60,10 +92,11 @@ namespace InventoryManagement.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -90,13 +123,15 @@ namespace InventoryManagement.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -108,13 +143,15 @@ namespace InventoryManagement.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("ColorName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("ShortenColor")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
 
@@ -126,13 +163,15 @@ namespace InventoryManagement.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("CustomerName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("CustomerPhone")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 
@@ -144,10 +183,11 @@ namespace InventoryManagement.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("PaymentName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<bool>("PaymentType")
                         .HasColumnType("bit");
@@ -162,9 +202,12 @@ namespace InventoryManagement.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int?>("BranchId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CampaignId")
                         .HasColumnType("int");
 
                     b.Property<int?>("ColorId")
@@ -186,19 +229,23 @@ namespace InventoryManagement.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ProductBarcode")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("ProductCode")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("ProductName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("ProductTypeId")
                         .HasColumnType("int");
 
                     b.Property<string>("ProductYear")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<decimal>("SellingPrice")
                         .HasColumnType("decimal(18,2)");
@@ -209,6 +256,8 @@ namespace InventoryManagement.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BranchId");
+
+                    b.HasIndex("CampaignId");
 
                     b.HasIndex("ColorId");
 
@@ -222,13 +271,14 @@ namespace InventoryManagement.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int>("RoleGroupId")
                         .HasColumnType("int");
 
                     b.Property<string>("RoleName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -249,7 +299,7 @@ namespace InventoryManagement.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.HasKey("RoleId", "RolePermessionId");
 
@@ -263,7 +313,7 @@ namespace InventoryManagement.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("Icon")
                         .HasColumnType("nvarchar(max)");
@@ -278,16 +328,20 @@ namespace InventoryManagement.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("RoleKey")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Translate")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("URL")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -302,10 +356,21 @@ namespace InventoryManagement.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("CampaignId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Operations")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<int>("ProductCount")
                         .HasColumnType("int");
 
                     b.HasKey("SaleId", "ProductId");
+
+                    b.HasIndex("CampaignId");
 
                     b.HasIndex("ProductId");
 
@@ -323,18 +388,14 @@ namespace InventoryManagement.Migrations
                     b.Property<double>("Amount")
                         .HasColumnType("float");
 
-                    b.Property<int>("CustomerInfoId")
-                        .HasColumnType("int");
-
                     b.Property<int>("DefferedPaymentCount")
                         .HasColumnType("int");
 
                     b.Property<string>("Receipt")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("SaleId", "PaymentMethodId");
-
-                    b.HasIndex("CustomerInfoId");
 
                     b.HasIndex("PaymentMethodId");
 
@@ -346,13 +407,19 @@ namespace InventoryManagement.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int>("BranchId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("CustomerInfoId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
+
+                    b.Property<decimal>("RefundAmount")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("Total")
                         .HasColumnType("decimal(18,2)");
@@ -364,6 +431,8 @@ namespace InventoryManagement.Migrations
 
                     b.HasIndex("BranchId");
 
+                    b.HasIndex("CustomerInfoId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Sales");
@@ -374,43 +443,52 @@ namespace InventoryManagement.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int?>("BranchId")
                         .HasColumnType("int");
 
                     b.Property<string>("Cellphone")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("ImagePath")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<DateTime?>("LastSuccesfulLoginDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
                     b.Property<string>("Salt")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("UserCode")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("UserStatus")
                         .HasColumnType("int");
@@ -437,6 +515,10 @@ namespace InventoryManagement.Migrations
                         .HasForeignKey("ProductTypeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("ProductProperty");
+
+                    b.Navigation("ProductType");
                 });
 
             modelBuilder.Entity("InventoryManagement.Models.Product", b =>
@@ -444,6 +526,11 @@ namespace InventoryManagement.Migrations
                     b.HasOne("InventoryManagement.Models.Branch", "Branch")
                         .WithMany("Products")
                         .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("InventoryManagement.Core.Models.Campaign", "Campaign")
+                        .WithMany("Products")
+                        .HasForeignKey("CampaignId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("InventoryManagement.Models.Color", "Color")
@@ -456,6 +543,14 @@ namespace InventoryManagement.Migrations
                         .HasForeignKey("ProductTypeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Branch");
+
+                    b.Navigation("Campaign");
+
+                    b.Navigation("Color");
+
+                    b.Navigation("ProductType");
                 });
 
             modelBuilder.Entity("InventoryManagement.Models.RoleAndRolePermession", b =>
@@ -471,10 +566,19 @@ namespace InventoryManagement.Migrations
                         .HasForeignKey("RolePermessionId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("RolePermession");
                 });
 
             modelBuilder.Entity("InventoryManagement.Models.SaleDetailsAndProduct", b =>
                 {
+                    b.HasOne("InventoryManagement.Core.Models.Campaign", "Campaign")
+                        .WithMany("saleDetailsAndProducts")
+                        .HasForeignKey("CampaignId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("InventoryManagement.Models.Product", "Product")
                         .WithMany("SaleDetailsAndProducts")
                         .HasForeignKey("ProductId")
@@ -486,16 +590,16 @@ namespace InventoryManagement.Migrations
                         .HasForeignKey("SaleId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Campaign");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Sale");
                 });
 
             modelBuilder.Entity("InventoryManagement.Models.SalePaymentMethod", b =>
                 {
-                    b.HasOne("InventoryManagement.Models.CustomerInfo", "CustomerInfo")
-                        .WithMany("SalePaymentMethods")
-                        .HasForeignKey("CustomerInfoId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("InventoryManagement.Models.PaymentMethod", "PaymentMethod")
                         .WithMany("SalePaymentMethods")
                         .HasForeignKey("PaymentMethodId")
@@ -507,6 +611,10 @@ namespace InventoryManagement.Migrations
                         .HasForeignKey("SaleId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("PaymentMethod");
+
+                    b.Navigation("Sale");
                 });
 
             modelBuilder.Entity("InventoryManagement.Models.SalesDetails", b =>
@@ -517,11 +625,22 @@ namespace InventoryManagement.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("InventoryManagement.Models.CustomerInfo", "CustomerInfo")
+                        .WithMany("SalesDetails")
+                        .HasForeignKey("CustomerInfoId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("InventoryManagement.Models.User", "User")
                         .WithMany("Sales")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Branch");
+
+                    b.Navigation("CustomerInfo");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("InventoryManagement.Models.User", b =>
@@ -536,6 +655,82 @@ namespace InventoryManagement.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Branch");
+
+                    b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("InventoryManagement.Core.Models.Campaign", b =>
+                {
+                    b.Navigation("Products");
+
+                    b.Navigation("saleDetailsAndProducts");
+                });
+
+            modelBuilder.Entity("InventoryManagement.Core.Models.ProductProperty", b =>
+                {
+                    b.Navigation("ProductTypeAndProperties");
+                });
+
+            modelBuilder.Entity("InventoryManagement.Core.Models.ProductType", b =>
+                {
+                    b.Navigation("Products");
+
+                    b.Navigation("ProductTypeAndProperties");
+                });
+
+            modelBuilder.Entity("InventoryManagement.Models.Branch", b =>
+                {
+                    b.Navigation("Products");
+
+                    b.Navigation("Sales");
+
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("InventoryManagement.Models.Color", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("InventoryManagement.Models.CustomerInfo", b =>
+                {
+                    b.Navigation("SalesDetails");
+                });
+
+            modelBuilder.Entity("InventoryManagement.Models.PaymentMethod", b =>
+                {
+                    b.Navigation("SalePaymentMethods");
+                });
+
+            modelBuilder.Entity("InventoryManagement.Models.Product", b =>
+                {
+                    b.Navigation("SaleDetailsAndProducts");
+                });
+
+            modelBuilder.Entity("InventoryManagement.Models.Role", b =>
+                {
+                    b.Navigation("RoleAndRolePermessions");
+
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("InventoryManagement.Models.RolePermession", b =>
+                {
+                    b.Navigation("RoleAndRolePermessions");
+                });
+
+            modelBuilder.Entity("InventoryManagement.Models.SalesDetails", b =>
+                {
+                    b.Navigation("SaleDetailsAndProducts");
+
+                    b.Navigation("SalePaymentMethods");
+                });
+
+            modelBuilder.Entity("InventoryManagement.Models.User", b =>
+                {
+                    b.Navigation("Sales");
                 });
 #pragma warning restore 612, 618
         }

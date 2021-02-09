@@ -29,25 +29,26 @@ namespace InventoryManagement.EntityFrameworkCore.EntityFrameworkCore.Repositori
             var Entity = await FindEntity(id);
             if (Entity != null)
             {
-                _context.Remove(Entity);
+                if (_context.Entry(Entity).State == EntityState.Detached)
+                {
+                    Table.Attach(Entity);
+                }
+                Table.Remove(Entity);
             }
             else
             {
                 return null;
             }
-
-            await _context.SaveChangesAsync();
             return Entity;
         }
 
-        public async Task DeleteWhere(Expression<Func<T, bool>> predicate)
+        public void DeleteWhere(Expression<Func<T, bool>> predicate)
         {
             IQueryable<T> queryable = Table;
             if (predicate != null)
             {
-                IQueryable<T> entities = queryable.AsNoTracking().Where(predicate);
-                _context.RemoveRange(entities);
-                await _context.SaveChangesAsync();
+                IQueryable<T> entities = queryable.Where(predicate);
+                Table.RemoveRange(entities);
             }
         }
 
@@ -80,28 +81,32 @@ namespace InventoryManagement.EntityFrameworkCore.EntityFrameworkCore.Repositori
 
         public async Task<List<T>> PostEntities(List<T> Entities)
         {
-            //List<T> Entities = new List<T>();
-            //JsonConvert.PopulateObject(values, Entities);
-            _context.AddRange(Entities);
-            await _context.SaveChangesAsync();
-
+            await _context.AddRangeAsync(Entities);
             return Entities;
         }
 
         public async Task<T> PostEntity(T Entity)
         {
-            _context.Add(Entity);
-            await _context.SaveChangesAsync();
+            await _context.AddAsync(Entity);
+            return Entity;
+        }
+
+        public T PutEntity(T Entity)
+        {
+            Table.Attach(Entity);
+            _context.Entry(Entity).State = EntityState.Modified;
 
             return Entity;
         }
 
-        public async Task<T> PutEntity(T Entity)
+        public List<T> PutEntities(List<T> Entities)
         {
-            _context.Entry(Entity).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-
-            return Entity;
+            Table.AttachRange(Entities);
+            foreach (var item in Entities)
+            {
+                _context.Entry<T>(item).State = EntityState.Modified;
+            }
+            return Entities;
         }
 
         public async Task<T> PutEntity(int id, string values)
@@ -109,35 +114,35 @@ namespace InventoryManagement.EntityFrameworkCore.EntityFrameworkCore.Repositori
             var Entity = await _context.FindAsync<T>(id);
             JsonConvert.PopulateObject(values, Entity);
             _context.Entry(Entity).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-
             return Entity;
         }
 
-        public async Task<T> ModifyEntity(T Entity)
-        {
-            _context.Entry(Entity).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+        //public IQueryable<T> GetIncludableEntities<EntityToInclude>(params Expression<Func<T, EntityToInclude>>[] navigationPropertyPaths)
+        //{
+        //    IQueryable<T> queryableEntities = Table.AsQueryable();
+        //    if (navigationPropertyPaths.Length > 0)
+        //    {
+        //        foreach (var propertyPath in navigationPropertyPaths)
+        //        {
+        //            queryableEntities.Include(propertyPath);
+        //        }
+        //        return queryableEntities;
+        //    }
+        //    else
+        //    {
+        //        return Table.AsQueryable();
+        //    }
 
-            return Entity;
+        //}
+
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
         }
 
-        public IQueryable<T> GetIncludableEntities<EntityToInclude>(params Expression<Func<T, EntityToInclude>>[] navigationPropertyPaths)
+        public void SaveChanges()
         {
-            IQueryable<T> queryableEntities = Table.AsQueryable();
-            if (navigationPropertyPaths.Length > 0)
-            {
-                foreach (var propertyPath in navigationPropertyPaths)
-                {
-                    queryableEntities.Include(propertyPath);
-                }
-                return queryableEntities;
-            }
-            else
-            {
-                return Table.AsQueryable();
-            }
-
+            _context.SaveChanges();
         }
 
         public IQueryable<T> GetEntities(params Expression<Func<T, object>>[] includes)
@@ -153,22 +158,49 @@ namespace InventoryManagement.EntityFrameworkCore.EntityFrameworkCore.Repositori
                         var Body = item.GetType().GetProperty("Body").GetValue(item, null);
                         IList Arguments = Body.GetType().GetProperty("Arguments").GetValue(Body, null) as IList;
 
+                        List<string> childNavigations = new List<string>();
+                        foreach (var argument in Arguments)
+                        {
+
+                            if (argument.GetType().GetProperty("Arguments") != null)
+                            {
+                                IList childList = argument.GetType().GetProperty("Arguments").GetValue(argument, null) as IList;
+
+
+                                //var Include = query.Include(Arguments[0] as MemberExpression);
+                                foreach (var property in childList)
+                                {
+                                    childNavigations.AddRange(property.ToString().Split(".").Skip(1));
+                                    //var ii = property;
+                                }
+                            }
+                            else
+                            {
+                                childNavigations.AddRange(argument.ToString().Split(".").Skip(1));
+                            }
+                        }
+                        if (childNavigations.Count > 0)
+                        {
+                            query = query.Include(string.Join(".", childNavigations));
+                        }
                         List<string> navigations = new List<string>();
 
                         //var Include = query.Include(Arguments[0] as MemberExpression);
-                        foreach (var property in Arguments)
-                        {
-                            navigations.Add(property.ToString().Split(".")[1]);
-                            //var ii = property;
-                        }
+                        //foreach (var property in Arguments)
+                        //{
+                        //    navigations.AddRange(property.ToString().Split(".").Skip(1));
+                        //    //var ii = property;
+                        //}
 
-                        string mainNavigation = navigations[0];
-                        query.Include(mainNavigation);
-                        navigations.RemoveAt(0);
-                        navigations.ForEach(nav =>
-                        {
-                            query = query.Include(String.Concat(mainNavigation, ".", nav));
-                        });
+                        //string mainNavigation = navigations[0];
+                        //query.Include(mainNavigation);
+                        //navigations.RemoveAt(0);
+                        //navigations.ForEach(nav =>
+                        //{
+                        //    query = query.Include(String.Concat(mainNavigation, ".", nav));
+                        //});
+                        //query = query.Include(string.Join(".", navigations));
+
                     }
                     else
                     {

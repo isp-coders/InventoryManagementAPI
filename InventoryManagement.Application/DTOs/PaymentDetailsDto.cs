@@ -7,6 +7,7 @@ namespace InventoryManagement.DTOs
 {
     public class PaymentDetailsDto
     {
+        public int PaymentId { get; set; }
         public string PaymentName { get; set; }
         public bool PaymentType { get; set; }
         public int DefferedPaymentCount { get; set; }

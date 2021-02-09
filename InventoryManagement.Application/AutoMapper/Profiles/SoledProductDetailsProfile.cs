@@ -23,6 +23,8 @@ namespace InventoryManagement.Application.AutoMapper.Profiles
     .ForMember(q => q.ProductCount, opt => opt.MapFrom(s => s.ProductCount))
     .ForMember(q => q.ExpirationDate, opt => opt.MapFrom(s => s.Product.ExpirationDate))
     .ForMember(q => q.Description, opt => opt.MapFrom(s => s.Product.Description))
+    .ForMember(q => q.Price, opt => opt.MapFrom(s => s.Price))
+    .ForMember(q => q.Operations, opt => opt.MapFrom(s => s.Operations))
     ;
         }
     }

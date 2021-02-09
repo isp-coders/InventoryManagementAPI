@@ -31,7 +31,7 @@ namespace InventoryManagement.Application.Services.RoleService
 
         public UIResponse GetRoleAuthorities(int RoleId, DataSourceLoadOptions loadOptions)
         {
-            LoadResult loadResult = DataSourceLoader.Load(RoleRepository.GetEntities().Where(wh => wh.Id == RoleId), loadOptions);
+            LoadResult loadResult = DataSourceLoader.Load(RoleRepository.GetQuery().Where(wh => wh.Id == RoleId), loadOptions);
             if (loadResult.data.OfType<Role>().Any())
             {
                 loadResult.data = _mapper.Map<List<RoleDto>>(loadResult.data.Cast<Role>().ToList());
@@ -42,13 +42,15 @@ namespace InventoryManagement.Application.Services.RoleService
         public async Task SaveRolePermessions(RoleIdAndPermessions SaveRolePermessions)
         {
 
-            await RoleAndPermessionRepository.DeleteWhere(wh => wh.RoleId == SaveRolePermessions.RoleId);
+            RoleAndPermessionRepository.DeleteWhere(wh => wh.RoleId == SaveRolePermessions.RoleId);
             await RoleAndPermessionRepository.PostEntities(SaveRolePermessions.RolePermessions.Distinct()
-                .Select(rolePermessionId => new RoleAndRolePermession
-                {
-                    RoleId = SaveRolePermessions.RoleId,
-                    RolePermessionId = rolePermessionId
-                }).ToList());
+               .Select(rolePermessionId => new RoleAndRolePermession
+               {
+                   RoleId = SaveRolePermessions.RoleId,
+                   RolePermessionId = rolePermessionId
+               }).ToList());
+
+            await RoleAndPermessionRepository.SaveChangesAsync();
 
         }
 

@@ -54,23 +54,21 @@ namespace InventoryManagement.Reporting.Services
             // Returns report layout data stored in a Report Storage using the specified URL. 
             // This method is called only for valid URLs after the IsValidUrl method is called.
             string reportName = url.Substring(0, url.IndexOf("?"));
-            string paramName = url.Substring(url.IndexOf("?") + 1, url.IndexOf("=") - (url.IndexOf("?") + 1));
-            string[] paramValue = url.Substring(url.IndexOf("=") + 1).Split(",");
             try
             {
-                if (Directory.EnumerateFiles(ReportDirectory).Select(Path.GetFileNameWithoutExtension).Contains(reportName))
-                {
-                    return File.ReadAllBytes(Path.Combine(ReportDirectory, reportName + FileExtension));
-                }
+                //if (Directory.EnumerateFiles(ReportDirectory).Select(Path.GetFileNameWithoutExtension).Contains(reportName))
+                //{
+                //    return File.ReadAllBytes(Path.Combine(ReportDirectory, reportName + FileExtension));
+                //}
                 if (ReportsFactory.Reports.ContainsKey(reportName))
                 {
                     using (MemoryStream ms = new MemoryStream())
                     {
                         XtraReport report = ReportsFactory.Reports[reportName]();
-                        report.Parameters[paramName].Value = paramValue;
-                        report.Parameters[paramName].Visible = true;
-                        report.RequestParameters = false;
-                        report.SaveLayoutToXml(ms);
+                        Type type = Type.GetType($"InventoryManagement.Reporting.ReportCreators.{reportName}ReportCreator", true);
+                        object instance = Activator.CreateInstance(type);
+                        XtraReport resultReport = instance.GetType().GetMethod("CreateReport").Invoke(instance, new object[] { report, url }) as XtraReport;
+                        resultReport.SaveLayoutToXml(ms);
                         return ms.ToArray();
                     }
                 }

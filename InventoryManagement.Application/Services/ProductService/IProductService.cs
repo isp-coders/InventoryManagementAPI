@@ -15,5 +15,6 @@ namespace InventoryManagement.Application.Services.ProductService
         Task<UIResponse> AddNewProducts(string values);
         Task<UIResponse> IncreaseProductCount(int ProductId, int Count);
         UIResponse GetProducts(DataSourceLoadOptions loadOptions);
+        Task<UIResponse> ApplyCampaign(ApplyCampaignRequestDto applyCampaign);
     }
 }

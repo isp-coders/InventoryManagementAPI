@@ -20,9 +20,11 @@ namespace InventoryManagement.Interface.Controllers
             var context = HttpContext.Features.Get<IExceptionHandlerFeature>();
             var exception = context?.Error; // Your exception
 
+
             if (exception is InventoryManagementException)
             {
                 var IMExeption = exception as InventoryManagementException;
+                HttpContext.Response.StatusCode = (int)IMExeption.StatusCode;
                 return new UIResponse { IsError = true, Message = IMExeption.Message, StatusCode = IMExeption.StatusCode };
             }
             else if (exception.InnerException is SqlException)
@@ -36,9 +38,11 @@ namespace InventoryManagement.Interface.Controllers
                 {
                     return new UIResponse { IsError = true, Message = "SQL", StatusCode = HttpStatusCode.InternalServerError };
                 }
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             }
             else
             {
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 return new UIResponse() { IsError = true, StatusCode = HttpStatusCode.InternalServerError, Message = exception.Message };
             }
         }

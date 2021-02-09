@@ -23,8 +23,8 @@ namespace InventoryManagement.Interface.Controllers
         }
 
 
-        [HttpGet]
-        public ActionResult GetColors(DataSourceLoadOptions loadOptions)
+        [HttpGet("Get")]
+        public ActionResult GetCustomers(DataSourceLoadOptions loadOptions)
         {
             var result = customerInfo.GetEntities(loadOptions);
             return Ok(result);
@@ -32,21 +32,21 @@ namespace InventoryManagement.Interface.Controllers
 
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<CustomerInfoDto>> GetColor(int id)
+        public async Task<ActionResult<CustomerInfoDto>> GetCustomer(int id)
         {
-            var color = await customerInfo.FindEntity(id);
+            var customer = await customerInfo.FindEntity(id);
 
-            if (color == null)
+            if (customer == null)
             {
                 return NotFound();
             }
 
-            return Ok(color);
+            return Ok(customer);
         }
 
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutColor([FromForm] int key, [FromForm] string values)
+        [HttpPost("Update/{id}")]
+        public async Task<IActionResult> PutCustomer([FromForm] int key, [FromForm] string values)
         {
             var result = await customerInfo.PutEntity(key, values);
 
@@ -60,19 +60,19 @@ namespace InventoryManagement.Interface.Controllers
         }
 
 
-        [HttpPost]
-        public async Task<ActionResult> PostColors([FromForm] string values)
+        [HttpPost("Insert")]
+        public async Task<ActionResult> PostCustomers([FromForm] string values)
         {
             await customerInfo.PostEntities(values);
             return Ok();
         }
 
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<CustomerInfoDto>> DeleteColor(int id)
+        [HttpPost("Delete")]
+        public async Task<ActionResult<CustomerInfoDto>> DeleteCustomer(int id)
         {
-            var color = await customerInfo.DeleteEntity(id);
-            if (color == null)
+            var customer = await customerInfo.DeleteEntity(id);
+            if (customer == null)
             {
                 return NotFound();
             }

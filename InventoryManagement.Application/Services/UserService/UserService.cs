@@ -147,7 +147,7 @@ namespace InventoryManagement.Application.Services.UserService
                 user.Password = newuser.Password;
             }
 
-            await UserRepository.ModifyEntity(user);
+            UserRepository.PutEntity(user);
             return _mapper.Map<UserDto>(user);
         }
 
@@ -171,6 +171,7 @@ namespace InventoryManagement.Application.Services.UserService
 
             User User = _mapper.Map<User>(userDto);
             await UserRepository.PostEntity(User);
+            await UserRepository.SaveChangesAsync();
             return userDto;
 
         }
