@@ -2,6 +2,7 @@
 using InventoryManagement.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ namespace InventoryManagement.Models
 {
     public class SaleDetailsAndProduct
     {
+        public int Id { get; set; }
         public int SaleId { get; set; }
         public SalesDetails Sale { get; set; }
         public int ProductId { get; set; }

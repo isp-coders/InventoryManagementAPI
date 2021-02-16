@@ -52,7 +52,7 @@ namespace InventoryManagement.Data
 
 
             modelBuilder.Entity<SaleDetailsAndProduct>()
-.HasKey(bc => new { bc.SaleId, bc.ProductId });
+.HasKey(bc => bc.Id);
             modelBuilder.Entity<SaleDetailsAndProduct>()
                 .HasOne(bc => bc.Sale)
                 .WithMany(b => b.SaleDetailsAndProducts)
