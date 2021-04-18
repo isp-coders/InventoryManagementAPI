@@ -138,7 +138,6 @@ namespace InventoryManagement.Application.Services.UserService
                 newPass = newPass + newuser.Salt;
                 string compPass = CalculateHashForNetCore(newPass);
                 newuser.Password = compPass;
-                user.Password = newuser.Password;
             }
             JsonConvert.PopulateObject(values, user);
             if (newuser.Password != null)
@@ -148,6 +147,7 @@ namespace InventoryManagement.Application.Services.UserService
             }
 
             UserRepository.PutEntity(user);
+            await UserRepository.SaveChangesAsync();
             return _mapper.Map<UserDto>(user);
         }
 
