@@ -8,6 +8,7 @@ using InventoryManagement.DTOs;
 using InventoryManagement.Models;
 using InventoryManagement.Repositories.IRepositories;
 using InventoryManagement.Utils.Exceptions;
+using InventoryManagement.Utils.Helpers;
 using InventoryManagement.Utils.Response;
 using Sample;
 using System;
@@ -280,6 +281,7 @@ namespace InventoryManagement.Application.Services.SalesService
                 {
                     customerInfo.CustomerName = CustomerName;
                     customerInfo.CustomerPhone = CustomerPhone;
+                    customerInfo.AccentInsensitiveCustomerName = CustomerName.ReplaceTurkishCharacter();
                 }
 
             }

@@ -9,5 +9,6 @@ namespace InventoryManagement.Application.DTOs
         public int Id { get; set; }
         public string CustomerName { get; set; }
         public string CustomerPhone { get; set; }
+        public string AccentInsensitiveCustomerName { get; set; }
     }
 }
