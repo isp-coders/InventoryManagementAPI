@@ -64,7 +64,7 @@
           <Rows>
             <Item1 Ref="29" ControlType="XRTableRow" Name="TableHeaderRow" Weight="11.5">
               <Cells>
-                <Item1 Ref="30" ControlType="XRTableCell" Name="tableCell5" Weight="0.38529826077547946" Multiline="true" Text="Satıcı" Padding="5,5,5,5,100">
+                <Item1 Ref="30" ControlType="XRTableCell" Name="tableCell5" Weight="0.38529826077547946" Multiline="true" Text="Kategori" Padding="5,5,5,5,100">
                   <StylePriority Ref="31" UsePadding="false" />
                 </Item1>
                 <Item2 Ref="32" ControlType="XRTableCell" Name="tableCell6" Weight="0.35674712064774039" Multiline="true" Text="Adet" TextAlignment="TopCenter" Padding="5,5,5,5,100">

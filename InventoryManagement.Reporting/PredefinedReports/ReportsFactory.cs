@@ -19,6 +19,7 @@ namespace InventoryManagement.Reporting.PredefinedReports
             ["BestSellingSizes"] = () => new BestSellingSizes(),
             ["MostProfitableProducts"] = () => new MostProfitableProducts(),
             ["LeastProfitableProducts"] = () => new LeastProfitableProducts(),
+            ["BestSellingCategoriesByGender"] = () => new BestSellingCategoriesByGender()
         };
     }
 }

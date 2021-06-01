@@ -11,14 +11,6 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Data\nwind.db" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Data\nwind.db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Remove="node_modules\**" />
     <Content Remove="node_modules\**" />
     <EmbeddedResource Remove="node_modules\**" />
@@ -42,6 +34,12 @@
     </Compile>
     <Compile Include="Reports\BestSellers.Designer.cs">
       <DependentUpon>BestSellers.repx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\BestSellingCategoriesByGender.cs">
+      <DependentUpon>BestSellingCategoriesByGender.repx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\BestSellingCategoriesByGender.Designer.cs">
+      <DependentUpon>BestSellingCategoriesByGender.repx</DependentUpon>
     </Compile>
     <Compile Include="Reports\BestSellingColors.cs">
       <DependentUpon>BestSellingColors.repx</DependentUpon>
@@ -126,5 +124,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Reports\LeastProfitableProducts.repx" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Reports\BestSellingCategoriesByGender.repx" />
   </ItemGroup>
 </Project>
