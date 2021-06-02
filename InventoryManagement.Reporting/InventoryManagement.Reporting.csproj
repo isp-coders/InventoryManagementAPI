@@ -20,9 +20,6 @@
     <EmbeddedResource Include="PredefinedReports\*.repx" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="PredefinedReports\TestReport.repx" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Reports\BestSellingCategories.cs">
       <DependentUpon>BestSellingCategories.repx</DependentUpon>
     </Compile>
@@ -77,13 +74,11 @@
     <Compile Include="Reports\ProductLabel.Designer.cs">
       <DependentUpon>ProductLabel.repx</DependentUpon>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="PredefinedReports\TestReport.cs">
-      <DependentUpon>TestReport.repx</DependentUpon>
+    <Compile Include="Reports\TotalProfitAccordingToCategoryAndGender.cs">
+      <DependentUpon>TotalProfitAccordingToCategoryAndGender.repx</DependentUpon>
     </Compile>
-    <Compile Update="PredefinedReports\TestReport.Designer.cs">
-      <DependentUpon>TestReport.repx</DependentUpon>
+    <Compile Include="Reports\TotalProfitAccordingToCategoryAndGender.Designer.cs">
+      <DependentUpon>TotalProfitAccordingToCategoryAndGender.repx</DependentUpon>
     </Compile>
   </ItemGroup>
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="LibraryManagerRestore" Condition="!Exists('node_modules') ">
@@ -127,5 +122,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Reports\BestSellingCategoriesByGender.repx" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Reports\TotalProfitAccordingToCategoryAndGender.repx" />
   </ItemGroup>
 </Project>

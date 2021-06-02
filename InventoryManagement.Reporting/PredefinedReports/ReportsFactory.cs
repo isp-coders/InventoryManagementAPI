@@ -2,8 +2,6 @@ using DevExpress.XtraReports.UI;
 using InventoryManagement.Reporting.Reports;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace InventoryManagement.Reporting.PredefinedReports
 {
@@ -19,7 +17,8 @@ namespace InventoryManagement.Reporting.PredefinedReports
             ["BestSellingSizes"] = () => new BestSellingSizes(),
             ["MostProfitableProducts"] = () => new MostProfitableProducts(),
             ["LeastProfitableProducts"] = () => new LeastProfitableProducts(),
-            ["BestSellingCategoriesByGender"] = () => new BestSellingCategoriesByGender()
+            ["BestSellingCategoriesByGender"] = () => new BestSellingCategoriesByGender(),
+            ["TotalProfitAccordingToCategoryAndGender"] = () => new TotalProfitAccordingToCategoryAndGender()
         };
     }
 }
