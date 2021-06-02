@@ -122,11 +122,57 @@
         </Item1>
       </Controls>
     </Item4>
+    <Item5 Ref="60" ControlType="ReportFooterBand" Name="ReportFooter">
+      <Controls>
+        <Item1 Ref="61" ControlType="XRLabel" Name="label9" Multiline="true" Text="Toplam" TextAlignment="MiddleRight" SizeF="83.56781,23" LocationFloat="0,10" Font="Times New Roman, 11pt, style=Bold" Padding="2,2,0,0,100">
+          <Summary Ref="62" IgnoreNullValues="true" />
+          <ExpressionBindings>
+            <Item1 Ref="63" EventName="BeforePrint" PropertyName="Text" />
+          </ExpressionBindings>
+          <StylePriority Ref="64" UseFont="false" UseTextAlignment="false" />
+        </Item1>
+        <Item2 Ref="65" ControlType="XRLabel" Name="label8" TextFormatString="{0:0}%" Multiline="true" Text="label5" TextAlignment="MiddleRight" SizeF="86.21518,23" LocationFloat="545.5793,10" Font="Times New Roman, 11pt, style=Bold" Padding="2,2,0,0,100">
+          <Summary Ref="66" Running="Report" />
+          <ExpressionBindings>
+            <Item1 Ref="67" EventName="BeforePrint" PropertyName="Text" Expression="sumSum([ProfitPercent])" />
+          </ExpressionBindings>
+          <StylePriority Ref="68" UseFont="false" UseTextAlignment="false" />
+        </Item2>
+        <Item3 Ref="69" ControlType="XRLabel" Name="label7" TextFormatString="{0:₺ 0}" Multiline="true" Text="label5" TextAlignment="MiddleRight" SizeF="86.21518,23" LocationFloat="455.387146,10" Font="Times New Roman, 11pt, style=Bold" Padding="2,2,0,0,100">
+          <Summary Ref="70" Running="Report" />
+          <ExpressionBindings>
+            <Item1 Ref="71" EventName="BeforePrint" PropertyName="Text" Expression="sumSum([TotalIncome])" />
+          </ExpressionBindings>
+          <StylePriority Ref="72" UseFont="false" UseTextAlignment="false" />
+        </Item3>
+        <Item4 Ref="73" ControlType="XRLabel" Name="label6" TextFormatString="{0:₺ 0}" Multiline="true" Text="label5" TextAlignment="MiddleRight" SizeF="86.21518,23" LocationFloat="354.813171,10" Font="Times New Roman, 11pt, style=Bold" Padding="2,2,0,0,100">
+          <Summary Ref="74" Running="Report" />
+          <ExpressionBindings>
+            <Item1 Ref="75" EventName="BeforePrint" PropertyName="Text" Expression="sumSum([TotalSellingPrice])" />
+          </ExpressionBindings>
+          <StylePriority Ref="76" UseFont="false" UseTextAlignment="false" />
+        </Item4>
+        <Item5 Ref="77" ControlType="XRLabel" Name="label5" TextFormatString="{0:₺ 0}" Multiline="true" Text="label5" TextAlignment="MiddleRight" SizeF="93.65286,23" LocationFloat="256.160278,10" Font="Times New Roman, 11pt, style=Bold" Padding="2,2,0,0,100">
+          <Summary Ref="78" Running="Report" />
+          <ExpressionBindings>
+            <Item1 Ref="79" EventName="BeforePrint" PropertyName="Text" Expression="sumSum([TotalPurchasePrice])" />
+          </ExpressionBindings>
+          <StylePriority Ref="80" UseFont="false" UseTextAlignment="false" />
+        </Item5>
+        <Item6 Ref="81" ControlType="XRLabel" Name="label4" Multiline="true" Text="label4" TextAlignment="MiddleRight" SizeF="83.56781,23" LocationFloat="164.592468,10" Font="Times New Roman, 11pt, style=Bold" Padding="2,2,0,0,100">
+          <Summary Ref="82" Running="Report" IgnoreNullValues="true" />
+          <ExpressionBindings>
+            <Item1 Ref="83" EventName="BeforePrint" PropertyName="Text" Expression="sumSum([Count])" />
+          </ExpressionBindings>
+          <StylePriority Ref="84" UseFont="false" UseTextAlignment="false" />
+        </Item6>
+      </Controls>
+    </Item5>
   </Bands>
   <StyleSheet>
-    <Item1 Ref="60" Name="HeaderStyle" BorderStyle="Inset" Padding="5,5,0,0,100" Font="Segoe UI, 7.8pt, style=Bold, charSet=162" ForeColor="White" BackColor="255,127,127,127" BorderColor="Gray" StringFormat="Near;Near;0;None;Character;Default" BorderWidthSerializable="1" />
-    <Item2 Ref="61" Name="OddStyle" BorderStyle="Inset" Padding="5,5,0,0,100" Font="Segoe UI, 12pt, charSet=162" ForeColor="Black" BackColor="255,234,245,255" BorderColor="Transparent" StringFormat="Near;Near;0;None;Character;Default" BorderWidthSerializable="1" />
-    <Item3 Ref="62" Name="EvenStyle" BorderStyle="Inset" Padding="5,5,0,0,100" Font="Segoe UI, 12pt, charSet=162" ForeColor="Black" BackColor="White" BorderColor="Transparent" StringFormat="Near;Near;0;None;Character;Default" BorderWidthSerializable="1" />
+    <Item1 Ref="85" Name="HeaderStyle" BorderStyle="Inset" Padding="5,5,0,0,100" Font="Segoe UI, 7.8pt, style=Bold, charSet=162" ForeColor="White" BackColor="255,127,127,127" BorderColor="Gray" StringFormat="Near;Near;0;None;Character;Default" BorderWidthSerializable="1" />
+    <Item2 Ref="86" Name="OddStyle" BorderStyle="Inset" Padding="5,5,0,0,100" Font="Segoe UI, 12pt, charSet=162" ForeColor="Black" BackColor="255,234,245,255" BorderColor="Transparent" StringFormat="Near;Near;0;None;Character;Default" BorderWidthSerializable="1" />
+    <Item3 Ref="87" Name="EvenStyle" BorderStyle="Inset" Padding="5,5,0,0,100" Font="Segoe UI, 12pt, charSet=162" ForeColor="Black" BackColor="White" BorderColor="Transparent" StringFormat="Near;Near;0;None;Character;Default" BorderWidthSerializable="1" />
   </StyleSheet>
   <ComponentStorage>
     <Item1 Ref="0" ObjectType="DevExpress.DataAccess.Sql.SqlDataSource,DevExpress.DataAccess.v20.2" Name="sqlDataSource1" Base64="PFNxbERhdGFTb3VyY2UgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxDb25uZWN0aW9uIE5hbWU9ImxvY2FsaG9zdF9JbnZlbnRvcnlNYW5hZ2VtZW50MV9Db25uZWN0aW9uIiBGcm9tQXBwQ29uZmlnPSJ0cnVlIiAvPjxRdWVyeSBUeXBlPSJDdXN0b21TcWxRdWVyeSIgTmFtZT0iUXVlcnkiPjxQYXJhbWV0ZXIgTmFtZT0iRnJvbURhdGUiIFR5cGU9IkRldkV4cHJlc3MuRGF0YUFjY2Vzcy5FeHByZXNzaW9uIj4oU3lzdGVtLkRhdGVUaW1lKSg/RnJvbSk8L1BhcmFtZXRlcj48UGFyYW1ldGVyIE5hbWU9IlRvRGF0ZSIgVHlwZT0iRGV2RXhwcmVzcy5EYXRhQWNjZXNzLkV4cHJlc3Npb24iPihTeXN0ZW0uRGF0ZVRpbWUpKD9Ubyk8L1BhcmFtZXRlcj48U3FsPgkJCQkgIFNFTEVDVCBSZXN1bHQuQ291bnQsUmVzdWx0LkdlbmRlcixSZXN1bHQuUHJvZml0UGVyY2VudCxSZXN1bHQuVG90YWxJbmNvbWUsUmVzdWx0LlRvdGFsUHVyY2hhc2VQcmljZSxSZXN1bHQuVG90YWxTZWxsaW5nUHJpY2UsZGJvLlByb2R1Y3RUeXBlcy5OYW1lIGFzIFByb2R1Y3RUeXBlIEZST00NCiAgICAgICAgICAgICAgICAgICAgICAoU0VMRUNUICBkYm8uUHJvZHVjdHMuUHJvZHVjdFR5cGVJZCwgZGJvLlByb2R1Y3RzLkdlbmRlcixzdW0oZGJvLlByb2R1Y3RzLlByaWNlKSBhcyBUb3RhbFB1cmNoYXNlUHJpY2UsDQogICAgICAgICAgICAgICAgICAgICAgc3VtKGRiby5TYWxlRGV0YWlsc0FuZFByb2R1Y3QuUHJpY2UpIGFzIFRvdGFsU2VsbGluZ1ByaWNlLA0KICAgICAgICAgICAgICAgICAgICAgIHN1bShkYm8uU2FsZURldGFpbHNBbmRQcm9kdWN0LlByaWNlIC0gZGJvLlByb2R1Y3RzLlByaWNlKSBhcyBUb3RhbEluY29tZSwNCiAgICAgICAgICAgICAgICAgICAgICAoc3VtKGRiby5TYWxlRGV0YWlsc0FuZFByb2R1Y3QuUHJpY2UpL3N1bShkYm8uUHJvZHVjdHMuUHJpY2UpICkqIDEwMCBhcyBQcm9maXRQZXJjZW50LA0KCQkJCQkgIGNvdW50KDEpIGFzIFtDb3VudF0NCiAgICAgICAgICAgICAgICAgICAgICBGUk9NICAgICBkYm8uU2FsZURldGFpbHNBbmRQcm9kdWN0IElOTkVSIEpPSU4NCiAgICAgICAgICAgICAgICAgICAgICBkYm8uUHJvZHVjdHMgT04gZGJvLlNhbGVEZXRhaWxzQW5kUHJvZHVjdC5Qcm9kdWN0SWQgPSBkYm8uUHJvZHVjdHMuSWQgSU5ORVIgSk9JTg0KICAgICAgICAgICAgICAgICAgICAgIGRiby5TYWxlcyBPTiBkYm8uU2FsZURldGFpbHNBbmRQcm9kdWN0LlNhbGVJZCA9IGRiby5TYWxlcy5JZA0KCQkJCSAgICAgIFdoZXJlIENBU1QoZGJvLlNhbGVzLkRhdGUgQVMgREFURSkgJmd0Oz0gQ0FTVChARnJvbURhdGUgQVMgREFURSkgIGFuZCBDQVNUKGRiby5TYWxlcy5EYXRlIEFTIERBVEUpICZsdDs9IENBU1QoQFRvRGF0ZSBBUyBEQVRFKQ0KCQkJCSAgICAgIGdyb3VwIGJ5ICBkYm8uUHJvZHVjdHMuUHJvZHVjdFR5cGVJZCwgZGJvLlByb2R1Y3RzLkdlbmRlcikgYXMgUmVzdWx0IElOTkVSIEpPSU4NCiAgICAgICAgICAgICAgICAgICAgICBkYm8uUHJvZHVjdFR5cGVzIE9OIGRiby5Qcm9kdWN0VHlwZXMuSWQ9IFJlc3VsdC5Qcm9kdWN0VHlwZUlkDQoJCQkJICAgICAgT3JkZXIgYnkgUHJvZml0UGVyY2VudCBERVNDPC9TcWw+PC9RdWVyeT48UmVzdWx0U2NoZW1hPjxEYXRhU2V0IE5hbWU9InNxbERhdGFTb3VyY2UxIj48VmlldyBOYW1lPSJRdWVyeSI+PEZpZWxkIE5hbWU9IkNvdW50IiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iR2VuZGVyIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iUHJvZml0UGVyY2VudCIgVHlwZT0iRGVjaW1hbCIgLz48RmllbGQgTmFtZT0iVG90YWxJbmNvbWUiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9IlRvdGFsUHVyY2hhc2VQcmljZSIgVHlwZT0iRGVjaW1hbCIgLz48RmllbGQgTmFtZT0iVG90YWxTZWxsaW5nUHJpY2UiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9IlByb2R1Y3RUeXBlIiBUeXBlPSJTdHJpbmciIC8+PC9WaWV3PjwvRGF0YVNldD48L1Jlc3VsdFNjaGVtYT48Q29ubmVjdGlvbk9wdGlvbnMgQ2xvc2VDb25uZWN0aW9uPSJ0cnVlIiAvPjwvU3FsRGF0YVNvdXJjZT4=" />
