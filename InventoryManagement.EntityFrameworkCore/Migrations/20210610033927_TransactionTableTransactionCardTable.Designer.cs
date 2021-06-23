@@ -4,14 +4,16 @@ using InventoryManagement.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace InventoryManagement.Migrations
 {
     [DbContext(typeof(InventoryManagementDbContext))]
-    partial class InventoryManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20210610033927_TransactionTableTransactionCardTable")]
+    partial class TransactionTableTransactionCardTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,21 +47,6 @@ namespace InventoryManagement.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Campaigns");
-                });
-
-            modelBuilder.Entity("InventoryManagement.Core.Models.Currency", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Currency", "parameters");
                 });
 
             modelBuilder.Entity("InventoryManagement.Core.Models.ProductProperty", b =>
@@ -149,11 +136,11 @@ namespace InventoryManagement.Migrations
                     b.Property<int>("PaymentMethod")
                         .HasColumnType("int");
 
-                    b.Property<int>("TransactionCardId")
+                    b.Property<int?>("TransactionCardId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("TransactionDate")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("TransactionDate")
+                        .HasColumnType("int");
 
                     b.Property<int>("TransactionType")
                         .HasColumnType("int");
@@ -175,19 +162,19 @@ namespace InventoryManagement.Migrations
                     b.Property<string>("CardCode")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CardName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Currency")
-                        .HasColumnType("int");
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Gsm")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OwnerName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -613,8 +600,7 @@ namespace InventoryManagement.Migrations
                     b.HasOne("InventoryManagement.Core.Models.TransactionCard", "TransactionCard")
                         .WithMany("Transactions")
                         .HasForeignKey("TransactionCardId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("TransactionCard");
                 });
