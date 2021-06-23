@@ -91,7 +91,7 @@ namespace InventoryManagement.Application.Services.UserService
 
         public NavigationItems UserPermissionsCreator(RolePermession ParentMenue, List<RolePermession> UserPermessions)
         {
-            NavigationItems navigationItems = new NavigationItems() { Icon = ParentMenue.Icon, Key = ParentMenue.RoleKey, Title = ParentMenue.Title, Translate = ParentMenue.Translate, URL = ParentMenue.URL, Type = "collapsable" };
+            NavigationItems navigationItems = new NavigationItems() { Icon = ParentMenue.Icon, Key = ParentMenue.RoleKey, Title = ParentMenue.Title, Translate = ParentMenue.Translate, URL = ParentMenue.URL, Type = ParentMenue.IsParent ? "collapsable" : "item" };
             var parentChildren = UserPermessions.Where(wh => wh.ParentId == ParentMenue.Id).ToList();
             parentChildren.ForEach(child =>
             {

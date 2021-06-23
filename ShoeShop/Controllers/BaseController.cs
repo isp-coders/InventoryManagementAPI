@@ -20,7 +20,7 @@ namespace InventoryManagement.Interface.Controllers
         }
 
         [HttpGet("Get")]
-        public ActionResult Get(DataSourceLoadOptions loadOptions)
+        public virtual ActionResult Get(DataSourceLoadOptions loadOptions)
         {
             var result = _service.GetEntities(loadOptions);
             return Ok(result);
