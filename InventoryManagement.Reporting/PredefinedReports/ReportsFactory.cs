@@ -18,7 +18,8 @@ namespace InventoryManagement.Reporting.PredefinedReports
             ["MostProfitableProducts"] = () => new MostProfitableProducts(),
             ["LeastProfitableProducts"] = () => new LeastProfitableProducts(),
             ["BestSellingCategoriesByGender"] = () => new BestSellingCategoriesByGender(),
-            ["TotalProfitAccordingToCategoryAndGender"] = () => new TotalProfitAccordingToCategoryAndGender()
+            ["TotalProfitAccordingToCategoryAndGender"] = () => new TotalProfitAccordingToCategoryAndGender(),
+            ["Eod"] = () => new EodReport()
         };
     }
 }

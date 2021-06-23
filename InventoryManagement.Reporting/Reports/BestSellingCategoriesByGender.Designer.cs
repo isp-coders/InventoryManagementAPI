@@ -25,13 +25,13 @@ namespace InventoryManagement.Reporting.Reports {
             this.Table = reportInitializer.GetControl<DevExpress.XtraReports.UI.XRTable>("Table");
             this.TableRow = reportInitializer.GetControl<DevExpress.XtraReports.UI.XRTableRow>("TableRow");
             this.tableCell2 = reportInitializer.GetControl<DevExpress.XtraReports.UI.XRTableCell>("tableCell2");
+            this.GenderCell = reportInitializer.GetControl<DevExpress.XtraReports.UI.XRTableCell>("GenderCell");
             this.tableCell3 = reportInitializer.GetControl<DevExpress.XtraReports.UI.XRTableCell>("tableCell3");
             this.TableHeader = reportInitializer.GetControl<DevExpress.XtraReports.UI.XRTable>("TableHeader");
             this.TableHeaderRow = reportInitializer.GetControl<DevExpress.XtraReports.UI.XRTableRow>("TableHeaderRow");
             this.tableCell5 = reportInitializer.GetControl<DevExpress.XtraReports.UI.XRTableCell>("tableCell5");
             this.GenderLable = reportInitializer.GetControl<DevExpress.XtraReports.UI.XRTableCell>("GenderLable");
             this.tableCell1 = reportInitializer.GetControl<DevExpress.XtraReports.UI.XRTableCell>("tableCell1");
-            this.GenderCell = reportInitializer.GetControl<DevExpress.XtraReports.UI.XRTableCell>("GenderCell");
 
             // Parameters
             this.From = reportInitializer.GetParameter("From");
@@ -55,18 +55,18 @@ namespace InventoryManagement.Reporting.Reports {
         private DevExpress.XtraReports.UI.XRTable Table;
         private DevExpress.XtraReports.UI.XRTableRow TableRow;
         private DevExpress.XtraReports.UI.XRTableCell tableCell2;
+        private DevExpress.XtraReports.UI.XRTableCell GenderCell;
         private DevExpress.XtraReports.UI.XRTableCell tableCell3;
         private DevExpress.XtraReports.UI.XRTable TableHeader;
         private DevExpress.XtraReports.UI.XRTableRow TableHeaderRow;
         private DevExpress.XtraReports.UI.XRTableCell tableCell5;
         private DevExpress.XtraReports.UI.XRTableCell GenderLable;
+        private DevExpress.XtraReports.UI.XRTableCell tableCell1;
         private DevExpress.DataAccess.Sql.SqlDataSource sqlDataSource1;
         private DevExpress.XtraReports.UI.XRControlStyle HeaderStyle;
         private DevExpress.XtraReports.UI.XRControlStyle OddStyle;
         private DevExpress.XtraReports.UI.XRControlStyle EvenStyle;
         private DevExpress.XtraReports.Parameters.Parameter From;
         private DevExpress.XtraReports.Parameters.Parameter To;
-        private DevExpress.XtraReports.UI.XRTableCell tableCell1;
-        private DevExpress.XtraReports.UI.XRTableCell GenderCell;
     }
 }

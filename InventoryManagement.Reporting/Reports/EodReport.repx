@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="20.2.3.0" Ref="0" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v20.2, Version=20.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="EodReport" VerticalContentSplitting="Smart" HorizontalContentSplitting="Smart" Margins="100, 93, 100, 87" PaperKind="A4" PageWidth="827" PageHeight="1169" Version="20.2" EventsInfo="|ProductType,BeforePrint,ProductTypeBeforePrint" Font="Arial, 9.75pt">
+  <Parameters>
+    <Item1 Ref="2" Description="End Of Day Report Date" ValueInfo="2021-06-23" Name="ReportDate" Type="#Ref-1" />
+  </Parameters>
+  <Bands>
+    <Item1 Ref="3" ControlType="ReportHeaderBand" Name="ReportHeader" HeightF="40.0130157">
+      <Controls>
+        <Item1 Ref="4" ControlType="XRLabel" Name="label2" TextFormatString="{0:d.MM.yyyy}" Multiline="true" Text="label2" SizeF="152.500031,22.9999981" LocationFloat="471.500031,5" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="5" EventName="BeforePrint" PropertyName="Text" Expression="GetDate(?ReportDate)" />
+          </ExpressionBindings>
+        </Item1>
+        <Item2 Ref="6" ControlType="XRLabel" Name="label1" Text="Gün Sonu Raporu" SizeF="205.525833,30.0130157" LocationFloat="5,5" StyleName="TitleStyle" />
+      </Controls>
+    </Item1>
+    <Item2 Ref="7" ControlType="DetailBand" Name="Detail">
+      <Controls>
+        <Item1 Ref="9" ControlType="XRCrossTab" Name="crossTab1" GeneralStyleName="crossTabGeneralStyle" DataAreaStyleName="crossTabDataStyle" HeaderAreaStyleName="crossTabHeaderStyle" TotalAreaStyleName="crossTabTotalStyle" DataSource="#Ref-8" DataMember="Query" SizeF="300,75" LocationFloat="0,0">
+          <LayoutOptions Ref="10" />
+          <PrintOptions Ref="11" />
+          <RowFields>
+            <Item1 Ref="12" FieldName="ProductType" />
+          </RowFields>
+          <ColumnFields>
+            <Item1 Ref="13" FieldName="Gender" />
+          </ColumnFields>
+          <DataFields>
+            <Item1 Ref="14" FieldName="Total" />
+          </DataFields>
+          <ColumnDefinitions>
+            <Item1 Ref="15" AutoWidthMode="ShrinkAndGrow" />
+            <Item2 Ref="16" />
+            <Item3 Ref="17" />
+          </ColumnDefinitions>
+          <RowDefinitions>
+            <Item1 Ref="18" Height="25" />
+            <Item2 Ref="19" Height="25" />
+            <Item3 Ref="20" Height="25" />
+          </RowDefinitions>
+          <Cells>
+            <Item1 Ref="21" ControlType="XRCrossTabCell" Name="crossTabCell2" ColumnIndex="0" RowIndex="0" Text="Product Type" />
+            <Item2 Ref="22" ControlType="XRCrossTabCell" Name="crossTabCell3" ColumnIndex="1" RowIndex="1" />
+            <Item3 Ref="23" ControlType="XRCrossTabCell" Name="GenderCell" ColumnIndex="1" RowIndex="0">
+              <ExpressionBindings>
+                <Item1 Ref="24" EventName="BeforePrint" PropertyName="Text" Expression="Iif([Gender] == 0, 'Erkek','Kadın' )" />
+              </ExpressionBindings>
+            </Item3>
+            <Item4 Ref="25" ControlType="XRCrossTabCell" Name="crossTabCell5" ColumnIndex="2" RowIndex="0" Text="Toplam" />
+            <Item5 Ref="26" ControlType="XRCrossTabCell" Name="crossTabCell6" ColumnIndex="2" RowIndex="1" />
+            <Item6 Ref="27" ControlType="XRCrossTabCell" Name="ProductType" ColumnIndex="0" RowIndex="1" />
+            <Item7 Ref="28" ControlType="XRCrossTabCell" Name="crossTabCell10" ColumnIndex="0" RowIndex="2" Text="Toplam" />
+            <Item8 Ref="29" ControlType="XRCrossTabCell" Name="crossTabCell12" ColumnIndex="1" RowIndex="2" />
+            <Item9 Ref="30" ControlType="XRCrossTabCell" Name="crossTabCell14" ColumnIndex="2" RowIndex="2" />
+          </Cells>
+        </Item1>
+      </Controls>
+    </Item2>
+    <Item3 Ref="31" ControlType="TopMarginBand" Name="TopMargin" />
+    <Item4 Ref="32" ControlType="BottomMarginBand" Name="BottomMargin" HeightF="87.48698" />
+  </Bands>
+  <StyleSheet>
+    <Item1 Ref="33" Name="TitleStyle" BorderStyle="Inset" Padding="2,2,0,0,100" Font="Arial, 18pt" StringFormat="Near;Near;0;None;Character;Default" />
+    <Item2 Ref="34" Name="crossTabGeneralStyle" BorderStyle="Inset" Padding="6,6,0,0,100" Font="Arial, 9.75pt" BorderColor="255,230,232,234" Sides="All" StringFormat="Near;Near;0;None;Character;Default" BorderWidthSerializable="1" />
+    <Item3 Ref="35" Name="crossTabHeaderStyle" BorderStyle="Inset" Font="Arial, 9.75pt, style=Bold" BackColor="255,250,251,252" StringFormat="Near;Center;0;None;Character;Default" TextAlignment="MiddleLeft" />
+    <Item4 Ref="36" Name="crossTabDataStyle" BorderStyle="Inset" StringFormat="Far;Center;0;None;Character;Default" TextAlignment="MiddleRight" />
+    <Item5 Ref="37" Name="crossTabTotalStyle" BorderStyle="Inset" Font="Arial, 9.75pt, style=Bold" BackColor="255,250,251,252" StringFormat="Far;Center;0;None;Character;Default" TextAlignment="MiddleRight" />
+  </StyleSheet>
+  <ComponentStorage>
+    <Item1 Ref="8" ObjectType="DevExpress.DataAccess.Sql.SqlDataSource,DevExpress.DataAccess.v20.2" Name="sqlDataSource1" Base64="PFNxbERhdGFTb3VyY2UgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxDb25uZWN0aW9uIE5hbWU9ImxvY2FsaG9zdF9JbnZlbnRvcnlNYW5hZ2VtZW50MV9Db25uZWN0aW9uIiBGcm9tQXBwQ29uZmlnPSJ0cnVlIiAvPjxRdWVyeSBUeXBlPSJDdXN0b21TcWxRdWVyeSIgTmFtZT0iUXVlcnkiPjxQYXJhbWV0ZXIgTmFtZT0iUmVwb3J0RGF0ZSIgVHlwZT0iRGV2RXhwcmVzcy5EYXRhQWNjZXNzLkV4cHJlc3Npb24iPihTeXN0ZW0uRGF0ZVRpbWUpKEdFVERBVEUoP1JlcG9ydERhdGUpKTwvUGFyYW1ldGVyPjxTcWw+U0VMRUNUIGRiby5TYWxlcy5Ub3RhbCxTYWxlRGV0YWlsc0FuZFByb2R1Y3QuUHJvZHVjdFR5cGVJZCwgU2FsZURldGFpbHNBbmRQcm9kdWN0LlByb2R1Y3RJZCwgU2FsZURldGFpbHNBbmRQcm9kdWN0LkdlbmRlcixTYWxlRGV0YWlsc0FuZFByb2R1Y3QuUHJvZHVjdFR5cGUNCkZST00gZGJvLlNhbGVzDQpDUk9TUyBBUFBMWQ0KICAgICAgICAoDQogICAgICAgIFNFTEVDVCAgVE9QIDEgZGJvLlNhbGVEZXRhaWxzQW5kUHJvZHVjdC5Qcm9kdWN0SWQsIGRiby5Qcm9kdWN0cy5Qcm9kdWN0VHlwZUlkLGRiby5Qcm9kdWN0cy5HZW5kZXIsIGRiby5Qcm9kdWN0VHlwZXMuTmFtZSBhcyBQcm9kdWN0VHlwZQ0KICAgICAgICBGUk9NICAgIGRiby5TYWxlRGV0YWlsc0FuZFByb2R1Y3QNCgkJaW5uZXIgam9pbiANCgkJZGJvLlByb2R1Y3RzIE9OIGRiby5TYWxlRGV0YWlsc0FuZFByb2R1Y3QuUHJvZHVjdElkID0gZGJvLlByb2R1Y3RzLklkIGlubmVyIGpvaW4NCgkJZGJvLlByb2R1Y3RUeXBlcyBPTiBkYm8uUHJvZHVjdFR5cGVzLklkID0gZGJvLlByb2R1Y3RzLlByb2R1Y3RUeXBlSWQNCg0KICAgICAgICBXSEVSRSAgIGRiby5TYWxlRGV0YWlsc0FuZFByb2R1Y3QuU2FsZUlkPSBkYm8uU2FsZXMuSWQNCiAgICAgICAgKSBTYWxlRGV0YWlsc0FuZFByb2R1Y3QNCldoZXJlIENBU1QoZGJvLlNhbGVzLkRhdGUgQVMgREFURSkgPSBDQVNUKEBSZXBvcnREYXRlIEFTIERBVEUpDQo8L1NxbD48L1F1ZXJ5PjxSZXN1bHRTY2hlbWE+PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9IlF1ZXJ5Ij48RmllbGQgTmFtZT0iVG90YWwiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9IlByb2R1Y3RUeXBlSWQiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJQcm9kdWN0SWQiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJHZW5kZXIiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJQcm9kdWN0VHlwZSIgVHlwZT0iU3RyaW5nIiAvPjwvVmlldz48L0RhdGFTZXQ+PC9SZXN1bHRTY2hlbWE+PENvbm5lY3Rpb25PcHRpb25zIENsb3NlQ29ubmVjdGlvbj0idHJ1ZSIgLz48L1NxbERhdGFTb3VyY2U+" />
+  </ComponentStorage>
+  <ObjectStorage>
+    <Item1 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v20.2" Ref="1" Content="System.DateTime" Type="System.Type" />
+  </ObjectStorage>
+</XtraReportsLayoutSerializer>

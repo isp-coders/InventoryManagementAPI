@@ -56,6 +56,12 @@
     <Compile Include="Reports\BestSellingProducts.Designer.cs">
       <DependentUpon>BestSellingProducts.repx</DependentUpon>
     </Compile>
+    <Compile Include="Reports\EodReport.cs">
+      <DependentUpon>EodReport.repx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\EodReport.Designer.cs">
+      <DependentUpon>EodReport.repx</DependentUpon>
+    </Compile>
     <Compile Include="Reports\LeastProfitableProducts.cs">
       <DependentUpon>LeastProfitableProducts.repx</DependentUpon>
     </Compile>
@@ -125,5 +131,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Reports\TotalProfitAccordingToCategoryAndGender.repx" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Reports\EodReport.repx" />
   </ItemGroup>
 </Project>

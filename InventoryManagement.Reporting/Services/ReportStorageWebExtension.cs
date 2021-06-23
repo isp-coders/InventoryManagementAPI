@@ -53,7 +53,14 @@ namespace InventoryManagement.Reporting.Services
         {
             // Returns report layout data stored in a Report Storage using the specified URL. 
             // This method is called only for valid URLs after the IsValidUrl method is called.
-            string reportName = url.Substring(0, url.IndexOf("?"));
+            int IndexOfQustionMark = url.IndexOf("?");
+            string reportName = "";
+            if (IndexOfQustionMark > 0)
+                reportName = url.Substring(0, IndexOfQustionMark);
+            else
+            {
+                reportName = url;
+            }
             try
             {
                 //if (Directory.EnumerateFiles(ReportDirectory).Select(Path.GetFileNameWithoutExtension).Contains(reportName))
