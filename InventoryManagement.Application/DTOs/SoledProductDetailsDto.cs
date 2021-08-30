@@ -19,6 +19,7 @@ namespace InventoryManagement.DTOs
         public DateTime ExpirationDate { get; set; }
         public string Description { get; set; }
         public string BranchName { get; set; }
+        public decimal SellingPrice { get; set; }
         public decimal Price { get; set; }
         public SaleOperation Operations { get; set; }
     }
