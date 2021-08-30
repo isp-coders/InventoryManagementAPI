@@ -99,7 +99,7 @@ namespace InventoryManagement.Interface.Controllers
             return Ok();
         }
 
-        public string generateJwtToken(LoginRequest user)
+        private string generateJwtToken(LoginRequest user)
         {
             // generate token that is valid for 7 days
             var tokenHandler = new JwtSecurityTokenHandler();

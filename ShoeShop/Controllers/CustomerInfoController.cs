@@ -1,7 +1,9 @@
 ﻿using InventoryManagement.Application.DTOs;
 using InventoryManagement.Application.Services.CustomerInfoService;
+using InventoryManagement.Utils.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using Sample;
 using System;
 using System.Collections.Generic;
@@ -48,6 +50,12 @@ namespace InventoryManagement.Interface.Controllers
         [HttpPost("Update/{id}")]
         public async Task<IActionResult> PutCustomer([FromForm] int key, [FromForm] string values)
         {
+            JObject request = JObject.FromObject(values);
+            if (request.ContainsKey("CustomerName"))
+            {
+                string CustomerName = request.Value<string>("CustomerName");
+                request.Add("AccentInsensitiveCustomerName", CustomerName.ReplaceTurkishCharacter());
+            }
             var result = await customerInfo.PutEntity(key, values);
 
             if (result == null)

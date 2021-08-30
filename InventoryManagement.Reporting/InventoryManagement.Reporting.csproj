@@ -11,14 +11,6 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Data\nwind.db" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Data\nwind.db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Remove="node_modules\**" />
     <Content Remove="node_modules\**" />
     <EmbeddedResource Remove="node_modules\**" />
@@ -26,9 +18,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="PredefinedReports\*.repx" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="PredefinedReports\TestReport.repx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Reports\BestSellingCategories.cs">
@@ -42,6 +31,12 @@
     </Compile>
     <Compile Include="Reports\BestSellers.Designer.cs">
       <DependentUpon>BestSellers.repx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\BestSellingCategoriesByGender.cs">
+      <DependentUpon>BestSellingCategoriesByGender.repx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\BestSellingCategoriesByGender.Designer.cs">
+      <DependentUpon>BestSellingCategoriesByGender.repx</DependentUpon>
     </Compile>
     <Compile Include="Reports\BestSellingColors.cs">
       <DependentUpon>BestSellingColors.repx</DependentUpon>
@@ -61,6 +56,12 @@
     <Compile Include="Reports\BestSellingProducts.Designer.cs">
       <DependentUpon>BestSellingProducts.repx</DependentUpon>
     </Compile>
+    <Compile Include="Reports\EodReport.cs">
+      <DependentUpon>EodReport.repx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\EodReport.Designer.cs">
+      <DependentUpon>EodReport.repx</DependentUpon>
+    </Compile>
     <Compile Include="Reports\LeastProfitableProducts.cs">
       <DependentUpon>LeastProfitableProducts.repx</DependentUpon>
     </Compile>
@@ -79,13 +80,11 @@
     <Compile Include="Reports\ProductLabel.Designer.cs">
       <DependentUpon>ProductLabel.repx</DependentUpon>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="PredefinedReports\TestReport.cs">
-      <DependentUpon>TestReport.repx</DependentUpon>
+    <Compile Include="Reports\TotalProfitAccordingToCategoryAndGender.cs">
+      <DependentUpon>TotalProfitAccordingToCategoryAndGender.repx</DependentUpon>
     </Compile>
-    <Compile Update="PredefinedReports\TestReport.Designer.cs">
-      <DependentUpon>TestReport.repx</DependentUpon>
+    <Compile Include="Reports\TotalProfitAccordingToCategoryAndGender.Designer.cs">
+      <DependentUpon>TotalProfitAccordingToCategoryAndGender.repx</DependentUpon>
     </Compile>
   </ItemGroup>
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="LibraryManagerRestore" Condition="!Exists('node_modules') ">
@@ -126,5 +125,14 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Reports\LeastProfitableProducts.repx" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Reports\BestSellingCategoriesByGender.repx" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Reports\TotalProfitAccordingToCategoryAndGender.repx" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Reports\EodReport.repx" />
   </ItemGroup>
 </Project>

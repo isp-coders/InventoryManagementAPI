@@ -1,14 +1,27 @@
-using System;
-using System.Reflection;
-using System.Text;
-using AutoMapper;
+using DevExtreme.AspNet.Data.Aggregation;
+using InventoryManagement.Application.Services;
 using InventoryManagement.Application.Services.BranchesService;
+using InventoryManagement.Application.Services.CampaignService;
 using InventoryManagement.Application.Services.ColorService;
+using InventoryManagement.Application.Services.CustomerInfoService;
 using InventoryManagement.Application.Services.PaymentMethodRepository;
 using InventoryManagement.Application.Services.PaymentMethodService;
+using InventoryManagement.Application.Services.ProductPropertyService;
 using InventoryManagement.Application.Services.ProductService;
+using InventoryManagement.Application.Services.ProductTypeService;
+using InventoryManagement.Application.Services.RolePermessionsService;
+using InventoryManagement.Application.Services.RoleService;
 using InventoryManagement.Application.Services.SalesService;
+using InventoryManagement.Application.Services.UserService;
+using InventoryManagement.Application.StartupUtilities;
 using InventoryManagement.Core.IRepositories;
+using InventoryManagement.Data;
+using InventoryManagement.EntityFrameworkCore.EntityFrameworkCore;
+using InventoryManagement.EntityFrameworkCore.EntityFrameworkCore.Repositories;
+using InventoryManagement.Interface.Devextreme.Aggreagators;
+using InventoryManagement.Repositories;
+using InventoryManagement.Repositories.IRepositories;
+using InventoryManagement.Utils.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -18,24 +31,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json.Serialization;
-using InventoryManagement.Data;
-using InventoryManagement.Repositories;
-using InventoryManagement.Repositories.IRepositories;
-using InventoryManagement.EntityFrameworkCore.EntityFrameworkCore.Repositories;
-using InventoryManagement.Application.Services.CustomerInfoService;
-using InventoryManagement.Application.Services.RoleService;
-using InventoryManagement.Application.Services.UserService;
-using InventoryManagement.Utils.Helpers;
-using DevExtreme.AspNet.Data.Aggregation;
-using InventoryManagement.Interface.Devextreme.Aggreagators;
-using InventoryManagement.Application.Services.RolePermessionsService;
-using InventoryManagement.Application.Services.ProductTypeService;
-using InventoryManagement.Application.Services.ProductPropertyService;
 using Newtonsoft.Json;
-using InventoryManagement.EntityFrameworkCore.EntityFrameworkCore;
-using InventoryManagement.Application.Services.CampaignService;
-using InventoryManagement.Application.Services;
+using Newtonsoft.Json.Serialization;
+using System;
+using System.Reflection;
+using System.Text;
 
 namespace InventoryManagement
 {
@@ -53,6 +53,7 @@ namespace InventoryManagement
         {
             CustomAggregators.RegisterAggregator("ProductSellingPrice", typeof(ProductSellingPriceAggreagtor<>));
             CustomAggregators.RegisterAggregator("ProductPrice", typeof(ProductPriceAggregator<>));
+            CustomAggregators.RegisterAggregator("TotalAmount", typeof(TotalAmountAggregator<>));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 .AddJwtBearer(options =>
 {
@@ -93,6 +94,7 @@ namespace InventoryManagement
             }));
 
             services.AddAutoMapper(typeof(InventoryManagement.Application.AutoMapper.Profiles.BranchProfile).GetTypeInfo().Assembly);
+            services.AddSwagger();
             services.AddControllers().AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling =
@@ -144,7 +146,7 @@ namespace InventoryManagement
             else
             {
                 // This helps to return Error explanation through resoponse
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
@@ -157,7 +159,7 @@ namespace InventoryManagement
             app.UseAuthentication();
             app.UseRouting();
             app.UseAuthorization();
-
+            app.AddUseSwagger("v1.0.0");
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

@@ -33,7 +33,8 @@ namespace InventoryManagement.Reporting
             {
                 options.AddPolicy("AllowCorsPolicy", builder =>
                 {
-                    builder.WithOrigins("http://localhost:4200", "http://www.mfuatnuroglu.com");
+                    builder.AllowAnyOrigin();
+                    //builder.WithOrigins("http://localhost:4200", "http://www.hititshoe.com/");
                     builder.WithHeaders("Content-Type");
                 });
             });

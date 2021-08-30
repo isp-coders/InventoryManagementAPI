@@ -1,10 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using InventoryManagement.Core.Models;
 using InventoryManagement.Models;
-using System;
-using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using System.Threading.Tasks;
-using InventoryManagement.Core.Models;
 
 namespace InventoryManagement.Data
 {
@@ -106,6 +103,9 @@ namespace InventoryManagement.Data
         public DbSet<ProductProperty> ProductProperties { get; set; }
         public DbSet<ProductTypeAndProperty> ProductTypeAndProperties { get; set; }
         public DbSet<Campaign> Campaigns { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<TransactionCard> TransactionCards { get; set; }
+        public DbSet<Currency> Currency { get; set; }
 
     }
 }
