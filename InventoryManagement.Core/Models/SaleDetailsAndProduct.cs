@@ -18,6 +18,8 @@ namespace InventoryManagement.Models
         public Product Product { get; set; }
         public int ProductCount { get; set; }
         [Column(TypeName = "decimal(18,2)")]
+        public decimal SellingPrice { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
         public int? CampaignId { get; set; }
         public Campaign Campaign { get; set; }

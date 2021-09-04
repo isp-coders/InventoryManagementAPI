@@ -145,7 +145,7 @@ namespace InventoryManagement.Application.Services.SalesService
 
                     entity.Count -= 1;
                     int campaignId = productsPricesAndIdsAndCampaingId.CampaignIds[index];
-                    saleProducts.Add(new SaleDetailsAndProduct { Sale = sale, ProductId = Id, ProductCount = 1, Price = productsPricesAndIdsAndCampaingId.SellingPrices[index], CampaignId = campaignId != 0 ? campaignId : null });
+                    saleProducts.Add(new SaleDetailsAndProduct { Sale = sale, ProductId = Id, ProductCount = 1, SellingPrice = productsPricesAndIdsAndCampaingId.SellingPrices[index], CampaignId = campaignId != 0 ? campaignId : null, Price = entity.Price });
                 }
                 else
                 {
@@ -175,7 +175,7 @@ namespace InventoryManagement.Application.Services.SalesService
                     saleDetailsAndProduct.Product.Count += 1;
                     _SaleDetailsAndProduct.PutEntity(saleDetailsAndProduct);
                     _ProductRepository.PutEntity(saleDetailsAndProduct.Product);
-                    newSalesDetails.SaleDetailsAndProducts.Add(new SaleDetailsAndProduct { ProductId = productId, CampaignId = saleDetailsAndProduct.CampaignId, Operations = SaleOperation.RETURNED, Price = saleDetailsAndProduct.Price, ProductCount = 1 });
+                    newSalesDetails.SaleDetailsAndProducts.Add(new SaleDetailsAndProduct { ProductId = productId, CampaignId = saleDetailsAndProduct.CampaignId, Operations = SaleOperation.RETURNED, SellingPrice = saleDetailsAndProduct.SellingPrice, ProductCount = 1 });
                 }
 
                 _SalesRepository.PutEntity(SaleDetailsOfOldProdcuts);
@@ -259,7 +259,7 @@ namespace InventoryManagement.Application.Services.SalesService
                     _ProductRepository.PutEntity(product);
 
 
-                    saleDetailsAndProducts.Add(new SaleDetailsAndProduct { Operations = SaleOperation.TakenInsteadOfOldProducts, ProductId = productId, ProductCount = 1, Price = newProductListToTake.ProductPrices[index], CampaignId = product.CampaignId });
+                    saleDetailsAndProducts.Add(new SaleDetailsAndProduct { Operations = SaleOperation.TakenInsteadOfOldProducts, ProductId = productId, ProductCount = 1, SellingPrice = newProductListToTake.ProductPrices[index], CampaignId = product.CampaignId });
                 }
                 else
                 {
